@@ -17,6 +17,7 @@ final class THRG_STK_Notes {
 
     /** Column formats for insert/update. */
     const FORMATS = array(
+        'revision'    => '%d',
         'page_key'    => '%s',
         'page_path'   => '%s',
         'page_title'  => '%s',
@@ -113,15 +114,33 @@ final class THRG_STK_Notes {
      *
      * @param int   $id   Note ID.
      * @param array $data Column values.
+     * @param int|null $expected_revision Expected version, or current version.
      * @return bool
      */
-    public static function update( $id, array $data ) {
+    public static function update( $id, array $data, $expected_revision = null ) {
         global $wpdb;
         $data = self::dehydrate( $data );
         if ( ! $data ) {
             return true;
         }
-        return false !== $wpdb->update( THRG_STK_Schema::table(), $data, array( 'id' => (int) $id ), self::formats( $data ), array( '%d' ) );
+        if ( null === $expected_revision ) {
+            $current = self::find( $id );
+            if ( ! $current ) {
+                return false;
+            }
+            $expected_revision = $current['revision'];
+        }
+        $data['revision'] = (int) $expected_revision + 1;
+        return 1 === $wpdb->update(
+            THRG_STK_Schema::table(),
+            $data,
+            array(
+                'id'       => (int) $id,
+                'revision' => (int) $expected_revision,
+            ),
+            self::formats( $data ),
+            array( '%d', '%d' )
+        );
     }
 
     /**
@@ -197,7 +216,7 @@ final class THRG_STK_Notes {
      * @return array
      */
     public static function hydrate( array $row ) {
-        foreach ( array( 'id', 'pos_top', 'pos_center', 'width', 'height', 'viewport_w', 'author_id', 'resolved_by' ) as $int ) {
+        foreach ( array( 'revision', 'id', 'pos_top', 'pos_center', 'width', 'height', 'viewport_w', 'author_id', 'resolved_by' ) as $int ) {
             $row[ $int ] = isset( $row[ $int ] ) ? (int) $row[ $int ] : 0;
         }
         $row['mentions'] = isset( $row['mentions'] ) ? array_values( array_filter( array_map( 'intval', explode( ',', (string) $row['mentions'] ) ) ) ) : array();

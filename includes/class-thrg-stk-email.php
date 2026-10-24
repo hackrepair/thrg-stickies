@@ -50,22 +50,24 @@ final class THRG_STK_Email {
      * @return string
      */
     public static function text( array $d ) {
-        $lines   = array();
-        $lines[] = sprintf( 'Hi %s,', $d['recipient'] );
+        $lines = array();
+        /* translators: %s: recipient name. */
+        $lines[] = sprintf( __( 'Hi %s,', 'thrg-stickies' ), $d['recipient'] );
         $lines[] = '';
-        $lines[] = sprintf( '%s mentioned you in a sticky note on %s:', $d['author'], $d['page_label'] );
+        /* translators: 1: author name, 2: page label. */
+        $lines[] = sprintf( __( '%1$s mentioned you in a sticky note on %2$s:', 'thrg-stickies' ), $d['author'], $d['page_label'] );
         $lines[] = '';
         foreach ( explode( "\n", wordwrap( $d['excerpt'], 72 ) ) as $line ) {
             $lines[] = '  > ' . $line;
         }
         $lines[] = '';
-        $lines[] = 'View the note:';
+        $lines[] = __( 'View the note:', 'thrg-stickies' );
         $lines[] = $d['note_url'];
         $lines[] = '';
-        $lines[] = 'You need to be logged in to see it.';
+        $lines[] = __( 'You need to be logged in to see it.', 'thrg-stickies' );
         $lines[] = '';
         $lines[] = '--';
-        $lines[] = 'Sent by Stickies on ' . $d['site_url'];
+        $lines[] = __( 'Sent by Stickies on ', 'thrg-stickies' ) . $d['site_url'];
         return implode( "\n", $lines ) . "\n";
     }
 
@@ -85,13 +87,15 @@ final class THRG_STK_Email {
             . '<div style="padding:24px 16px">'
             . '<div style="background:#fff;border:1px solid #d5dde4;border-left:4px solid #b34700;border-radius:6px;padding:20px 22px">'
             . $logo
-            . '<p style="margin:0 0 14px;font-size:15px">Hi ' . $e( $d['recipient'] ) . ',</p>'
-            . '<p style="margin:0 0 14px;font-size:15px"><strong>' . $e( $d['author'] ) . '</strong> mentioned you in a sticky note on <strong>' . $e( $d['page_label'] ) . '</strong>:</p>'
+            . /* translators: %s: recipient name. */
+            '<p style="margin:0 0 14px;font-size:15px">' . $e( sprintf( __( 'Hi %s,', 'thrg-stickies' ), $d['recipient'] ) ) . '</p>'
+            . /* translators: 1: author name, 2: page label. */
+            '<p style="margin:0 0 14px;font-size:15px">' . $e( sprintf( __( '%1$s mentioned you in a sticky note on %2$s:', 'thrg-stickies' ), $d['author'], $d['page_label'] ) ) . '</p>'
             . '<div style="background:#ffefb1;border-radius:4px;box-shadow:2px 1px 5px rgba(50,48,50,.33);padding:14px 16px;margin:0 0 18px;font-size:16px;line-height:1.4;color:#333;white-space:pre-wrap">' . $e( $d['excerpt'] ) . '</div>'
-            . '<p style="margin:0 0 18px"><a href="' . $e( $d['note_url'] ) . '" style="display:inline-block;background:#b34700;color:#fff;text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:600">View the note</a></p>'
-            . '<p style="margin:0;font-size:13px;color:#4f6577">You need to be logged in to see it.</p>'
+            . '<p style="margin:0 0 18px"><a href="' . $e( $d['note_url'] ) . '" style="display:inline-block;background:#b34700;color:#fff;text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:600">' . $e( __( 'View the note', 'thrg-stickies' ) ) . '</a></p>'
+            . '<p style="margin:0;font-size:13px;color:#4f6577">' . $e( __( 'You need to be logged in to see it.', 'thrg-stickies' ) ) . '</p>'
             . '</div>'
-            . '<p style="margin:14px 0 0;font-size:12px;color:#4f6577">Sent by Stickies on <a href="' . $e( $d['site_url'] ) . '" style="color:#4f6577">' . $e( $d['site_url'] ) . '</a></p>'
+            . '<p style="margin:14px 0 0;font-size:12px;color:#4f6577">' . $e( __( 'Sent by Stickies on', 'thrg-stickies' ) ) . ' <a href="' . $e( $d['site_url'] ) . '" style="color:#4f6577">' . $e( $d['site_url'] ) . '</a></p>'
             . '</div></body></html>';
     }
 
@@ -117,6 +121,7 @@ final class THRG_STK_Email {
         $note_url = THRG_STK_Plugin::note_url( $note );
         $label    = '' !== $note['page_title'] ? $note['page_title'] . ' (' . $note['page_path'] . ')' : $note['page_path'];
         $sent     = 0;
+        $results  = array();
 
         foreach ( array_unique( array_map( 'intval', $user_ids ) ) as $uid ) {
             if ( $uid === (int) $author_id ) {
@@ -157,11 +162,33 @@ final class THRG_STK_Email {
             $ok = wp_mail( $user->user_email, self::subject( $domain ), self::html( $data ), $headers );
             remove_action( 'phpmailer_init', $alt );
 
+            $results[ $uid ] = array(
+                'state' => $ok ? 'accepted' : 'failed',
+                'time'  => current_time( 'mysql', true ),
+            );
             if ( $ok ) {
                 set_transient( $throttle, 1, self::THROTTLE );
                 ++$sent;
             }
         }
+        if ( $results ) {
+            self::record( (int) $note['id'], $results );
+        }
         return $sent;
+    }
+    /**
+     * Record the latest attempted notification per recipient, without changing note revisions.
+     *
+     * @param int   $id      Note ID.
+     * @param array $results Recipient results.
+     * @return void
+     */
+    private static function record( $id, array $results ) {
+        global $wpdb;
+        $note = THRG_STK_Notes::find( $id );
+        $old  = $note && ! empty( $note['mail_status'] ) ? json_decode( $note['mail_status'], true ) : array();
+        $log  = array_replace( is_array( $old ) ? $old : array(), $results );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Notification metadata for this plugin's table; no cached note queries.
+        $wpdb->update( THRG_STK_Schema::table(), array( 'mail_status' => wp_json_encode( $log ) ), array( 'id' => $id ), array( '%s' ), array( '%d' ) );
     }
 }

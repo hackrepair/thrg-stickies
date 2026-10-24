@@ -843,6 +843,7 @@
 		var req;
 		if ( this.id ) {
 			body.updated_at = d.updated_at;
+			body.revision = d.revision;
 			req = api( 'PATCH', 'notes/' + this.id, body );
 		} else {
 			body.uri = pageUri();
@@ -857,7 +858,10 @@
 		req.then( function ( data ) {
 			self.saving = false;
 			self.el.classList.remove( 'is-loading' );
-			var keepEditing = self.editing && auto;
+			var keepEditing = self.dirty.content || ( self.editing && auto );
+			if ( keepEditing ) {
+				self.editing = true;
+			}
 			if ( ! keepEditing ) {
 				self.editing = false;
 				self.closeSuggest();

@@ -2,7 +2,9 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
+Status: **2.0.1 release, October 23, 2026.** Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+
+Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
 ## Purpose
 
@@ -68,7 +70,7 @@ These are the reasons for a clean rewrite rather than an update of the example:
 | Version constant | `THRG_STK_VERSION` |
 | Repository | `hackrepair/thrg-stickies` (public, branch `main`) |
 | REST namespace | `thrg-stickies/v1` |
-| Database table | `{prefix}thrg_stickies` (schema version 2) |
+| Database table | `{prefix}thrg_stickies` (schema version 4) |
 | Local working copy | `/Volumes/BACKUP8TB2/plugins/thrg-stickies/thrg-stickies` |
 | Releases folder | `/Volumes/BACKUP8TB2/plugins/thrg-stickies/releases/` (outside the repo) |
 | Requires | WordPress 6.9.4+, PHP 7.4+ (checked on PHP 7.4.33 and 8.2.33, WordPress 7.1) |
@@ -410,3 +412,13 @@ Installed copies get updates only from tagged releases that carry the `thrg-stic
 ## Community support
 
 Questions and ideas at https://github.com/hackrepair/thrg-stickies/discussions, reproducible bugs at https://github.com/hackrepair/thrg-stickies/issues, and security reports privately to jim@hackrepair.com.
+
+## 2.0.0 Zendogs validation, October 23, 2026
+
+Installed the locally built 2.0.0 package in the Zendogs sandbox at localhost:8081. Backed up the installed plugin and full local database to releases/zendogs-2.0.0-backup before installation. Schema upgrade and all 49 WordPress integration assertions passed. Ego Lite space 57 verified creation/save, links, color, private visibility, resolve/Undo, hide/show, mobile panel at 390px without overflow, keyboard move/resize, settings save, autosave, persistence, plugin details, delayed-save text preservation, and stale revision HTTP 409. Removed test note 30 and restored autosave off. Existing notes retained. PHPCS and JS syntax passed after final save correction. Screenshots: .review/200-site.png and .review/200-save.png (intermediate states).
+
+Limits: no fresh pointer-drag/resize gesture, mention-suggestion UI, bulk-action UI, logged-out browser session, screen reader, multisite, external inbox, or published updater installation test in this pass. Mention email and role/visibility behavior passed integration tests; these do not replace browser or external-delivery proof. GitHub release remains unpublished.
+
+## 2.0.1 email status
+
+Notes list records the latest attempted mention email per recipient: Accepted by mailer, Send failed, or No recorded send. Timestamps use UTC. No raw mail errors, addresses, or message bodies are stored in this status. Mail metadata writes do not change note revisions. Schema 4 adds nullable mail_status; old notes remain unknown. Local Zendogs integration: 52 assertions passed, including acceptance, forced failure, and unchanged revisions. PHPCS passed. Mailer acceptance does not establish inbox delivery.

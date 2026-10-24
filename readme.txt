@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 1.1.2
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -33,7 +33,7 @@ Open any page of your site while logged in and click the note button on the left
 
 = Privacy =
 
-Notes are stored in your own WordPress database and are only shown to logged-in people with Stickies permissions. Notes are fetched after the page loads, so cached pages never contain them. The only thing that leaves your site is the mention email, sent through your site's normal mail setup. Stickies makes no outside requests apart from checking GitHub for plugin updates.
+Notes are stored in your own WordPress database and are only shown to logged-in people with Stickies permissions. Notes are fetched after the page loads, so cached pages never contain them. Mention emails use your site’s normal mail setup. GitHub is contacted for updates, and mention suggestions may load images from your configured avatar provider, including Gravatar.
 
 = Mention emails =
 
@@ -94,6 +94,16 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 
 == Changelog ==
 
+= 2.0.1 =
+* Record mention email acceptance and failures per recipient in the notes list.
+* Show attempt timestamps and distinguish mailer acceptance from inbox delivery.
+
+= 2.0.0 =
+* Preserve edits typed while saving.
+* Add atomic revision checks to prevent concurrent overwrites.
+* Translate mention emails and clarify avatar privacy.
+
+
 = 1.1.2 =
 * Resolved notes leave the page; open them from the notes panel or the Stickies list.
 * The push-pin is now a Hack Repair heart and can be dragged to move the note.
@@ -110,3 +120,5 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 
 = 1.0.0 =
 * First release.
+
+Privacy clarification: Mention suggestions load avatars using WordPress’s configured avatar provider, which may contact Gravatar. GitHub is contacted for plugin update checks.

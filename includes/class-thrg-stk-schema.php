@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /** One table per site holds every note. */
 final class THRG_STK_Schema {
 
-    const VERSION        = '2';
+    const VERSION        = '4';
     const VERSION_OPTION = 'thrg_stk_db_version';
 
     /**
@@ -33,11 +33,13 @@ final class THRG_STK_Schema {
     public static function sql( $table, $charset ) {
         return "CREATE TABLE {$table} (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  revision bigint(20) unsigned NOT NULL DEFAULT 1,
   page_key char(40) NOT NULL DEFAULT '',
   page_path varchar(2048) NOT NULL DEFAULT '',
   page_title varchar(255) NOT NULL DEFAULT '',
   context varchar(10) NOT NULL DEFAULT 'front',
   content text NOT NULL,
+  mail_status text NULL,
   pos_top int(11) NOT NULL DEFAULT 0,
   pos_center int(11) NOT NULL DEFAULT 0,
   width smallint(5) unsigned NOT NULL DEFAULT 270,

@@ -39,6 +39,7 @@ class THRG_STK_List_Table extends WP_List_Table {
             'page_path'  => __( 'Page', 'thrg-stickies' ),
             'author'     => __( 'Author', 'thrg-stickies' ),
             'mentions'   => __( 'Mentions', 'thrg-stickies' ),
+            'mail'       => __( 'Mention email', 'thrg-stickies' ),
             'status'     => __( 'Status', 'thrg-stickies' ),
             'updated_at' => __( 'Updated', 'thrg-stickies' ),
         );
@@ -256,6 +257,27 @@ class THRG_STK_List_Table extends WP_List_Table {
             }
         }
         return $names ? esc_html( implode( ', ', $names ) ) : '<span aria-hidden="true">&mdash;</span>';
+    }
+
+    /**
+     * Latest send result for each current mention.
+     *
+     * @param array $item Note.
+     * @return string
+     */
+    protected function column_mail( $item ) {
+        $log = ! empty( $item['mail_status'] ) ? json_decode( $item['mail_status'], true ) : array();
+        $out = array();
+        foreach ( $item['mentions'] as $uid ) {
+            $entry = is_array( $log ) && isset( $log[ $uid ] ) ? $log[ $uid ] : null;
+            $label = __( 'No recorded send', 'thrg-stickies' );
+            if ( $entry ) {
+                $label  = 'accepted' === $entry['state'] ? __( 'Accepted by mailer', 'thrg-stickies' ) : __( 'Send failed', 'thrg-stickies' );
+                $label .= ' (' . $entry['time'] . ' UTC)';
+            }
+            $out[] = esc_html( THRG_STK_Plugin::display_name( $uid ) . ': ' . $label );
+        }
+        return $out ? implode( '<br />', $out ) . '<br /><small>' . esc_html__( 'Mailer acceptance does not confirm inbox delivery.', 'thrg-stickies' ) . '</small>' : '&mdash;';
     }
 
     /**

@@ -8,7 +8,7 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets your team say it right where it happens. Notes are only for logged-in people with Stickies access; visitors never see them.
 
-Current release: **1.1.2**.
+Current release: **2.0.1**.
 
 ## What it does
 
@@ -22,7 +22,7 @@ Current release: **1.1.2**.
 
 ## Privacy and scope
 
-Notes live in one table in your site's database. They are fetched after the page loads through the WordPress REST API, so page caches never contain them. Nothing loads for visitors. The only thing that leaves the site is the mention email. The plugin is not a public comment system and has no anonymous notes.
+Notes live in one table in your site's database. They are fetched after the page loads through the WordPress REST API, so page caches never contain them. Nothing loads for visitors. Mention emails leave the site, update checks contact GitHub, and mention suggestions may load avatars from Gravatar or your configured avatar provider. The plugin is not a public comment system and has no anonymous notes.
 
 ## Install
 
@@ -71,6 +71,15 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.0.1
+- Show per-recipient mention email acceptance/failure and attempt timestamps in the notes list.
+- Historical emails display No recorded send; acceptance does not confirm inbox delivery.
+
+### 2.0.0
+- Preserve edits during manual saves and protect concurrent updates with revisions.
+- Translate mention emails and clarify avatar privacy.
+
+
 ### 1.1.2
 - Resolved notes leave the page; open them from the notes panel or the Stickies list.
 - The push-pin is now a Hack Repair heart and can be dragged to move the note.
@@ -87,3 +96,5 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ### 1.0.0
 - First release.
+
+Privacy clarification: Mention suggestions load avatars using WordPress’s configured avatar provider, which may contact Gravatar. GitHub is contacted for plugin update checks.

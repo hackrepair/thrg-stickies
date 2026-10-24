@@ -122,6 +122,10 @@ final class THRG_STK_REST {
                                 'type' => 'string',
                                 'enum' => THRG_STK_Access::STATUSES,
                             ),
+                            'revision'   => array(
+                                'type'    => 'integer',
+                                'minimum' => 1,
+                            ),
                             'updated_at' => array(
                                 'type'    => 'string',
                                 'pattern' => '^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$',
@@ -300,7 +304,7 @@ final class THRG_STK_REST {
         if ( $status && ! THRG_STK_Access::can_resolve( $note, $uid, $caps ) ) {
             return new WP_Error( 'thrg_stk_forbidden', __( 'You can’t resolve this note.', 'thrg-stickies' ), array( 'status' => 403 ) );
         }
-        if ( $req['updated_at'] && $editing && $req['updated_at'] !== $note['updated_at'] ) {
+        if ( ( null !== $req['revision'] && (int) $req['revision'] !== $note['revision'] ) || ( $req['updated_at'] && $editing && $req['updated_at'] !== $note['updated_at'] ) ) {
             return new WP_Error(
                 'thrg_stk_conflict',
                 __( 'Someone else changed this note while you were editing. Reload it to see their version.', 'thrg-stickies' ),
@@ -341,8 +345,8 @@ final class THRG_STK_REST {
             $data['edited_at'] = $data['updated_at'];
         }
 
-        if ( ! THRG_STK_Notes::update( $note['id'], $data ) ) {
-            return new WP_Error( 'thrg_stk_db', __( 'The note could not be saved. Please try again.', 'thrg-stickies' ), array( 'status' => 500 ) );
+        if ( ! THRG_STK_Notes::update( $note['id'], $data, $note['revision'] ) ) {
+            return new WP_Error( 'thrg_stk_conflict', __( 'The note changed or could not be saved. Reload the page before trying again.', 'thrg-stickies' ), array( 'status' => 409 ) );
         }
         $note = THRG_STK_Notes::find( $note['id'] );
         if ( $new_mentions ) {
@@ -468,6 +472,7 @@ final class THRG_STK_REST {
             'created'     => gmdate( 'c', (int) strtotime( $note['created_at'] . ' UTC' ) ),
             'updated'     => gmdate( 'c', (int) strtotime( $note['updated_at'] . ' UTC' ) ),
             'updated_at'  => $note['updated_at'],
+            'revision'    => $note['revision'],
             'edited'      => ! empty( $note['edited_at'] ),
             'resolved_by' => $note['resolved_by'] ? (string) THRG_STK_Plugin::display_name( $note['resolved_by'] ) : '',
             'page'        => $note['page_path'],

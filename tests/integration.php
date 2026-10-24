@@ -150,6 +150,20 @@ try {
     $row = THRG_STK_Notes::find( $n1 );
     check( 'title stored as text', 'Test Page' === $row['page_title'], $row['page_title'] );
     check( 'one mention email sent', 1 === count( $mails ), count( $mails ) );
+    $log = json_decode( $row['mail_status'], true );
+    check( 'accepted mail status recorded', 'accepted' === $log[ $editor2 ]['state'] );
+    delete_transient( 'thrg_stk_mail_' . $n1 . '_' . $editor2 );
+    $fail_mail = static function () { return false; };
+    add_filter( 'pre_wp_mail', $fail_mail, 99 );
+    THRG_STK_Email::notify( $row, array( $editor2 ), $editor );
+    remove_filter( 'pre_wp_mail', $fail_mail, 99 );
+    array_pop( $mails ); // Discard the intentionally failed attempt from the capture.
+    $failed_row = THRG_STK_Notes::find( $n1 );
+    $failed_log = json_decode( $failed_row['mail_status'], true );
+    check( 'failed mail status recorded', 'failed' === $failed_log[ $editor2 ]['state'] );
+    check( 'mail logging does not change revision', $row['revision'] === $failed_row['revision'] );
+    set_transient( 'thrg_stk_mail_' . $n1 . '_' . $editor2, 1, 600 );
+
     if ( $mails ) {
         $host = THRG_STK_Email::domain( home_url(), site_url() );
         check( 'mention email subject', '[' . $host . '] [Stickies] You were mentioned in a note' === $mails[0]['subject'], $mails[0]['subject'] );

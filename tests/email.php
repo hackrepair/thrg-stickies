@@ -1,5 +1,7 @@
 <?php
 require __DIR__ . '/bootstrap.php';
+function __( $text, $domain = '' ) { return $text; }
+
 require __DIR__ . '/../includes/class-thrg-stk-email.php';
 
 check( 'domain from home url', 'example.com' === THRG_STK_Email::domain( 'https://Example.com/blog/' ) );
