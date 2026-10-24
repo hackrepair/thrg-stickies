@@ -2,7 +2,7 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.0.4 release, October 24, 2026.** Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.0.5 on `main`, October 24, 2026** (last published release: 2.0.4). Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
 Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
@@ -73,7 +73,7 @@ These are the reasons for a clean rewrite rather than an update of the example:
 | Database table | `{prefix}thrg_stickies` (schema version 4) |
 | Local working copy | `/Volumes/BACKUP8TB2/plugins/thrg-stickies/thrg-stickies` |
 | Releases folder | `/Volumes/BACKUP8TB2/plugins/thrg-stickies/releases/` (outside the repo) |
-| Requires | WordPress 6.9.4+, PHP 7.4+ (checked on PHP 7.4.33 and 8.2.33, WordPress 7.1) |
+| Requires | WordPress 6.9.4+, PHP 7.4+ (checked on PHP 7.4.33 and 8.2.33, WordPress 7.1.3) |
 | License | GPL v2 or later |
 | Author | The Hack Repair Guy, https://hackrepair.com/ |
 
@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.0.4
+Version:           2.0.5
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -186,11 +186,13 @@ One custom table per site, `{$wpdb->prefix}thrg_stickies`, created with `dbDelta
 | Column | Type | Notes |
 |---|---|---|
 | `id` | BIGINT UNSIGNED AUTO_INCREMENT | Primary key; used in `#thrg-stk-<id>` |
+| `revision` | BIGINT UNSIGNED, default 1 | Increases by one on every write; updates are `WHERE id AND revision` so a stale write changes nothing (added in schema 3) |
 | `page_key` | CHAR(40) | SHA-1 of the normalized page path; indexed |
 | `page_path` | VARCHAR(2048) | Normalized home-relative path and kept query string, for display and links |
 | `page_title` | VARCHAR(255) | Browser title when the note was created (plain text), for the list and emails |
 | `context` | VARCHAR(10) | `front` or `admin` |
 | `content` | TEXT | Plain text with mention tokens `@[user:123]`; never HTML |
+| `mail_status` | TEXT, nullable | JSON keyed by recipient user ID: `state` (`accepted` or `failed`) and `time` (UTC) of the latest mention email attempt; no addresses, errors or bodies; written without changing `revision` (added in schema 4) |
 | `pos_top` | INT | px from document top |
 | `pos_center` | INT | px offset from viewport center |
 | `width`, `height` | SMALLINT UNSIGNED | Validated 120–2000 and 60–2000 by the API; the browser keeps 180–900 by 100–900 |
@@ -200,13 +202,13 @@ One custom table per site, `{$wpdb->prefix}thrg_stickies`, created with `dbDelta
 | `status` | VARCHAR(10) | `open`, `resolved` |
 | `author_id` | BIGINT UNSIGNED | Indexed |
 | `mentions` | VARCHAR(255) | Comma-separated user IDs, also derivable from content; used for filters |
-| `created_at`, `updated_at` | DATETIME (GMT) | `updated_at` changes on any save and drives conflict checks |
+| `created_at`, `updated_at` | DATETIME (GMT) | `updated_at` changes on any save; still accepted as a fallback conflict check for older clients |
 | `edited_at` | DATETIME (GMT) | Nullable; set only when the text changes, so resolving is not shown as an edit (added in schema 2) |
 | `resolved_by`, `resolved_at` | BIGINT UNSIGNED, DATETIME | Nullable |
 
 Limits: 2,000 characters of note content, 10 mentions per note, 200 notes per page (`thrg_stk_page_limit` filter) and 5,000 notes per site (`thrg_stk_site_limit` filter). The API explains the limit when it is reached.
 
-Schema upgrades run on `init` when `thrg_stk_db_version` differs from `THRG_STK_Schema::VERSION`, and for new network sites through `wp_initialize_site`. The 1 → 2 upgrade (adding `edited_at`) was exercised on Zendogs.
+Schema upgrades run on `init` when `thrg_stk_db_version` differs from `THRG_STK_Schema::VERSION`, and for new network sites through `wp_initialize_site`. The 1 → 2 upgrade (adding `edited_at`) and the 2 → 4 upgrade (adding `revision`, then `mail_status`; existing notes start at revision 1) were exercised on Zendogs. Schema 3 existed only in the unreleased 2.0.0 build.
 
 Options: `thrg_stk_options` (settings array), `thrg_stk_db_version`, `thrg_stk_show_welcome`. User meta: `thrg_stk_notice_dismissed`. Transients: `thrg_stk_mail_<note>_<user>` (mention throttle), `thrg_stk_github_limit`. Per-browser preferences (notes hidden, show resolved) use `localStorage` inside try/catch.
 
@@ -310,21 +312,24 @@ Plain PHP scripts in `tests/` (shared helpers in `tests/bootstrap.php`), plus th
 - `tests/url.php` (26): page-path normalization: tracking parameters, ordering, flags, dots in names, subfolder home, admin screens, rejected input.
 - `tests/content.php` (25): sanitizer, length cap, mention tokens and filtering, rendering, auto-linking, and XSS payloads (`<script>`, quote breakouts, `javascript:`, tags after URLs, entity handling).
 - `tests/access.php` (21): visibility and permission matrix for authors, writers, readers, mentioned users and managers, with and without the private-notes setting.
-- `tests/email.php` (16): subject per the email standard (domain, subdomain, port, fallback), HTML escaping, full width, plain-text body.
-- `tests/schema.php` (28): table SQL shape, every repository column present, row typing.
+- `tests/email.php` (19): subject per the email standard (domain, subdomain, port, fallback), HTML escaping, bold author and page, footer link, full width, plain-text body.
+- `tests/revision.php` (5): two writers that read the same revision; the first wins, the stale one is rejected, a fresh one succeeds.
+- `tests/schema.php` (29): table SQL shape, every repository column present, row typing.
 - `tests/smoke.php` (31): plugin loads with the updater skipped, hooks registered, no `wp_ajax_nopriv_` handlers, settings defaults and sanitizing, shipped files, `innerHTML` rule.
 - `tests/uninstall.php` (9): data kept by default; table, options, user meta, capabilities and throttles removed when opted in, other data untouched.
 - `tests/package-permissions.py`: build output uses 0644 entries even from 0600 sources.
-- `tests/integration.php` (49): runs inside a real WordPress (`php tests/integration.php /var/www/html`, CLI only). It creates temporary users and notes, then checks:
+- `tests/integration.php` (67): runs inside a real WordPress (`php tests/integration.php /var/www/html`, CLI only). It creates temporary users and notes, then checks:
   - REST permissions for logged-out users and every role
   - creation, sanitizing and rendering
   - mentions and the mention email (intercepted with `pre_wp_mail`)
   - page-key matching across hosts
   - edit, resolve, reopen and delete permissions
-  - 409 conflicts and validation errors
+  - 409 conflicts by `updated_at` and by `revision`, including a write that loses the race between read and write, and validation errors
+  - mention email status (accepted and forced failure) without changing the revision
+  - bulk resolve and reopen through the Stickies list handler
   - private and mentioned-only visibility
-  - user search limits and email throttling
-  - the role matrix and the schema upgrade
+  - user search limits, duplicate display names, administrator-only email lookup, and email throttling
+  - the role matrix, automatic role repair, and the schema upgrade
 
   Afterwards it removes everything it created.
 
@@ -438,8 +443,6 @@ View details browser review on Zendogs: include Description (video link and priv
 
 Corrected readme and native plugin information metadata to 7.1.3. Zendogs core upgraded from 7.1 to official 7.1.3 after a full local database/core backup. Existing settings preserved. This patch changes compatibility metadata only; no functional changes. Shared PHPCS passed. Runtime integration and native details checks recorded in the release verification.
 
-Corrected readme and native plugin information metadata to 7.1.3. Zendogs core upgraded from 7.1 to official 7.1.3 after a full local database/core backup. Existing settings preserved. This patch changes compatibility metadata only; no functional changes. Shared PHPCS passed. Runtime integration and native details checks recorded in the release verification.
-
 Verification October 23, 2026: Zendogs core reports 7.1.3. All six native plugin-information responses declare tested 7.1.3; Ego Lite space 59 opened all six View details pages and found no has-not-been-tested warning. Stickies 52 WordPress integration assertions and PUE real-WordPress integration passed; DOPN update-notices and all seven PUE standalone suites passed. Shared PHPCS passed for all three corrected plugins. Other plugins were checked for metadata/UI behavior, not subjected to a new full feature audit.
 
 2.0.3 banner: bundled YouTube thumbnail complements the THRG gradient and animated heart; a keyboard-accessible preview links to the walkthrough. Mobile header stacks the thumbnail. No third-party image request occurs when opening View details.
@@ -453,3 +456,15 @@ Saved matrix and persisted WordPress role capabilities could diverge after exter
 Temporary same-name admin/editor fixtures verified homepage/dashboard controls through actual login switching, both Jim suggestions, administrator-only email labels/lookup, and non-administrator account-ID labels without emails. Repaired editor controls and both suggestions verified in Ego Lite. Test accounts and their unsaved notes removed; original settings/roles restored. 61 WordPress integration assertions passed, including duplicate names, email access restrictions, and role repair. Shared PHPCS and JS syntax passed. Screenshots: .review/204-jim-admin.png, .review/204-editor-missing-before.png, .review/204-editor-repaired.png. This reproduces a possible cause matching the reported production symptoms; affected-site role data was not inspected directly.
 
 2.0.4 release documentation: README and bundled FAQ include permission drift, automatic role repair, duplicate-name labels, administrator-only email lookup, and preserved per-user restrictions. Existing schema stays at version 4. Prior runtime/browser limitations remain applicable outside the tested workflows.
+
+## 2.0.5 review fixes, October 24, 2026
+
+A review of 2.0.1 to 2.0.4 found no security or data-loss problems. Fixed in 2.0.5:
+
+- Mention email HTML shows the author and page name in bold again (lost in the 2.0.1 translation change). The footer uses a single translatable `Sent by Stickies on %s` string in both the HTML and text bodies.
+- A PATCH whose atomic update matches no row now tells the cases apart: if another save won the race, HTTP 409 with the latest note (so the browser shows Reload note); if the note is gone, 404; otherwise HTTP 500 with a plain database error. Before, all three returned a 409 without the note.
+- `THRG_STK_Admin::apply()` passes the revision it already loaded, saving one query per note in bulk resolve and reopen.
+- The Mention email column ignores malformed status entries instead of raising notices.
+- Docs: README 2.0.3 changelog entry, 2.0.0 marked as unreleased, stray privacy paragraph removed from both changelogs, generic self-mention FAQ example, a role-sync note that Stickies > Settings overrides role editors, and this file's data table, tests and schema notes.
+
+Kept as designed: role sync reverts Stickies capability changes made outside Stickies > Settings on the next request. A plugin that re-applies its own role setup on every load could cause repeated role-option writes; none was seen. The walkthrough thumbnail appears in both the View details banner and as the clickable preview at the top of Description, as introduced in 2.0.3.

@@ -194,6 +194,34 @@ try {
     list( $s, $d ) = req( 'PATCH', 'notes/' . $n1, array( 'content' => 'Stale edit', 'updated_at' => $stamp ), $editor );
     check( 'stale edit gets 409', 409 === $s, $s );
     check( '409 carries current note', isset( $d['data']['note']['content'] ) && 'Edited by admin' === $d['data']['note']['content'] );
+    $rev = (int) $d['data']['note']['revision'];
+    list( $s ) = req( 'PATCH', 'notes/' . $n1, array( 'content' => 'Old revision', 'revision' => $rev - 1 ), $admin );
+    check( 'stale revision gets 409', 409 === $s, $s );
+
+    // A writer that wins between the read and the write still yields a 409 with the latest note.
+    $race = static function ( $sql ) use ( $n1 ) {
+        static $busy = false;
+        global $wpdb;
+        if ( ! $busy && 0 === strpos( ltrim( $sql ), 'UPDATE `' . THRG_STK_Schema::table() . '`' ) && false !== strpos( $sql, '`content` = \'Race loser\'' ) ) {
+            $busy = true;
+            $wpdb->query( $wpdb->prepare( 'UPDATE `' . THRG_STK_Schema::table() . '` SET revision = revision + 1, content = %s WHERE id = %d', 'Race winner', $n1 ) ); // phpcs:ignore
+            $busy = false;
+        }
+        return $sql;
+    };
+    add_filter( 'query', $race );
+    list( $s, $d ) = req( 'PATCH', 'notes/' . $n1, array( 'content' => 'Race loser', 'revision' => $rev ), $admin );
+    remove_filter( 'query', $race );
+    check( 'lost write race gets 409', 409 === $s, $s );
+    check( 'lost race returns winning note', isset( $d['data']['note']['content'] ) && 'Race winner' === $d['data']['note']['content'], $d );
+
+    // Bulk resolve and reopen advance the revision.
+    wp_set_current_user( $admin );
+    $before = THRG_STK_Notes::find( $n1 );
+    check( 'bulk resolve applies', 1 === THRG_STK_Admin::apply( 'resolve', array( $n1 ) ) );
+    $after = THRG_STK_Notes::find( $n1 );
+    check( 'bulk resolve bumps revision', $after['revision'] === $before['revision'] + 1 && 'resolved' === $after['status'] );
+    check( 'bulk reopen applies', 1 === THRG_STK_Admin::apply( 'reopen', array( $n1 ) ) );
 
     // Geometry validation.
     list( $s ) = req( 'PATCH', 'notes/' . $n1, array( 'width' => 99999 ), $editor );

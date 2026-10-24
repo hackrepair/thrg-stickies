@@ -271,7 +271,7 @@ class THRG_STK_List_Table extends WP_List_Table {
         foreach ( $item['mentions'] as $uid ) {
             $entry = is_array( $log ) && isset( $log[ $uid ] ) ? $log[ $uid ] : null;
             $label = __( 'No recorded send', 'thrg-stickies' );
-            if ( $entry ) {
+            if ( is_array( $entry ) && isset( $entry['state'], $entry['time'] ) ) {
                 $label  = 'accepted' === $entry['state'] ? __( 'Accepted by mailer', 'thrg-stickies' ) : __( 'Send failed', 'thrg-stickies' );
                 $label .= ' (' . $entry['time'] . ' UTC)';
             }

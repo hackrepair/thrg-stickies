@@ -27,10 +27,13 @@ check( 'html escapes page label', false !== strpos( $html, 'About &quot;us&quot;
 check( 'html links to note', false !== strpos( $html, 'href="http://x.test/about/#thrg-stk-5"' ) );
 check( 'html is full width (no 600px cap)', false === strpos( $html, '600px' ) );
 check( 'html names site', false !== strpos( $html, 'Sent by Stickies on' ) );
+check( 'html bolds author and page', false !== strpos( $html, '<strong>Jim &lt;script&gt;</strong>' ) && false !== strpos( $html, '<strong>About &quot;us&quot; (/about/)</strong>' ) );
+check( 'html links site in footer', false !== strpos( $html, 'Sent by Stickies on <a href="http://x.test/"' ) );
 $text = THRG_STK_Email::text( $d );
 check( 'text greets recipient', 0 === strpos( $text, 'Hi Ann,' ) );
 check( 'text has link', false !== strpos( $text, "View the note:\nhttp://x.test/about/#thrg-stk-5" ) );
 check( 'text quotes excerpt', false !== strpos( $text, '  > Fix <b>this</b> & that' ) );
 check( 'text says login needed', false !== strpos( $text, 'You need to be logged in to see it.' ) );
+check( 'text names site', false !== strpos( $text, "Sent by Stickies on http://x.test/\n" ) );
 
 done();

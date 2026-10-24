@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1.3
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -76,7 +76,7 @@ Administrators always can. Editors can see and add notes by default. In Stickies
 
 = Why is an editor missing from mentions or unable to see Stickies? =
 
-Check that Editor has See notes and Add notes in Stickies > Settings. Role-editing plugins or site migrations can remove the stored capabilities while those settings remain checked. Version 2.0.4 reapplies the saved role permissions automatically on the next request. It changes only Stickies role capabilities, and users with individual capability restrictions retain those restrictions.
+Check that Editor has See notes and Add notes in Stickies > Settings. Role-editing plugins or site migrations can remove the stored capabilities while those settings remain checked. Version 2.0.4 reapplies the saved role permissions automatically on the next request. It changes only Stickies role capabilities, and users with individual capability restrictions retain those restrictions. Because Stickies > Settings is the source of truth, a Stickies permission granted or removed in a role-editing plugin is changed back to match Settings on the next page load, so manage Stickies access in Stickies > Settings.
 
 = How do I distinguish two people with the same name? =
 
@@ -100,7 +100,7 @@ Yes. Dashboard screens are on by default. You can turn them off with "On dashboa
 
 = Why does a mention show No recorded send? =
 
-Stickies does not email you when you mention your own account. If you are logged in as Jim and choose Jim from the @ suggestions, no notification is sent, even with emails enabled and visibility set to Team. Choose a different account to test notifications.
+Stickies does not email you when you mention your own account. If you choose your own name from the @ suggestions, no notification is sent, even with emails enabled and visibility set to Team. Choose a different account to test notifications.
 
 No recorded send means there is no saved send result for that person. It can also appear for mentions saved before version 2.0.1, when mention emails were disabled, when the recipient could not see the note (for example a Just me note), when the recipient account or email was invalid, or when the 10-minute cooldown suppressed a notification.
 
@@ -117,6 +117,12 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.0.5 =
+* Mention emails show the author and page name in bold again, and the footer uses one translatable string.
+* A save that loses a race to another edit now returns the latest note with a Reload button; a real database error says so plainly.
+* Bulk resolve and reopen use the revision they already loaded.
+* Documentation corrections.
 
 = 2.0.4 =
 * Repair missing role capabilities from the saved Stickies permissions, restoring editor controls and mention eligibility.
@@ -137,11 +143,10 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 * Record mention email acceptance and failures per recipient in the notes list.
 * Show attempt timestamps and distinguish mailer acceptance from inbox delivery.
 
-= 2.0.0 =
+= 2.0.0 (not released; included in 2.0.1) =
 * Preserve edits typed while saving.
 * Add atomic revision checks to prevent concurrent overwrites.
 * Translate mention emails and clarify avatar privacy.
-
 
 = 1.1.2 =
 * Resolved notes leave the page; open them from the notes panel or the Stickies list.
@@ -159,5 +164,3 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 
 = 1.0.0 =
 * First release.
-
-Privacy clarification: Mention suggestions load avatars using WordPress’s configured avatar provider, which may contact Gravatar. GitHub is contacted for plugin update checks.

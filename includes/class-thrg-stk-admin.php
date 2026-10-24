@@ -267,7 +267,8 @@ final class THRG_STK_Admin {
                         'resolved_by' => 'resolved' === $status ? $uid : 0,
                         'resolved_at' => 'resolved' === $status ? current_time( 'mysql', true ) : null,
                         'updated_at'  => current_time( 'mysql', true ),
-                    )
+                    ),
+                    $note['revision']
                 ) ? 1 : 0;
             }
         }

@@ -53,7 +53,7 @@ Enable mention emails, create a new Team note, select another administrator or e
 
 ### Why is an editor missing from mentions or unable to see Stickies?
 
-Role-editing tools or migrations can remove WordPress’s stored Stickies capabilities while the saved Editor settings remain checked. Starting with 2.0.4, Stickies reconciles its role capabilities with the saved permission matrix on each request, writing only when they differ. Individual user restrictions are preserved.
+Role-editing tools or migrations can remove WordPress’s stored Stickies capabilities while the saved Editor settings remain checked. Starting with 2.0.4, Stickies reconciles its role capabilities with the saved permission matrix on each request, writing only when they differ. Individual user restrictions are preserved. Stickies settings are the source of truth: if a role editor grants or removes Stickies access for a role directly, the next page load changes it back to match Stickies > Settings. Change Stickies access in Stickies > Settings, not in a role editor.
 
 ### How can I tell two people with the same name apart?
 
@@ -99,6 +99,12 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.0.5
+- Mention emails show the author and page name in bold again, and the footer uses one translatable string.
+- A save that loses a race to another edit now returns the latest note with a Reload button; a real database error says so plainly.
+- Bulk resolve and reopen use the revision they already loaded.
+- Documentation corrections.
+
 ### 2.0.4
 - Restore missing Stickies role capabilities from the saved permission settings.
 - Distinguish duplicate names in mentions; administrators can identify eligible users by email.
@@ -109,14 +115,17 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 - Add the walkthrough video and include Support in View details.
 - Remove the repeated delivery disclaimer from the notes list.
 
+### 2.0.3
+- Declare WordPress 7.1.3 compatibility in the readme and View details.
+- Add the walkthrough thumbnail to the View details banner and a clickable local video preview.
+
 ### 2.0.1
 - Show per-recipient mention email acceptance/failure and attempt timestamps in the notes list.
 - Historical emails display No recorded send; acceptance does not confirm inbox delivery.
 
-### 2.0.0
+### 2.0.0 (not released; included in 2.0.1)
 - Preserve edits during manual saves and protect concurrent updates with revisions.
 - Translate mention emails and clarify avatar privacy.
-
 
 ### 1.1.2
 - Resolved notes leave the page; open them from the notes panel or the Stickies list.
@@ -134,5 +143,3 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ### 1.0.0
 - First release.
-
-Privacy clarification: Mention suggestions load avatars using WordPress’s configured avatar provider, which may contact Gravatar. GitHub is contacted for plugin update checks.

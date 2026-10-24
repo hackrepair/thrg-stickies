@@ -346,7 +346,22 @@ final class THRG_STK_REST {
         }
 
         if ( ! THRG_STK_Notes::update( $note['id'], $data, $note['revision'] ) ) {
-            return new WP_Error( 'thrg_stk_conflict', __( 'The note changed or could not be saved. Reload the page before trying again.', 'thrg-stickies' ), array( 'status' => 409 ) );
+            $latest = THRG_STK_Notes::find( $note['id'] );
+            if ( ! $latest ) {
+                return new WP_Error( 'thrg_stk_missing', __( 'This note was deleted or you can no longer see it.', 'thrg-stickies' ), array( 'status' => 404 ) );
+            }
+            if ( $latest['revision'] !== $note['revision'] ) {
+                // Another save won the race between our read and our write.
+                return new WP_Error(
+                    'thrg_stk_conflict',
+                    __( 'Someone else changed this note while you were editing. Reload it to see their version.', 'thrg-stickies' ),
+                    array(
+                        'status' => 409,
+                        'note'   => self::prepare( $latest, $uid, $caps ),
+                    )
+                );
+            }
+            return new WP_Error( 'thrg_stk_db', __( 'The note could not be saved. Please try again.', 'thrg-stickies' ), array( 'status' => 500 ) );
         }
         $note = THRG_STK_Notes::find( $note['id'] );
         if ( $new_mentions ) {

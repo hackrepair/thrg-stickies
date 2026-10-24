@@ -67,7 +67,8 @@ final class THRG_STK_Email {
         $lines[] = __( 'You need to be logged in to see it.', 'thrg-stickies' );
         $lines[] = '';
         $lines[] = '--';
-        $lines[] = __( 'Sent by Stickies on ', 'thrg-stickies' ) . $d['site_url'];
+        /* translators: %s: site address. */
+        $lines[] = sprintf( __( 'Sent by Stickies on %s', 'thrg-stickies' ), $d['site_url'] );
         return implode( "\n", $lines ) . "\n";
     }
 
@@ -90,12 +91,13 @@ final class THRG_STK_Email {
             . /* translators: %s: recipient name. */
             '<p style="margin:0 0 14px;font-size:15px">' . $e( sprintf( __( 'Hi %s,', 'thrg-stickies' ), $d['recipient'] ) ) . '</p>'
             . /* translators: 1: author name, 2: page label. */
-            '<p style="margin:0 0 14px;font-size:15px">' . $e( sprintf( __( '%1$s mentioned you in a sticky note on %2$s:', 'thrg-stickies' ), $d['author'], $d['page_label'] ) ) . '</p>'
+            '<p style="margin:0 0 14px;font-size:15px">' . sprintf( $e( __( '%1$s mentioned you in a sticky note on %2$s:', 'thrg-stickies' ) ), '<strong>' . $e( $d['author'] ) . '</strong>', '<strong>' . $e( $d['page_label'] ) . '</strong>' ) . '</p>'
             . '<div style="background:#ffefb1;border-radius:4px;box-shadow:2px 1px 5px rgba(50,48,50,.33);padding:14px 16px;margin:0 0 18px;font-size:16px;line-height:1.4;color:#333;white-space:pre-wrap">' . $e( $d['excerpt'] ) . '</div>'
             . '<p style="margin:0 0 18px"><a href="' . $e( $d['note_url'] ) . '" style="display:inline-block;background:#b34700;color:#fff;text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:600">' . $e( __( 'View the note', 'thrg-stickies' ) ) . '</a></p>'
             . '<p style="margin:0;font-size:13px;color:#4f6577">' . $e( __( 'You need to be logged in to see it.', 'thrg-stickies' ) ) . '</p>'
             . '</div>'
-            . '<p style="margin:14px 0 0;font-size:12px;color:#4f6577">' . $e( __( 'Sent by Stickies on', 'thrg-stickies' ) ) . ' <a href="' . $e( $d['site_url'] ) . '" style="color:#4f6577">' . $e( $d['site_url'] ) . '</a></p>'
+            . /* translators: %s: site address. */
+            '<p style="margin:14px 0 0;font-size:12px;color:#4f6577">' . sprintf( $e( __( 'Sent by Stickies on %s', 'thrg-stickies' ) ), '<a href="' . $e( $d['site_url'] ) . '" style="color:#4f6577">' . $e( $d['site_url'] ) . '</a>' ) . '</p>'
             . '</div></body></html>';
     }
 
