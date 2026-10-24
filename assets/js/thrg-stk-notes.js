@@ -947,7 +947,7 @@
 		users.forEach( function ( u, i ) {
 			var opt = el( 'div', { role: 'option', id: 'thrg-stk-opt-' + i, 'aria-selected': i === 0 ? 'true' : 'false', 'data-id': String( u.id ) }, [
 				u.avatar ? el( 'img', { src: u.avatar, alt: '' } ) : null,
-				el( 'span', { text: u.name } )
+				el( 'span', { text: u.label || u.name } )
 			] );
 			opt.addEventListener( 'mousedown', function ( e ) {
 				e.preventDefault();

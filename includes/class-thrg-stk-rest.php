@@ -385,14 +385,19 @@ final class THRG_STK_REST {
         $term  = trim( sanitize_text_field( (string) $req['search'] ) );
         $users = array();
         if ( '' !== $term ) {
+            $can_list = current_user_can( 'list_users' );
+            $columns  = array( 'user_login', 'user_nicename', 'display_name' );
+            if ( $can_list ) {
+                $columns[] = 'user_email';
+            }
             $query = new WP_User_Query(
                 array(
                     'search'         => '*' . $term . '*',
-                    'search_columns' => array( 'user_login', 'user_nicename', 'display_name' ),
+                    'search_columns' => $columns,
                     'capability__in' => array_values( THRG_STK_Access::caps() ),
                     'number'         => 10,
                     'orderby'        => 'display_name',
-                    'fields'         => array( 'ID', 'display_name' ),
+                    'fields'         => $can_list ? array( 'ID', 'display_name', 'user_email' ) : array( 'ID', 'display_name' ),
                     'count_total'    => false,
                 )
             );
@@ -400,6 +405,8 @@ final class THRG_STK_REST {
                 $users[] = array(
                     'id'     => (int) $user->ID,
                     'name'   => $user->display_name,
+                    /* translators: 1: display name, 2: account ID. */
+                    'label'  => $can_list ? $user->display_name . ' (' . $user->user_email . ')' : sprintf( __( '%1$s (user #%2$d)', 'thrg-stickies' ), $user->display_name, $user->ID ),
                     'avatar' => get_avatar_url( (int) $user->ID, array( 'size' => 48 ) ),
                 );
             }

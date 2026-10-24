@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1.3
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -74,6 +74,14 @@ No. Notes, the toolbar and every Stickies file load only for logged-in people wh
 
 Administrators always can. Editors can see and add notes by default. In Stickies > Settings you can give any role permission to see notes, add notes, or manage everyone's notes. Everyone can edit, move, resolve and delete their own notes.
 
+= Why is an editor missing from mentions or unable to see Stickies? =
+
+Check that Editor has See notes and Add notes in Stickies > Settings. Role-editing plugins or site migrations can remove the stored capabilities while those settings remain checked. Version 2.0.4 reapplies the saved role permissions automatically on the next request. It changes only Stickies role capabilities, and users with individual capability restrictions retain those restrictions.
+
+= How do I distinguish two people with the same name? =
+
+Administrators who can list users see an email address next to each name and can search by email. Other Stickies users see an account ID next to each name. Suggestions include only accounts with Stickies access. Selecting a person stores their account ID, so identical display names remain distinct.
+
 = Who can resolve a note? =
 
 The person who wrote it, anyone who manages notes, and anyone mentioned in it.
@@ -109,6 +117,11 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.0.4 =
+* Repair missing role capabilities from the saved Stickies permissions, restoring editor controls and mention eligibility.
+* Distinguish matching names in mention suggestions; administrators can identify and search eligible accounts by email.
+* Keep email addresses out of suggestions for users who cannot list accounts.
 
 = 2.0.3 =
 * Declare WordPress 7.1.3 compatibility consistently in the readme and native View details.

@@ -51,6 +51,14 @@ No. Only newly added mentions trigger notification attempts. Re-saving the same 
 
 Enable mention emails, create a new Team note, select another administrator or editor from the @ dropdown, and save. Refresh the notes list for the send result and check Mailpit if used locally. If the new email arrives but no result is recorded, investigate the database upgrade and status write.
 
+### Why is an editor missing from mentions or unable to see Stickies?
+
+Role-editing tools or migrations can remove WordPress’s stored Stickies capabilities while the saved Editor settings remain checked. Starting with 2.0.4, Stickies reconciles its role capabilities with the saved permission matrix on each request, writing only when they differ. Individual user restrictions are preserved.
+
+### How can I tell two people with the same name apart?
+
+Administrators who can list users see email addresses next to names and can search by email. Other Stickies users see account IDs. Only eligible users appear, and selecting a mention stores the account ID, so matching names remain separate people.
+
 ## Development
 
 Requires WordPress 6.9.4+ and PHP 7.4+. Tests are plain PHP scripts:
@@ -63,6 +71,7 @@ php tests/email.php
 php tests/schema.php
 php tests/smoke.php
 php tests/uninstall.php
+php tests/revision.php
 python3 tests/package-permissions.py
 ```
 
@@ -89,6 +98,11 @@ Update checks use [Plugin Update Checker](https://github.com/YahnisElsts/plugin-
 Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair").
 
 ## Changelog
+
+### 2.0.4
+- Restore missing Stickies role capabilities from the saved permission settings.
+- Distinguish duplicate names in mentions; administrators can identify eligible users by email.
+- Keep email addresses private from users without list-users permission.
 
 ### 2.0.2
 - Explain self-mentions, No recorded send, and notification troubleshooting.

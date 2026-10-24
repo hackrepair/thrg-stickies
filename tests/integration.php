@@ -222,12 +222,37 @@ try {
     list( $s ) = req( 'PATCH', 'notes/' . $n2, array( 'content' => 'x' ), $admin );
     check( 'admin cannot touch private note it cannot see', 404 === $s, $s );
 
+    // Settings can remain checked after role capabilities are removed externally.
+    wp_set_current_user( $editor );
+    get_role( 'editor' )->remove_cap( THRG_STK_Access::CAP_READ );
+    get_role( 'editor' )->remove_cap( THRG_STK_Access::CAP_CREATE );
+    THRG_STK_Access::sync_roles();
+    check( 'saved editor permissions repair missing role caps', user_can( $editor, THRG_STK_Access::CAP_READ ) && user_can( $editor, THRG_STK_Access::CAP_CREATE ) );
+    check( 'repair refreshes current user capability cache', current_user_can( THRG_STK_Access::CAP_CREATE ) );
+    check( 'repair does not grant unconfigured author access', ! user_can( $author, THRG_STK_Access::CAP_READ ) );
+
     // Mention search.
     list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'editortwo_' . $suffix ), $editor );
     check( 'user search finds editor2', 200 === $s && 1 === count( $d['users'] ) && $editor2 === $d['users'][0]['id'], $d );
     check( 'user search returns no email or login', ! isset( $d['users'][0]['email'] ) && ! isset( $d['users'][0]['login'] ) );
     list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'author_' . $suffix ), $editor );
     check( 'user search skips users without access', 0 === count( $d['users'] ) );
+
+    // Duplicate display names stay distinct; email lookup is administrator-only.
+    wp_update_user( array( 'ID' => $editor, 'display_name' => 'Jim ' . $suffix ) );
+    wp_update_user( array( 'ID' => $editor2, 'display_name' => 'Jim ' . $suffix ) );
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'Jim ' . $suffix ), $editor );
+    check( 'duplicate names both returned', 2 === count( $d['users'] ) );
+    check( 'duplicate labels distinct', $d['users'][0]['label'] !== $d['users'][1]['label'] );
+    check( 'editor labels contain no email', false === strpos( wp_json_encode( $d['users'] ), '@example.test' ) );
+    $address = get_userdata( $editor2 )->user_email;
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => $address ), $admin );
+    check( 'admin can search exact email', 1 === count( $d['users'] ) && $editor2 === $d['users'][0]['id'] );
+    check( 'admin label identifies email', false !== strpos( $d['users'][0]['label'], $address ) );
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => $address ), $editor );
+    check( 'editor cannot search email', 0 === count( $d['users'] ) );
+    wp_update_user( array( 'ID' => $editor, 'display_name' => 'Editor Tester' ) );
+    wp_update_user( array( 'ID' => $editor2, 'display_name' => 'Editortwo Tester' ) );
 
     // Email throttle and new-mention diff.
     $mails = array();

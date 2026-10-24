@@ -24,6 +24,7 @@ final class THRG_STK_Plugin {
     public static function boot() {
         add_action( 'init', array( __CLASS__, 'textdomain' ) );
         add_action( 'init', array( 'THRG_STK_Schema', 'maybe_upgrade' ), 5 );
+        add_action( 'init', array( 'THRG_STK_Access', 'sync_roles' ), 6 );
         add_action( 'wp_initialize_site', array( __CLASS__, 'new_site' ), 200 );
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_front' ) );
         add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin' ) );

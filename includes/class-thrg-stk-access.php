@@ -141,6 +141,16 @@ final class THRG_STK_Access {
     }
 
     /**
+     * Keep persisted role capabilities aligned with the saved permission matrix.
+     * Role editors, imports or migrations can remove caps without changing settings.
+     *
+     * @return void
+     */
+    public static function sync_roles() {
+        self::apply_matrix( (array) THRG_STK_Settings::get( 'roles' ) );
+    }
+
+    /**
      * Apply the saved role matrix to WordPress roles. Administrators always
      * keep all three capabilities.
      *
@@ -151,16 +161,23 @@ final class THRG_STK_Access {
         if ( ! function_exists( 'wp_roles' ) ) {
             return;
         }
+        $changed = false;
         foreach ( wp_roles()->role_objects as $name => $role ) {
             $granted = 'administrator' === $name ? array_keys( self::caps() ) : ( isset( $matrix[ $name ] ) ? (array) $matrix[ $name ] : array() );
             foreach ( self::caps() as $short => $cap ) {
                 $want = in_array( $short, $granted, true );
                 if ( $want && ! $role->has_cap( $cap ) ) {
                     $role->add_cap( $cap );
+                    $changed = true;
                 } elseif ( ! $want && $role->has_cap( $cap ) ) {
                     $role->remove_cap( $cap );
+                    $changed = true;
                 }
             }
+        }
+        if ( $changed && function_exists( 'wp_get_current_user' ) ) {
+            // A user loaded before the repair may still have cached role caps.
+            wp_get_current_user()->get_role_caps();
         }
     }
 

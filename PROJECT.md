@@ -2,7 +2,7 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.0.2 release, October 23, 2026.** Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.0.4 release, October 24, 2026.** Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
 Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           1.1.2
+Version:           2.0.4
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -249,10 +249,10 @@ Namespace `thrg-stickies/v1`. Every route uses a `permission_callback` and the s
 | POST | `/notes` | Create | `thrg_stk_create` |
 | PATCH | `/notes/<id>` | Edit content, position, size, color, visibility; or status | edit: owner with `thrg_stk_create`, or `thrg_stk_manage`; status: also anyone mentioned |
 | DELETE | `/notes/<id>` | Delete | owner or `thrg_stk_manage` |
-| GET | `/users?search=<text>` | Mention suggestions: ID, display name, avatar URL; searches login, nicename and display name (never email); only users with a Stickies capability; max 10 | `thrg_stk_create` |
+| GET | `/users?search=<text>` | Mention suggestions: ID, display name, distinguishing label, avatar URL; searches login, nicename and display name; list_users additionally allows email search and email labels, otherwise account-ID labels; only users with a Stickies capability; max 10 | `thrg_stk_create` |
 
 - Notes are fetched with REST after the page loads, never printed into the HTML. Cached pages therefore never contain notes, and the front-end script is only enqueued for logged-in users with read access.
-- PATCH sends only the changed fields. Edits use optimistic concurrency: the client sends `updated_at`, and the server replies 409 with the current note if it changed in the meantime. The note offers a "Reload note" button.
+- PATCH sends only the changed fields. Edits use optimistic concurrency: the client sends a numeric `revision` and `updated_at`; database updates compare the revision atomically and reject stale writes with HTTP 409. The note offers a "Reload note" button.
 - Notes another user cannot see return 404 rather than 403, so their existence is not revealed.
 - Creating stores `document.title` (sanitized, 200 characters) as the page title for the list and emails.
 - Mention emails go out only to users newly added on that save, and at most one email per recipient per note every 10 minutes.
@@ -298,7 +298,7 @@ Follows `THRG-EMAIL-STANDARD.md`:
 - Nothing for visitors: no scripts, styles, cookies, REST access or markup for logged-out users or users without `thrg_stk_read`.
 - Every write path needs a logged-in user, a nonce and a capability check, and uses prepared queries via `$wpdb->prepare()` or `insert`/`update`/`delete` with formats.
 - No user-supplied HTML is ever stored or echoed. All output is escaped at the point of output.
-- No outbound requests, scheduled jobs or file writes. Email is the only thing that leaves the site.
+- GitHub update checks contact GitHub, mention suggestions may load avatars from the configured provider, and mention emails use WordPress mail. The walkthrough thumbnail is bundled locally.
 - Plain-language UI and messages, same voice as Site Inspector. Errors say what happened and what to do.
 - Docs links carry tooltip text, written as `[text](url "tooltip")`.
 - Inspiration credit for the reference plugin is in readme.txt Credits and README License and credits: "Inspired by the 2014 WP Sticky Notes plugin by Soso Kruashvili (GPLv2). Stickies is a new plugin written from scratch; no code, images or text from it are used."
@@ -445,3 +445,11 @@ Verification October 23, 2026: Zendogs core reports 7.1.3. All six native plugin
 2.0.3 banner: bundled YouTube thumbnail complements the THRG gradient and animated heart; a keyboard-accessible preview links to the walkthrough. Mobile header stacks the thumbnail. No third-party image request occurs when opening View details.
 
 Final 2.0.3 banner validation: Ego Lite desktop and 390px phone screenshots inspected; local thumbnail loads, preview links to the supplied video, no horizontal overflow, compatibility warning absent on WordPress 7.1.3. Shared PHPCS and 31 smoke assertions passed after banner changes. Screenshots: .review/203-banner-desktop.png and .review/203-banner-mobile.png.
+
+## 2.0.4 editor and mention regression review, October 24, 2026
+
+Saved matrix and persisted WordPress role capabilities could diverge after external role edits/imports/migrations: Editor remained checked but the toolbar vanished from home/dashboard and mention search excluded the editor. Ego Lite space 62 reproduced the missing-toolbar state after deliberately removing editor read/create caps with settings unchanged. Init priority 6 now reconciles only Stickies role capabilities from the saved matrix, writing only when mismatched; current-user role-cap caches refresh after a repair. Explicit per-user restrictions remain intact.
+
+Temporary same-name admin/editor fixtures verified homepage/dashboard controls through actual login switching, both Jim suggestions, administrator-only email labels/lookup, and non-administrator account-ID labels without emails. Repaired editor controls and both suggestions verified in Ego Lite. Test accounts and their unsaved notes removed; original settings/roles restored. 61 WordPress integration assertions passed, including duplicate names, email access restrictions, and role repair. Shared PHPCS and JS syntax passed. Screenshots: .review/204-jim-admin.png, .review/204-editor-missing-before.png, .review/204-editor-repaired.png. This reproduces a possible cause matching the reported production symptoms; affected-site role data was not inspected directly.
+
+2.0.4 release documentation: README and bundled FAQ include permission drift, automatic role repair, duplicate-name labels, administrator-only email lookup, and preserved per-user restrictions. Existing schema stays at version 4. Prior runtime/browser limitations remain applicable outside the tested workflows.
