@@ -390,6 +390,10 @@
 .thrg-stk-suggest [role="option"][aria-selected="true"],
 .thrg-stk-suggest [role="option"]:hover { background: var(--stk-blue); color: #fff; }
 .thrg-stk-suggest .thrg-stk-none { padding: 6px 8px; color: var(--stk-soft); }
+.thrg-stk-suggest .thrg-stk-hint { padding: 6px 8px; font-size: 12.5px; line-height: 1.35; color: var(--stk-soft); background: #f6f7f7; }
+.thrg-stk-suggest [role="option"] + .thrg-stk-hint,
+.thrg-stk-suggest .thrg-stk-hint + .thrg-stk-hint { border-top: 1px solid #e2e4e7; }
+.thrg-stk-suggest .thrg-stk-hint a { color: var(--stk-blue); text-decoration: underline; white-space: nowrap; }
 
 /* Resolved notes collapse to a small checked pin. */
 .thrg-stk-note.is-resolved:not(.is-peek) {

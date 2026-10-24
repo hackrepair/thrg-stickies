@@ -2,7 +2,7 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.0.6 released, October 24, 2026**. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.0.7 on `main`, October 24, 2026** (last published release: 2.0.6). Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
 Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.0.6
+Version:           2.0.7
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -481,3 +481,14 @@ Found when a test of moving and recoloring another person's note seemed to work 
 - Setting text now reads "Also save text automatically a moment after typing stops (moving, resizing and recoloring a note always save right away)".
 
 Verified on Zendogs 2.0.6 with autosave off: an administrator moved an editor's note with the arrow keys (position and revision saved, footer "Saved", same spot after reload); recolored it and left the page at once (color saved); changed its color while unsaved text was typed (color saved, text not saved, typed text kept; the check button then saved the text); and dragged a note with the mouse (saved). Unit tests, smoke (32 checks), PHPCS and JS syntax pass. Test users and notes were removed.
+
+## 2.0.7 mention hint for administrators, October 24, 2026
+
+An administrator typed `@jim` and the editor named Jim was missing, because that account's role (a custom "SEO Editor") was not ticked under Stickies > Settings. Nothing explained it, so it looked like a bug.
+
+- `GET /users` now returns `hints` beside `users`. For administrators only (`manage_options` and `list_users`), `THRG_STK_REST::blocked_hints()` looks at people who match the search but cannot see notes and returns up to three plain sentences, each with a link to Stickies > Settings: the role cannot see notes yet; the role is allowed but the account has its own restriction; or the account has no role. Other users always get an empty `hints` list and the same labels as before (no emails).
+- The note edit box shows each hint under the suggestions (`addHints()`, `.thrg-stk-hint`), built with text nodes and a checked http(s) link that opens in a new tab. A hint-only result no longer also says "No one matches". Enter and the arrow keys ignore hints.
+- Fixed in the same function: `showSuggest()` returned early for an empty result without clearing the previous results, so Enter could still pick someone from the earlier search. It now clears them first.
+- Not done by design: no one-click "allow this role" button, because it would change permissions from inside a small popup.
+
+Verified on Zendogs with an administrator, an editor, two accounts named Jim (one in a role that cannot see notes) and a third blocked account: the administrator saw both the eligible Jim and the hint with its link; a search that matches only a blocked account showed only the hint; the editor saw no hint and no email; after results then no results, Enter picked no one. Integration 72 checks (5 new), units, smoke (32) and PHPCS pass. Test users and the test role were removed.

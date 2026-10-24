@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1.3
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -76,7 +76,7 @@ Administrators always can. Editors can see and add notes by default. In Stickies
 
 = Why is an editor missing from mentions or unable to see Stickies? =
 
-Check that Editor has See notes and Add notes in Stickies > Settings. Role-editing plugins or site migrations can remove the stored capabilities while those settings remain checked. Version 2.0.4 reapplies the saved role permissions automatically on the next request. It changes only Stickies role capabilities, and users with individual capability restrictions retain those restrictions. Because Stickies > Settings is the source of truth, a Stickies permission granted or removed in a role-editing plugin is changed back to match Settings on the next page load, so manage Stickies access in Stickies > Settings.
+Check that Editor has See notes and Add notes in Stickies > Settings. Role-editing plugins or site migrations can remove the stored capabilities while those settings remain checked. Version 2.0.4 reapplies the saved role permissions automatically on the next request. It changes only Stickies role capabilities, and users with individual capability restrictions retain those restrictions. Because Stickies > Settings is the source of truth, a Stickies permission granted or removed in a role-editing plugin is changed back to match Settings on the next page load, so manage Stickies access in Stickies > Settings. If you type a name in the @ list and the person is missing because their role cannot see notes yet, administrators see a short note saying so (with the account email and role) and a link to Stickies > Settings. Other users see no such note.
 
 = How do I distinguish two people with the same name? =
 
@@ -117,6 +117,10 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.0.7 =
+* Administrators now get a short note in the @ mention list when someone matches the name but cannot be mentioned because their role cannot see notes yet, with a link to Stickies > Settings. Other users see no change and no account details.
+* Fixed a rare case where pressing Enter after a search found no one could pick the person from the previous search.
 
 = 2.0.6 =
 * Moving, resizing or recoloring a saved note now saves as soon as you let go. Before, the change was lost if you left the page without clicking the check button.

@@ -1000,19 +1000,41 @@
 				if ( ! self.mention || self.mention.term !== term ) {
 					return;
 				}
-				self.showSuggest( res.users || [] );
+				self.showSuggest( res.users || [], res.hints || [] );
 			}, function () {
 				self.closeSuggest();
 			} );
 		}, 180 );
 	};
 
-	Note.prototype.showSuggest = function ( users ) {
+	/* Administrators only: why someone who matches cannot be mentioned yet. */
+	Note.prototype.addHints = function ( hints ) {
+		var self = this;
+		hints.forEach( function ( h ) {
+			if ( ! h || ! h.text ) {
+				return;
+			}
+			var link = h.url && /^https?:\/\//i.test( h.url ) ? el( 'a', { href: h.url, target: '_blank', rel: 'noopener', text: h.link || h.url } ) : null;
+			var row = el( 'div', { class: 'thrg-stk-hint' }, [ h.text, link ? ' ' : null, link ] );
+			// Keep the cursor in the note while the link is used.
+			row.addEventListener( 'mousedown', function ( e ) {
+				e.preventDefault();
+			} );
+			self.suggest.appendChild( row );
+		} );
+	};
+
+	Note.prototype.showSuggest = function ( users, hints ) {
 		var self = this;
 		this.suggest.textContent = '';
 		this.suggestIndex = 0;
+		this.suggestUsers = users;
 		if ( ! users.length ) {
-			this.suggest.appendChild( el( 'div', { class: 'thrg-stk-none', text: T.noMatches } ) );
+			if ( ! hints || ! hints.length ) {
+				this.suggest.appendChild( el( 'div', { class: 'thrg-stk-none', text: T.noMatches } ) );
+			}
+			this.body.removeAttribute( 'aria-activedescendant' );
+			this.addHints( hints || [] );
 			return;
 		}
 		users.forEach( function ( u, i ) {
@@ -1026,7 +1048,7 @@
 			} );
 			self.suggest.appendChild( opt );
 		} );
-		this.suggestUsers = users;
+		this.addHints( hints || [] );
 		this.body.setAttribute( 'aria-activedescendant', 'thrg-stk-opt-0' );
 	};
 

@@ -398,13 +398,13 @@ final class THRG_STK_REST {
      */
     public static function search_users( $req ) {
         $term  = trim( sanitize_text_field( (string) $req['search'] ) );
-        $users = array();
+        $users    = array();
+        $can_list = current_user_can( 'list_users' );
+        $columns  = array( 'user_login', 'user_nicename', 'display_name' );
+        if ( $can_list ) {
+            $columns[] = 'user_email';
+        }
         if ( '' !== $term ) {
-            $can_list = current_user_can( 'list_users' );
-            $columns  = array( 'user_login', 'user_nicename', 'display_name' );
-            if ( $can_list ) {
-                $columns[] = 'user_email';
-            }
             $query = new WP_User_Query(
                 array(
                     'search'         => '*' . $term . '*',
@@ -426,7 +426,66 @@ final class THRG_STK_REST {
                 );
             }
         }
-        return rest_ensure_response( array( 'users' => $users ) );
+        $hints = '' !== $term && $can_list && current_user_can( 'manage_options' ) ? self::blocked_hints( $term, $columns, wp_list_pluck( $users, 'id' ) ) : array();
+        return rest_ensure_response(
+            array(
+                'users' => $users,
+                'hints' => $hints,
+            )
+        );
+    }
+
+    /**
+     * Administrators only: explain why a person who matches the search is not
+     * in the suggestions, with a link to the permission settings.
+     *
+     * @param string $term    Search term.
+     * @param array  $columns Columns searched.
+     * @param int[]  $found   IDs already suggested.
+     * @return array[] Each with text, link and url.
+     */
+    private static function blocked_hints( $term, array $columns, array $found ) {
+        $query  = new WP_User_Query(
+            array(
+                'search'         => '*' . $term . '*',
+                'search_columns' => $columns,
+                'exclude'        => $found,
+                'number'         => 20,
+                'orderby'        => 'display_name',
+                'count_total'    => false,
+            )
+        );
+        $matrix = (array) THRG_STK_Settings::get( 'roles' );
+        $roles  = wp_roles()->roles;
+        $url    = admin_url( 'admin.php?page=' . THRG_STK_Settings::PAGE );
+        $hints  = array();
+        foreach ( $query->get_results() as $user ) {
+            if ( THRG_STK_Access::user_caps( $user->ID )['read'] ) {
+                continue;
+            }
+            $who  = $user->display_name . ' (' . $user->user_email . ')';
+            $role = reset( $user->roles );
+            if ( ! $role ) {
+                /* translators: %s: person's name and email. */
+                $text = sprintf( __( '%s has no role on this site, so they cannot see notes.', 'thrg-stickies' ), $who );
+            } elseif ( ! empty( $matrix[ $role ] ) ) {
+                /* translators: %s: person's name and email. */
+                $text = sprintf( __( '%s cannot see notes because of a permission set on their own account.', 'thrg-stickies' ), $who );
+            } else {
+                $label = isset( $roles[ $role ]['name'] ) ? translate_user_role( $roles[ $role ]['name'] ) : $role;
+                /* translators: 1: person's name and email, 2: role name. */
+                $text = sprintf( __( '%1$s has the %2$s role, which cannot see notes yet.', 'thrg-stickies' ), $who, $label );
+            }
+            $hints[] = array(
+                'text' => $text,
+                'link' => __( 'Open Stickies settings', 'thrg-stickies' ),
+                'url'  => $url,
+            );
+            if ( count( $hints ) >= 3 ) {
+                break;
+            }
+        }
+        return $hints;
     }
 
     /**

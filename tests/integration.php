@@ -279,6 +279,17 @@ try {
     check( 'admin label identifies email', false !== strpos( $d['users'][0]['label'], $address ) );
     list( $s, $d ) = req( 'GET', 'users', array( 'search' => $address ), $editor );
     check( 'editor cannot search email', 0 === count( $d['users'] ) );
+
+    // Administrators are told why a match is not offered; nobody else is.
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'author_' . $suffix ), $admin );
+    check( 'admin sees why a match cannot be mentioned', 0 === count( $d['users'] ) && 1 === count( $d['hints'] ) && false !== strpos( $d['hints'][0]['text'], 'cannot see notes yet' ) && false !== strpos( $d['hints'][0]['url'], 'page=thrg-stickies-settings' ), $d );
+    check( 'admin hint names the account email', false !== strpos( $d['hints'][0]['text'], '@' ) );
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'author_' . $suffix ), $editor );
+    check( 'editor gets no hints and no account details', array() === $d['hints'] && false === strpos( wp_json_encode( $d ), '@example.test' ), $d );
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'editortwo_' . $suffix ), $admin );
+    check( 'no hint for someone who can be mentioned', array() === $d['hints'] && 1 === count( $d['users'] ), $d );
+    list( $s, $d ) = req( 'GET', 'users', array( 'search' => 'zzzz_nobody_' . $suffix ), $admin );
+    check( 'no hint when nobody matches', array() === $d['hints'] && array() === $d['users'] );
     wp_update_user( array( 'ID' => $editor, 'display_name' => 'Editor Tester' ) );
     wp_update_user( array( 'ID' => $editor2, 'display_name' => 'Editortwo Tester' ) );
 

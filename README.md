@@ -53,7 +53,7 @@ Enable mention emails, create a new Team note, select another administrator or e
 
 ### Why is an editor missing from mentions or unable to see Stickies?
 
-Role-editing tools or migrations can remove WordPress’s stored Stickies capabilities while the saved Editor settings remain checked. Starting with 2.0.4, Stickies reconciles its role capabilities with the saved permission matrix on each request, writing only when they differ. Individual user restrictions are preserved. Stickies settings are the source of truth: if a role editor grants or removes Stickies access for a role directly, the next page load changes it back to match Stickies > Settings. Change Stickies access in Stickies > Settings, not in a role editor.
+Role-editing tools or migrations can remove WordPress’s stored Stickies capabilities while the saved Editor settings remain checked. Starting with 2.0.4, Stickies reconciles its role capabilities with the saved permission matrix on each request, writing only when they differ. Individual user restrictions are preserved. Stickies settings are the source of truth: if a role editor grants or removes Stickies access for a role directly, the next page load changes it back to match Stickies > Settings. Change Stickies access in Stickies > Settings, not in a role editor. If you type a name in the @ list and the person is missing because their role cannot see notes yet, administrators see a short note saying so (with the account email and role) and a link to Stickies > Settings. Other users see no such note.
 
 ### How can I tell two people with the same name apart?
 
@@ -98,6 +98,10 @@ Update checks use [Plugin Update Checker](https://github.com/YahnisElsts/plugin-
 Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair").
 
 ## Changelog
+
+### 2.0.7
+- Administrators now get a short note in the @ mention list when someone matches the name but cannot be mentioned because their role cannot see notes yet, with a link to Stickies > Settings. Other users see no change and no account details.
+- Fixed a rare case where pressing Enter after a search found no one could pick the person from the previous search.
 
 ### 2.0.6
 - Moving, resizing or recoloring a saved note now saves as soon as you let go. Before, the change was lost if you left the page without clicking the check button.
