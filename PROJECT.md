@@ -2,7 +2,7 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.0.5 on `main`, October 24, 2026** (last published release: 2.0.4). Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.0.6 on `main`, October 24, 2026** (last published release: 2.0.5). Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
 Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.0.5
+Version:           2.0.6
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -105,7 +105,7 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 - **Admin bar item** "Stickies (n)" as a second way to open the list and toggle visibility. The toolbar can be turned off in settings in favor of the admin bar only.
 - **Create:** a new note appears near the visible top of the window, focused and ready for typing.
 - **Move and resize:** pointer events (mouse, pen, touch) with no jQuery UI. Keyboard alternatives are provided: with the note focused, arrow keys move it by 10px and Shift+arrow resizes it.
-- **Save:** check button, Ctrl+S or Cmd+S while the note is focused, and an optional autosave after a pause in typing (setting, off by default). The Hack Repair heart pin (`assets/img/pin-heart.svg`) shows when saved and can be grabbed to move the note, and the note shows a "Saving…" state and errors inline, never through `alert()`.
+- **Save:** moving, resizing and recoloring a saved note save by themselves 0.4 seconds after you let go (`saveLayout()` sends only those fields, never text being typed) and once more on `pagehide` with a keepalive request. Text saves with the check button, Ctrl+S or Cmd+S, and an optional autosave after a pause in typing (setting, off by default). A new, unsaved note still needs its first save. The Hack Repair heart pin (`assets/img/pin-heart.svg`) shows when saved and can be grabbed to move the note, and the note shows a "Saving…" state and errors inline, never through `alert()`.
 - **Colors:** yellow (default), blue, green, pink and gray, chosen from a round color button at the top right of the note. A soft sheen confirms the change.
 - **Resolve:** the round check button at the bottom right (same size as the color button, with a hover tip) marks the note resolved. The note leaves the page and an "Undo" message appears. A "Show resolved" toggle in the list panel lists resolved notes; clicking one shows it on the page so it can be reopened. The Stickies list also reopens notes.
 - **Delete:** with an inline "Delete this note?" confirmation, never a browser dialog.
@@ -128,7 +128,7 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
   - Where notes appear: front end (on, default) and dashboard screens (on, default). Every front-end page counts, including archives.
   - Toolbar: left edge, admin bar only, or both. Small-screen breakpoint.
   - Mention emails: on/off.
-  - Autosave: on/off.
+  - Autosave text: on/off (move, resize and color always save right away).
   - Uninstall: *Delete all plugin data* (off by default), same wording as Site Inspector.
 - **Plugins screen:** Settings and Notes action links, and a native **View details** dialog built from the bundled readme.txt, with banner, icons, the THRG brand banner and an "Other THRG Plugins" tab (Site Inspector, Plugin Detective, Group Password Reset, Disable Other Plugin Notices).
 - **One-time notice** after activation, pointing to the toolbar and the settings. Dismissible and stored per user.

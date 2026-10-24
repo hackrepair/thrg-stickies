@@ -16,7 +16,7 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 ## What it does
 
 - A small toolbar on the left edge of every page (and a Stickies item in the admin bar) adds a note, hides or shows notes, and opens the list of notes on the page.
-- Notes are paper-yellow by default, with blue, green, pink and gray as options. Pick a color from the button at the top right. Drag by the top edge or by the pin, resize from the corner, and save with the check button or Ctrl+S / Cmd+S. A Hack Repair heart pin shows a saved note.
+- Notes are paper-yellow by default, with blue, green, pink and gray as options. Pick a color from the button at the top right. Drag by the top edge or by the pin, resize from the corner, and pick a color: these save the moment you let go. Save text with the check button or Ctrl+S / Cmd+S. A Hack Repair heart pin shows a saved note.
 - Type `@` to mention a teammate. They get an email linking straight to the note.
 - Each note can be seen by the whole team, only the people mentioned, or just you. The ? beside the menu explains each choice.
 - Mark a note resolved with the round check button. It leaves the page, with an Undo message, and stays in the notes panel (tick Show resolved) and the Stickies list, where it can be reopened.
@@ -98,6 +98,12 @@ Update checks use [Plugin Update Checker](https://github.com/YahnisElsts/plugin-
 Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair").
 
 ## Changelog
+
+### 2.0.6
+- Moving, resizing or recoloring a saved note now saves as soon as you let go. Before, the change was lost if you left the page without clicking the check button.
+- A move or color change made just before you leave the page is still saved.
+- Text still waits for the check button (or Ctrl+S / Cmd+S) unless autosave is on, so half-typed notes are never saved by accident.
+- The autosave setting now covers text only.
 
 ### 2.0.5
 - Mention emails show the author and page name in bold again, and the footer uses one translatable string.

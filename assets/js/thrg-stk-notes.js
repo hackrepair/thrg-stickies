@@ -125,10 +125,11 @@
 		return qs ? url + '?' + qs : url;
 	}
 
-	function api( method, path, body, params ) {
+	function api( method, path, body, params, keep ) {
 		return window.fetch( restUrl( path, params ), {
 			method: method,
 			credentials: 'same-origin',
+			keepalive: !! keep,
 			headers: { 'X-WP-Nonce': C.nonce, 'Content-Type': 'application/json', Accept: 'application/json' },
 			body: body ? JSON.stringify( body ) : undefined
 		} ).then( function ( res ) {
@@ -399,12 +400,21 @@
 	Note.prototype.markDirty = function ( field ) {
 		this.dirty[ field ] = true;
 		this.markSaved();
-		if ( C.autosave && this.id ) {
-			var self = this;
+		if ( ! this.id ) {
+			return;
+		}
+		var self = this;
+		if ( C.autosave ) {
 			window.clearTimeout( this.autoTimer );
 			this.autoTimer = window.setTimeout( function () {
 				self.save( true );
 			}, 1500 );
+		} else if ( 'geometry' === field || 'color' === field ) {
+			// Moving, resizing and recoloring a saved note stick as soon as you let go.
+			window.clearTimeout( this.layoutTimer );
+			this.layoutTimer = window.setTimeout( function () {
+				self.saveLayout();
+			}, 400 );
 		}
 	};
 
@@ -796,10 +806,94 @@
 		return data;
 	}
 
+	/* Put a failed save back so the check button can retry it. */
+	Note.prototype.saveFailed = function ( err, sent ) {
+		var self = this;
+		this.saving = false;
+		this.el.classList.remove( 'is-loading' );
+		Object.keys( sent ).forEach( function ( k ) {
+			self.dirty[ k ] = true;
+		} );
+		this.layoutFailed = !! ( sent.geometry || sent.color );
+		this.markSaved();
+		if ( err.status === 409 && err.data && err.data.note ) {
+			var latest = err.data.note;
+			this.say( err.message, false, {
+				label: T.reload,
+				run: function () {
+					self.dirty = {};
+					self.layoutFailed = false;
+					self.editing = false;
+					self.update( latest );
+					self.say( '' );
+				}
+			} );
+		} else {
+			this.say( err.message );
+		}
+	};
+
+	/*
+	 * Save only where a saved note sits, how big it is and its color. Text that is
+	 * still being typed stays in the note and waits for the check button.
+	 */
+	Note.prototype.saveLayout = function ( keep ) {
+		var self = this;
+		if ( ! this.id || ! this.data.can_edit || ( ! this.dirty.geometry && ! this.dirty.color ) ) {
+			return;
+		}
+		if ( this.saving ) {
+			this.saveAgain = this.saveAgain || 'layout';
+			return;
+		}
+		var d = this.data;
+		var body = { updated_at: d.updated_at, revision: d.revision };
+		var sent = {};
+		if ( this.dirty.geometry ) {
+			this.captureGeometry();
+			body.pos_top = d.pos_top;
+			body.pos_center = d.pos_center;
+			body.width = d.width;
+			body.height = d.height;
+			body.viewport_w = d.viewport_w;
+			sent.geometry = true;
+		}
+		if ( this.dirty.color ) {
+			body.color = d.color;
+			sent.color = true;
+		}
+		delete this.dirty.geometry;
+		delete this.dirty.color;
+		this.saving = true;
+		this.el.classList.add( 'is-loading' );
+		api( 'PATCH', 'notes/' + this.id, body, null, keep ).then( function ( data ) {
+			self.saving = false;
+			self.layoutFailed = false;
+			self.el.classList.remove( 'is-loading' );
+			self.update( mergeLocal( self, data ) );
+			self.say( T.saved, true );
+			refreshLists();
+			self.runQueued();
+		}, function ( err ) {
+			self.saveFailed( err, sent );
+		} );
+	};
+
+	/* Run the save that was asked for while another one was still in flight. */
+	Note.prototype.runQueued = function () {
+		var again = this.saveAgain;
+		this.saveAgain = false;
+		if ( 'layout' === again ) {
+			this.saveLayout();
+		} else if ( again && Object.keys( this.dirty ).length ) {
+			this.save( true );
+		}
+	};
+
 	Note.prototype.save = function ( auto ) {
 		var self = this;
 		if ( this.saving ) {
-			this.saveAgain = true;
+			this.saveAgain = 'full';
 			return;
 		}
 		var text = this.currentText();
@@ -857,6 +951,7 @@
 		this.el.classList.add( 'is-loading' );
 		req.then( function ( data ) {
 			self.saving = false;
+			self.layoutFailed = false;
 			self.el.classList.remove( 'is-loading' );
 			var keepEditing = self.dirty.content || ( self.editing && auto );
 			if ( keepEditing ) {
@@ -871,33 +966,9 @@
 				self.say( T.saved, true );
 			}
 			refreshLists();
-			if ( self.saveAgain ) {
-				self.saveAgain = false;
-				if ( Object.keys( self.dirty ).length ) {
-					self.save( true );
-				}
-			}
+			self.runQueued();
 		}, function ( err ) {
-			self.saving = false;
-			self.el.classList.remove( 'is-loading' );
-			Object.keys( sentDirty ).forEach( function ( k ) {
-				self.dirty[ k ] = true;
-			} );
-			self.markSaved();
-			if ( err.status === 409 && err.data && err.data.note ) {
-				var latest = err.data.note;
-				self.say( err.message, false, {
-					label: T.reload,
-					run: function () {
-						self.dirty = {};
-						self.editing = false;
-						self.update( latest );
-						self.say( '' );
-					}
-				} );
-			} else {
-				self.say( err.message );
-			}
+			self.saveFailed( err, sentDirty );
 		} );
 	};
 
@@ -1413,14 +1484,28 @@
 		}, 60000 );
 
 		// Warn before leaving with unsaved notes.
+		// A move or color change is saved on its way out, so only text, visibility
+		// and layout changes that failed to save are worth a warning.
 		window.addEventListener( 'beforeunload', function ( e ) {
 			var unsaved = state.notes.some( function ( n ) {
-				return ( ! n.id && n.currentText() ) || ( n.id && Object.keys( n.dirty ).length );
+				if ( ! n.id ) {
+					return !! n.currentText();
+				}
+				return Object.keys( n.dirty ).some( function ( k ) {
+					return ( 'geometry' !== k && 'color' !== k ) || n.layoutFailed;
+				} );
 			} );
 			if ( unsaved ) {
 				e.preventDefault();
 				e.returnValue = '';
 			}
+		} );
+		window.addEventListener( 'pagehide', function () {
+			state.notes.forEach( function ( n ) {
+				if ( ! n.layoutFailed ) {
+					n.saveLayout( true );
+				}
+			} );
 		} );
 	}
 

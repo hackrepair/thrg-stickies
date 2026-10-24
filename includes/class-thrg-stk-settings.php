@@ -233,7 +233,7 @@ final class THRG_STK_Settings {
                 <h2 class="stk-section"><?php esc_html_e( 'Writing notes', 'thrg-stickies' ); ?></h2>
                 <div class="stk-card">
                     <p><label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[emails]" value="1" <?php checked( $o['emails'] ); ?> /> <?php esc_html_e( 'Email people when they are mentioned with @', 'thrg-stickies' ); ?></label></p>
-                    <p><label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[autosave]" value="1" <?php checked( $o['autosave'] ); ?> /> <?php esc_html_e( 'Save automatically a moment after typing, moving or resizing stops', 'thrg-stickies' ); ?></label></p>
+                    <p><label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>[autosave]" value="1" <?php checked( $o['autosave'] ); ?> /> <?php esc_html_e( 'Also save text automatically a moment after typing stops (moving, resizing and recoloring a note always save right away)', 'thrg-stickies' ); ?></label></p>
                 </div>
 
                 <h2 class="stk-section"><?php esc_html_e( 'Uninstall', 'thrg-stickies' ); ?></h2>

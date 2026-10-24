@@ -22,7 +22,7 @@ function hooked( $hook, $cb ) {
     return isset( $GLOBALS['hooks'][ $hook ] ) && in_array( $cb, $GLOBALS['hooks'][ $hook ], true );
 }
 
-check( 'version constant', '2.0.5' === THRG_STK_VERSION );
+check( 'version constant', '2.0.6' === THRG_STK_VERSION );
 check( 'header version matches constant', 1 === preg_match( '/^ \* Version:\s+' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../index.php' ) ) );
 check( 'readme stable tag matches', 1 === preg_match( '/^Stable tag: ' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../readme.txt' ) ) );
 check( 'activation hook', array( 'THRG_STK_Plugin', 'activate' ) === $GLOBALS['activation'] );
@@ -66,6 +66,7 @@ foreach ( array( 'readme.txt', 'uninstall.php', 'assets/css/thrg-stk-notes.css',
 }
 $js = file_get_contents( "$root/assets/js/thrg-stk-notes.js" );
 check( 'js has no eval', false === strpos( $js, 'eval(' ) );
+check( 'js saves move, resize and color apart from text', false !== strpos( $js, 'Note.prototype.saveLayout' ) && false !== strpos( $js, "'pagehide'" ) );
 preg_match_all( '/innerHTML\s*=\s*([^;]+);/', $js, $m );
 $bad = array_filter( $m[1], function ( $rhs ) { return 0 !== strpos( $rhs, 'SVG[' ) && false === strpos( $rhs, '.rendered' ); } );
 check( 'js innerHTML only for static svg and server-rendered html', count( $m[1] ) >= 4 && ! $bad, $bad );

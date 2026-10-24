@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1.3
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -17,12 +17,12 @@ Pin sticky notes to the exact spot on any page of your site, mention a teammate,
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets you say it right where it happens.
 
-Open any page of your site while logged in and click the note button on the left edge. A paper-yellow note appears. Type, drag it to the spot, resize it, and save. A Hack Repair heart pin shows the note is saved. Everyone on your team with Stickies access sees it in the same place.
+Open any page of your site while logged in and click the note button on the left edge. A paper-yellow note appears. Type, drag it to the spot, resize it, and save the text. Moving, resizing and recoloring a saved note stick as soon as you let go. A Hack Repair heart pin shows the note is saved. Everyone on your team with Stickies access sees it in the same place.
 
 **Made for the people building and looking after the site.** Administrators and editors can use Stickies as soon as it is activated, and you choose which roles can see, add or manage notes. Visitors never see notes, and no Stickies files load for them.
 
 * Pin notes on any page of the site and on dashboard screens (both on by default)
-* Drag by the top edge or the pin, resize from the corner, and save with the check button or Ctrl+S (Cmd+S on a Mac)
+* Drag by the top edge or the pin, resize from the corner, and pick a color: these save the moment you let go. Save text with the check button or Ctrl+S (Cmd+S on a Mac)
 * Five colors, chosen from the button at the top right: yellow, blue, green, pink and gray
 * Mention a teammate with @ and they get an email with a link straight to the note
 * Choose who sees each note: the whole team, only the people mentioned, or just you
@@ -117,6 +117,12 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.0.6 =
+* Moving, resizing or recoloring a saved note now saves as soon as you let go. Before, the change was lost if you left the page without clicking the check button.
+* A move or color change made just before you leave the page is still saved.
+* Text still waits for the check button (or Ctrl+S / Cmd+S) unless autosave is on, so half-typed notes are never saved by accident.
+* The autosave setting now covers text only.
 
 = 2.0.5 =
 * Mention emails show the author and page name in bold again, and the footer uses one translatable string.
