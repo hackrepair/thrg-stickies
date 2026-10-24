@@ -139,6 +139,9 @@ final class THRG_STK_Plugin {
         if ( 'front' === $context && ( is_customize_preview() || is_embed() || is_feed() ) ) {
             return false;
         }
+        if ( 'admin' === $context && defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+            return false; // Framed dashboard pages such as View details.
+        }
         $caps = THRG_STK_Access::user_caps( get_current_user_id() );
         return (bool) apply_filters( 'thrg_stk_load', $caps['read'], $context );
     }

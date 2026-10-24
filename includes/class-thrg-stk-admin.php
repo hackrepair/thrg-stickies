@@ -326,14 +326,29 @@ final class THRG_STK_Admin {
      * @return void
      */
     private static function back( $done, $count ) {
-        $url = add_query_arg(
-            array(
-                'page'      => self::PAGE,
-                'stk_done'  => $done,
-                'stk_count' => (int) $count,
-            ),
-            admin_url( 'admin.php' )
+        $args = array(
+            'page'      => self::PAGE,
+            'stk_done'  => $done,
+            'stk_count' => (int) $count,
         );
+        // Keep the list's search, filters, sort and page. Bulk actions submit them;
+        // row actions arrive from the list, so read them from the referring URL.
+        $from = $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce checked by the caller; values are sanitized below.
+        if ( empty( $from['s'] ) && empty( $from['status'] ) && empty( $from['mention'] ) && empty( $from['paged'] ) && wp_get_referer() ) {
+            wp_parse_str( (string) wp_parse_url( wp_get_referer(), PHP_URL_QUERY ), $from );
+        }
+        foreach ( array( 'status', 'mention', 'orderby', 'order' ) as $key ) {
+            if ( ! empty( $from[ $key ] ) && is_string( $from[ $key ] ) ) {
+                $args[ $key ] = sanitize_key( wp_unslash( $from[ $key ] ) );
+            }
+        }
+        if ( ! empty( $from['s'] ) && is_string( $from['s'] ) ) {
+            $args['s'] = rawurlencode( sanitize_text_field( wp_unslash( $from['s'] ) ) );
+        }
+        if ( ! empty( $from['paged'] ) ) {
+            $args['paged'] = absint( $from['paged'] );
+        }
+        $url = add_query_arg( $args, admin_url( 'admin.php' ) );
         wp_safe_redirect( $url );
         exit;
     }

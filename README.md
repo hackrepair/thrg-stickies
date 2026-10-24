@@ -103,6 +103,8 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 - Mention emails show the author and page name in bold again, and the footer uses one translatable string.
 - A save that loses a race to another edit now returns the latest note with a Reload button; a real database error says so plainly.
 - Bulk resolve and reopen use the revision they already loaded.
+- Bulk and row actions in the Stickies list keep your search, filter, sort and page.
+- The Stickies toolbar no longer loads inside the View details window.
 - Documentation corrections.
 
 ### 2.0.4
