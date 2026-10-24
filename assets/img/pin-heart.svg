@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 36" width="30" height="36">
+  <defs>
+    <linearGradient id="r" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff5a4e"/>
+      <stop offset=".55" stop-color="#e0201a"/>
+      <stop offset="1" stop-color="#9c0d0a"/>
+    </linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff3b0"/>
+      <stop offset=".4" stop-color="#f2c230"/>
+      <stop offset=".7" stop-color="#b8860b"/>
+      <stop offset="1" stop-color="#f5d660"/>
+    </linearGradient>
+    <linearGradient id="n" x1="0" x2="1">
+      <stop offset="0" stop-color="#9aa3ab"/>
+      <stop offset=".5" stop-color="#e9edf0"/>
+      <stop offset="1" stop-color="#7d868e"/>
+    </linearGradient>
+    <clipPath id="c">
+      <path d="M15 20.2C9.2 15.9 3.2 12 3.2 7.1 3.2 3.8 5.7 1.6 8.7 1.6c2.6 0 4.9 1.6 6.3 3.8 1.4-2.2 3.7-3.8 6.3-3.8 3 0 5.5 2.2 5.5 5.5 0 4.9-6 8.8-11.8 13.1z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Shadow and needle -->
+  <ellipse cx="20" cy="31.2" rx="4.2" ry="1.4" fill="#000" opacity=".18"/>
+  <g transform="translate(5 0) rotate(-14 15.2 30.6)">
+  <path d="M14.4 19.4 14.7 30.7 15.8 30.7 16.5 19.4z" fill="url(#n)"/>
+
+  <!-- Faceted heart gem -->
+  <path d="M15 20.2C9.2 15.9 3.2 12 3.2 7.1 3.2 3.8 5.7 1.6 8.7 1.6c2.6 0 4.9 1.6 6.3 3.8 1.4-2.2 3.7-3.8 6.3-3.8 3 0 5.5 2.2 5.5 5.5 0 4.9-6 8.8-11.8 13.1z" fill="url(#r)"/>
+  <g clip-path="url(#c)">
+    <path d="M15 9.6 3 1v9z" fill="#fff" opacity=".22"/>
+    <path d="M15 9.6 8.7 0 15 5.4z" fill="#fff" opacity=".32"/>
+    <path d="M15 9.6 15 5.4 21.3 0z" fill="#fff" opacity=".12"/>
+    <path d="M15 9.6 27 1v9z" fill="#000" opacity=".08"/>
+    <path d="M15 9.6 3 10 15 21z" fill="#000" opacity=".06"/>
+    <path d="M15 9.6 27 10 15 21z" fill="#000" opacity=".2"/>
+    <path d="M15 9.6 3 1M15 9.6 27 1M15 9.6 3 10M15 9.6 27 10M15 9.6V21M15 9.6 8.7 0M15 9.6 21.3 0" stroke="#fff" stroke-width=".35" opacity=".35" fill="none"/>
+  </g>
+
+  <!-- Wrench, as in the Hack Repair heart -->
+  <g transform="rotate(-45 15 10)">
+    <rect x="13.9" y="7.6" width="2.2" height="9" rx="1.1" fill="#ffd21f" stroke="#a87400" stroke-width=".4"/>
+    <path d="M12.2 4.4a3 3 0 1 0 5.6 0l-1.4 0v2.1h-2.8V4.4z" fill="#ffd21f" stroke="#a87400" stroke-width=".4" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Gold bezel -->
+  <path d="M15 20.2C9.2 15.9 3.2 12 3.2 7.1 3.2 3.8 5.7 1.6 8.7 1.6c2.6 0 4.9 1.6 6.3 3.8 1.4-2.2 3.7-3.8 6.3-3.8 3 0 5.5 2.2 5.5 5.5 0 4.9-6 8.8-11.8 13.1z" fill="none" stroke="url(#g)" stroke-width="1.3" stroke-linejoin="round"/>
+
+  <!-- Highlight and sparkle -->
+  <ellipse cx="21.6" cy="4.9" rx="2.3" ry="1.2" fill="#fff" opacity=".7" transform="rotate(35 21.6 4.9)"/>
+  <path d="M6.2 3.4l.45 1.4 1.4.45-1.4.45-.45 1.4-.45-1.4-1.4-.45 1.4-.45z" fill="#fff"/>
+  </g>
+</svg>

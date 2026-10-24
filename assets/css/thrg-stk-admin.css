@@ -1,0 +1,65 @@
+/* The Hack Repair Guy's Stickies: dashboard screens. Same palette as Site Inspector. */
+.thrg-stk-admin {
+	--ink: #18354b;
+	--ink-soft: #4f6577;
+	--paper: #f5f7f9;
+	--line: #d5dde4;
+	--ok: #2e6b4f;
+	--ok-bg: #e6f3ec;
+	--orange: #b34700;
+	--orange-dark: #8f3a00;
+	color: var(--ink);
+	max-width: 1180px;
+}
+.stk-head { display: flex; align-items: center; gap: 14px; margin: 10px 0 18px; }
+.stk-head .stk-mascot { width: 56px; height: 56px; flex: none; }
+.stk-head .stk-heart-link { display: block; flex: none; border-radius: 50%; line-height: 0; }
+.stk-head .stk-heart-link:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.stk-head .stk-heart-link:hover .stk-mascot { transform: scale(1.06); }
+.stk-head .stk-heart-link .stk-mascot { transition: transform .15s ease; }
+.stk-eyebrow { font-size: 12px !important; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--orange); margin: 0 !important; }
+.thrg-stk-admin .stk-head h1 { font-size: 28px; font-weight: 700; line-height: 1.2; color: var(--ink); margin: 2px 0; padding: 0; }
+.thrg-stk-admin .stk-byline { color: var(--ink-soft); margin: 0; }
+.stk-version { color: var(--ink-soft); font-size: 12px; font-weight: 400; margin-left: 6px; white-space: nowrap; }
+
+.thrg-stk-admin .stk-section { margin: 22px 0 0; padding: 10px 14px; font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--ink); background: linear-gradient(90deg, #fff1e6, #fff); border: 1px solid var(--line); border-bottom: 0; border-left: 4px solid var(--orange); border-radius: 6px 6px 0 0; }
+.stk-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--orange); border-radius: 0 0 6px 6px; padding: 12px 16px; }
+.stk-card > p:first-child { margin-top: 4px; }
+.stk-card fieldset legend { font-weight: 600; margin: 8px 0 0; }
+.stk-callout { background: #fff8d6; border: 1px solid #ecd27a; border-left: 4px solid #e0b400; border-radius: 6px; padding: 4px 14px; margin: 0 0 16px; }
+
+.stk-matrix { max-width: 640px; margin: 10px 0; }
+.stk-matrix th, .stk-matrix td { vertical-align: middle; }
+.stk-matrix td { text-align: center; }
+.stk-matrix thead th:not(:first-child) { text-align: center; }
+
+.thrg-stk-admin .button-primary, .thrg-stk-admin .button-primary:focus { background: var(--orange); border-color: var(--orange-dark); color: #fff; text-shadow: none; box-shadow: none; }
+.thrg-stk-admin .button-primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); color: #fff; }
+
+.stk-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.stk-swatch--yellow { background: #ffefb1; }
+.stk-swatch--blue { background: #cfe8fb; }
+.stk-swatch--green { background: #d4f2cf; }
+.stk-swatch--pink { background: #fbd3e3; }
+.stk-swatch--gray { background: #e6e8ea; }
+.stk-tag { display: inline-block; font-size: 11px; line-height: 1.6; padding: 0 6px; border-radius: 9px; background: var(--paper); color: var(--ink-soft); border: 1px solid var(--line); }
+.stk-chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 10px; }
+.stk-chip--open { background: #fff4d6; color: #8a5a00; }
+.stk-chip--ok { background: var(--ok-bg); color: var(--ok); }
+.stk-page-title { font-weight: 600; }
+.thrg-stk-admin .column-status, .thrg-stk-admin .column-updated_at { width: 110px; }
+.thrg-stk-admin .column-author, .thrg-stk-admin .column-mentions { width: 140px; }
+.thrg-stk-admin .column-page_path code { font-size: 12px; word-break: break-all; background: none; padding: 0; }
+
+.stk-support { margin-top: 26px; }
+.stk-support .dashicons { color: var(--orange); }
+.stk-footer { display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-between; align-items: center; margin: 22px 0 10px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 13px; }
+.stk-footer-col { flex: 1 1 300px; }
+.stk-help { display: flex; align-items: center; gap: 12px; justify-content: flex-end; }
+.stk-help img { flex: none; }
+.stk-help p { margin: 0; }
+.thrg-stk-admin a { color: var(--ink); }
+.thrg-stk-admin .row-actions a.submitdelete { color: #b32d2e; }
+@media (max-width: 782px) {
+	.stk-help { justify-content: flex-start; }
+}
