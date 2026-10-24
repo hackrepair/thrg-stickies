@@ -201,7 +201,6 @@ final class THRG_STK_Plugin {
             ),
             'caps'       => array(
                 'create' => $caps['create'],
-                'manage' => $caps['manage'],
             ),
             'toolbar'    => THRG_STK_Settings::get( 'toolbar' ),
             'breakpoint' => (int) THRG_STK_Settings::get( 'breakpoint' ),
@@ -252,7 +251,6 @@ final class THRG_STK_Plugin {
             'list'          => __( 'Notes on this page', 'thrg-stickies' ),
             'close'         => __( 'Close', 'thrg-stickies' ),
             'save'          => __( 'Save note (Ctrl+S)', 'thrg-stickies' ),
-            'saving'        => __( 'Saving…', 'thrg-stickies' ),
             'saved'         => __( 'Saved', 'thrg-stickies' ),
             'delete'        => __( 'Delete note', 'thrg-stickies' ),
             'confirmDelete' => __( 'Delete this note?', 'thrg-stickies' ),
@@ -316,7 +314,6 @@ final class THRG_STK_Plugin {
             'hoursAgo'      => __( '%d hr ago', 'thrg-stickies' ),
             /* translators: %d: number of days */
             'daysAgo'       => __( '%d days ago', 'thrg-stickies' ),
-            'readOnly'      => __( 'Only the author can change this note.', 'thrg-stickies' ),
             'you'           => __( 'You', 'thrg-stickies' ),
         );
     }

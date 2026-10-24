@@ -1201,8 +1201,7 @@
 			status: 'open',
 			author: { id: C.user.id, name: C.user.name },
 			can_edit: true,
-			can_resolve: true,
-			can_delete: true
+			can_resolve: true
 		};
 		var note = new Note( data );
 		state.notes.push( note );

@@ -102,6 +102,7 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 ### 2.0.7
 - Administrators now get a short note in the @ mention list when someone matches the name but cannot be mentioned because their role cannot see notes yet, with a link to Stickies > Settings. Other users see no change and no account details.
 - Fixed a rare case where pressing Enter after a search found no one could pick the person from the previous search.
+- Removed unused code and two unused text strings ("Saving…" and "Only the author can change this note."). Translators can drop them.
 
 ### 2.0.6
 - Moving, resizing or recoloring a saved note now saves as soon as you let go. Before, the change was lost if you left the page without clicking the check button.

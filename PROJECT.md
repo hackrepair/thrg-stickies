@@ -105,7 +105,7 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 - **Admin bar item** "Stickies (n)" as a second way to open the list and toggle visibility. The toolbar can be turned off in settings in favor of the admin bar only.
 - **Create:** a new note appears near the visible top of the window, focused and ready for typing.
 - **Move and resize:** pointer events (mouse, pen, touch) with no jQuery UI. Keyboard alternatives are provided: with the note focused, arrow keys move it by 10px and Shift+arrow resizes it.
-- **Save:** moving, resizing and recoloring a saved note save by themselves 0.4 seconds after you let go (`saveLayout()` sends only those fields, never text being typed) and once more on `pagehide` with a keepalive request. Text saves with the check button, Ctrl+S or Cmd+S, and an optional autosave after a pause in typing (setting, off by default). A new, unsaved note still needs its first save. The Hack Repair heart pin (`assets/img/pin-heart.svg`) shows when saved and can be grabbed to move the note, and the note shows a "Saving…" state and errors inline, never through `alert()`.
+- **Save:** moving, resizing and recoloring a saved note save by themselves 0.4 seconds after you let go (`saveLayout()` sends only those fields, never text being typed) and once more on `pagehide` with a keepalive request. Text saves with the check button, Ctrl+S or Cmd+S, and an optional autosave after a pause in typing (setting, off by default). A new, unsaved note still needs its first save. The Hack Repair heart pin (`assets/img/pin-heart.svg`) shows when saved and can be grabbed to move the note, and the note dims and the check button spins while saving; errors show inline, never through `alert()`.
 - **Colors:** yellow (default), blue, green, pink and gray, chosen from a round color button at the top right of the note. A soft sheen confirms the change.
 - **Resolve:** the round check button at the bottom right (same size as the color button, with a hover tip) marks the note resolved. The note leaves the page and an "Undo" message appears. A "Show resolved" toggle in the list panel lists resolved notes; clicking one shows it on the page so it can be reopened. The Stickies list also reopens notes.
 - **Delete:** with an inline "Delete this note?" confirmation, never a browser dialog.
@@ -492,3 +492,12 @@ An administrator typed `@jim` and the editor named Jim was missing, because that
 - Not done by design: no one-click "allow this role" button, because it would change permissions from inside a small popup.
 
 Verified on Zendogs with an administrator, an editor, two accounts named Jim (one in a role that cannot see notes) and a third blocked account: the administrator saw both the eligible Jim and the hint with its link; a search that matches only a blocked account showed only the hint; the editor saw no hint and no email; after results then no results, Enter picked no one. Integration 72 checks (5 new), units, smoke (32) and PHPCS pass. Test users and the test role were removed.
+
+### 2.0.7 dead-code cleanup
+
+A review for code left over from earlier sessions (unused CSS, JavaScript, PHP, strings and assets) found no dead CSS or JavaScript and no unreferenced assets. Removed:
+
+- `THRG_STK_Access::remove_all()`: nothing called it; `uninstall.php` carries its own inline copy because the plugin classes are not loaded at uninstall.
+- The `saving` and `readOnly` strings in `THRG_STK_Plugin::strings()`: the script never used them, and the second was out of date now that managers can edit any note.
+- `caps.manage` in the script's `window.thrgStickies` config and `can_delete` in the REST note payload (and the script's new-note default): never read. Delete permission still follows `can_edit` on the server.
+- Kept on purpose: the REST `page` field (the integration test checks page-address normalization with it), the unstyled `thrg-stk-video-preview` hook class, and every dynamically built class (`thrg-stk-c-*`, `stk-swatch--*`) and WordPress list-table class.

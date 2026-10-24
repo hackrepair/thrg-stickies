@@ -559,7 +559,6 @@ final class THRG_STK_REST {
             'page'        => $note['page_path'],
             'can_edit'    => THRG_STK_Access::can_edit( $note, $uid, $caps ),
             'can_resolve' => THRG_STK_Access::can_resolve( $note, $uid, $caps ),
-            'can_delete'  => THRG_STK_Access::can_delete( $note, $uid, $caps ),
         );
     }
 }

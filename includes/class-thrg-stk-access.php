@@ -180,20 +180,4 @@ final class THRG_STK_Access {
             wp_get_current_user()->get_role_caps();
         }
     }
-
-    /**
-     * Remove the capabilities from every role (uninstall).
-     *
-     * @return void
-     */
-    public static function remove_all() {
-        if ( ! function_exists( 'wp_roles' ) ) {
-            return;
-        }
-        foreach ( wp_roles()->role_objects as $role ) {
-            foreach ( self::caps() as $cap ) {
-                $role->remove_cap( $cap );
-            }
-        }
-    }
 }
