@@ -8,7 +8,7 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets your team say it right where it happens. Notes are only for logged-in people with Stickies access; visitors never see them.
 
-Current release: **2.0.2**.
+Current release: **2.0.3**.
 
 <p align="center">
   <strong>▶ Watch Stickies in action</strong><br>
@@ -124,3 +124,7 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 - First release.
 
 Privacy clarification: Mention suggestions load avatars using WordPress’s configured avatar provider, which may contact Gravatar. GitHub is contacted for plugin update checks.
+
+Compatibility update 2.0.3: Tested up to WordPress 7.1.3.
+
+Compatibility update 2.0.3: Tested up to WordPress 7.1.3.

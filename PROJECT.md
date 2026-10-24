@@ -433,3 +433,15 @@ Notes list records the latest attempted mention email per recipient: Accepted by
 View details browser review on Zendogs: include Description (video link and privacy), Installation, FAQ (self-mentions and send troubleshooting), Support, Changelog, and Other THRG Plugins; preserve local banners/icons and installed-version metadata.
 
 2.0.2 keeps schema version 4. Ego Lite verified the FAQ, video link, Support contact, companion tab, and branded header in Zendogs before the version bump. No mail sending or note access rules changed.
+
+## WordPress 7.1.3 compatibility patch 2.0.3
+
+Corrected readme and native plugin information metadata to 7.1.3. Zendogs core upgraded from 7.1 to official 7.1.3 after a full local database/core backup. Existing settings preserved. This patch changes compatibility metadata only; no functional changes. Shared PHPCS passed. Runtime integration and native details checks recorded in the release verification.
+
+Corrected readme and native plugin information metadata to 7.1.3. Zendogs core upgraded from 7.1 to official 7.1.3 after a full local database/core backup. Existing settings preserved. This patch changes compatibility metadata only; no functional changes. Shared PHPCS passed. Runtime integration and native details checks recorded in the release verification.
+
+Verification October 23, 2026: Zendogs core reports 7.1.3. All six native plugin-information responses declare tested 7.1.3; Ego Lite space 59 opened all six View details pages and found no has-not-been-tested warning. Stickies 52 WordPress integration assertions and PUE real-WordPress integration passed; DOPN update-notices and all seven PUE standalone suites passed. Shared PHPCS passed for all three corrected plugins. Other plugins were checked for metadata/UI behavior, not subjected to a new full feature audit.
+
+2.0.3 banner: bundled YouTube thumbnail complements the THRG gradient and animated heart; a keyboard-accessible preview links to the walkthrough. Mobile header stacks the thumbnail. No third-party image request occurs when opening View details.
+
+Final 2.0.3 banner validation: Ego Lite desktop and 390px phone screenshots inspected; local thumbnail loads, preview links to the supplied video, no horizontal overflow, compatibility warning absent on WordPress 7.1.3. Shared PHPCS and 31 smoke assertions passed after banner changes. Screenshots: .review/203-banner-desktop.png and .review/203-banner-mobile.png.

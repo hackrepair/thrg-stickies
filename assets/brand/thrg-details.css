@@ -40,3 +40,26 @@ body #plugin-information-title.with-banner .vignette { display: none; }
 @media (prefers-reduced-motion: reduce), print {
     body #plugin-information-title.with-banner::before { animation: none; transform: none; }
 }
+/* Bundled walkthrough thumbnail beside the shared THRG title. */
+body #plugin-information-title.with-banner h2 { flex: 1; }
+body #plugin-information-title.with-banner::after {
+    content: "";
+    display: block;
+    flex: 0 0 34%;
+    aspect-ratio: 16 / 9;
+    max-height: 180px;
+    background: url("stickies-video-thumbnail.jpg") center / contain no-repeat;
+    border-radius: 8px;
+}
+#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=cvO_PknGIyA"] { display: block; max-width: 400px; margin: 0 0 18px; }
+#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=cvO_PknGIyA"] img { display: block; width: 100%; height: auto; border-radius: 6px; }
+#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=cvO_PknGIyA"]:focus-visible { outline: 3px solid #2271b1; outline-offset: 4px; }
+@media (max-width: 650px) {
+    body #plugin-information-title.with-banner { gap: 16px; padding: 24px; }
+    body #plugin-information-title.with-banner::before { flex-basis: 64px; width: 64px; height: 64px; }
+    body #plugin-information-title.with-banner h2 { font-size: 24px; }
+}
+@media (max-width: 480px) {
+    body #plugin-information-title.with-banner { flex-wrap: wrap; height: auto; min-height: 250px; }
+    body #plugin-information-title.with-banner::after { flex-basis: 100%; height: 160px; aspect-ratio: auto; }
+}

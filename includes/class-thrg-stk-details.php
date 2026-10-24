@@ -204,6 +204,9 @@ final class THRG_STK_Details {
         }
 
         $url = plugins_url( 'assets/', THRG_STK_FILE );
+
+        $sections['description'] = '<a class="thrg-stk-video-preview" href="https://www.youtube.com/watch?v=cvO_PknGIyA" target="_blank" rel="noopener noreferrer"><img src="' . esc_url( $url . 'brand/stickies-video-thumbnail.jpg' ) . '" width="1280" height="720" alt="' . esc_attr__( 'Watch Stickies in action on YouTube (opens in a new tab)', 'thrg-stickies' ) . '" /></a>' . $sections['description'];
+
         wp_enqueue_style( 'thrg-stk-brand', $url . 'brand/thrg-brand.css', array(), THRG_STK_VERSION );
         wp_enqueue_style( 'thrg-stk-brand-details', $url . 'brand/thrg-details.css', array( 'thrg-stk-brand' ), THRG_STK_VERSION );
 
@@ -215,7 +218,7 @@ final class THRG_STK_Details {
         $info->homepage     = 'https://github.com/hackrepair/thrg-stickies';
         $info->external     = true;
         $info->requires     = '6.9.4';
-        $info->tested       = '7.1';
+        $info->tested       = '7.1.3';
         $info->requires_php = '7.4';
         $info->last_updated = gmdate( 'Y-m-d H:i:s', (int) filemtime( THRG_STK_FILE ) );
         $info->sections     = $sections;
