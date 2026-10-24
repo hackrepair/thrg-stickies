@@ -189,6 +189,7 @@ final class THRG_STK_Details {
             'installation'               => 'installation',
             'frequently asked questions' => 'faq',
             'changelog'                  => 'changelog',
+            'support'                    => 'support',
         );
         $sections = array();
         $count    = count( $parts );

@@ -277,7 +277,7 @@ class THRG_STK_List_Table extends WP_List_Table {
             }
             $out[] = esc_html( THRG_STK_Plugin::display_name( $uid ) . ': ' . $label );
         }
-        return $out ? implode( '<br />', $out ) . '<br /><small>' . esc_html__( 'Mailer acceptance does not confirm inbox delivery.', 'thrg-stickies' ) . '</small>' : '&mdash;';
+        return $out ? implode( '<br />', $out ) : '&mdash;';
     }
 
     /**

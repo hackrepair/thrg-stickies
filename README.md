@@ -8,7 +8,12 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets your team say it right where it happens. Notes are only for logged-in people with Stickies access; visitors never see them.
 
-Current release: **2.0.1**.
+Current release: **2.0.2**.
+
+<p align="center">
+  <strong>▶ Watch Stickies in action</strong><br>
+  <a href="https://www.youtube.com/watch?v=cvO_PknGIyA"><img src="https://img.youtube.com/vi/cvO_PknGIyA/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
+</p>
 
 ## What it does
 
@@ -31,6 +36,22 @@ Notes live in one table in your site's database. They are fetched after the page
 3. Activate it, open any page of your site while logged in, and click the note button on the left edge.
 
 Updates arrive through the normal WordPress Plugins screen from this repository's GitHub releases.
+
+## Frequently asked questions
+
+### Why does my mention show “No recorded send”?
+
+Mentioning your own logged-in account does not send you an email. This is intentional, including on Team notes with mention emails enabled. Use a different administrator or editor to test.
+
+The label means there is no saved send result. It also covers older mentions from before 2.0.1 and skipped notifications: emails disabled, invalid recipient/email, recipient unable to see the note, or the 10-minute cooldown.
+
+### Does saving or resolving a note resend emails?
+
+No. Only newly added mentions trigger notification attempts. Re-saving the same mention, resolving, or reopening a note does not resend it.
+
+### How do I test it?
+
+Enable mention emails, create a new Team note, select another administrator or editor from the @ dropdown, and save. Refresh the notes list for the send result and check Mailpit if used locally. If the new email arrives but no result is recorded, investigate the database upgrade and status write.
 
 ## Development
 
@@ -70,6 +91,11 @@ Update checks use [Plugin Update Checker](https://github.com/YahnisElsts/plugin-
 Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair").
 
 ## Changelog
+
+### 2.0.2
+- Explain self-mentions, No recorded send, and notification troubleshooting.
+- Add the walkthrough video and include Support in View details.
+- Remove the repeated delivery disclaimer from the notes list.
 
 ### 2.0.1
 - Show per-recipient mention email acceptance/failure and attempt timestamps in the notes list.

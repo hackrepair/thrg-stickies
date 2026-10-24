@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -12,6 +12,8 @@ Support link: https://github.com/hackrepair/thrg-stickies/discussions
 Pin sticky notes to the exact spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
 
 == Description ==
+
+[Watch Stickies in action on YouTube](https://www.youtube.com/watch?v=cvO_PknGIyA "Free Sticky Notes for Your WordPress Team")
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets you say it right where it happens.
 
@@ -88,11 +90,31 @@ Yes. Tracking parameters such as utm_source and fbclid are ignored, and so are h
 
 Yes. Dashboard screens are on by default. You can turn them off with "On dashboard screens" in Stickies > Settings.
 
+= Why does a mention show No recorded send? =
+
+Stickies does not email you when you mention your own account. If you are logged in as Jim and choose Jim from the @ suggestions, no notification is sent, even with emails enabled and visibility set to Team. Choose a different account to test notifications.
+
+No recorded send means there is no saved send result for that person. It can also appear for mentions saved before version 2.0.1, when mention emails were disabled, when the recipient could not see the note (for example a Just me note), when the recipient account or email was invalid, or when the 10-minute cooldown suppressed a notification.
+
+= Does saving or resolving a note resend mention emails? =
+
+No. Emails are triggered when a person is newly mentioned on a save. Saving an existing mention again, resolving a note, or reopening it does not resend the email.
+
+= How can I test mention emails? =
+
+Enable mention emails in Stickies > Settings. Create a new Team note and select a different administrator or editor from the @ suggestions, then save. Refresh the Stickies list to see Accepted by mailer or Send failed. In a local Mailpit setup, also check Mailpit for the message. If Mailpit receives the new message but the list still shows No recorded send, check the plugin database upgrade and status write.
+
 = What happens to my notes if I uninstall? =
 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.0.2 =
+* Explain self-mentions, No recorded send, and notification troubleshooting in the FAQ.
+* Add the Stickies walkthrough video link.
+* Include the Support tab in View details.
+* Remove the repeated delivery disclaimer from the notes list.
 
 = 2.0.1 =
 * Record mention email acceptance and failures per recipient in the notes list.

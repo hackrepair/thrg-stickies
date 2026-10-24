@@ -2,7 +2,7 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.0.1 release, October 23, 2026.** Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.0.2 release, October 23, 2026.** Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
 Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
@@ -272,6 +272,8 @@ Follows `THRG-EMAIL-STANDARD.md`:
 - From the site's default sender. Reply-To is the note author's email when valid.
 - Body: who mentioned you, the page title and path, the note excerpt (escaped, mentions shown as names, 300 characters), a "View the note" button linking to the page with `#thrg-stk-<id>`, the site URL, and a line saying you need to be logged in to see it.
 - HTML with a plain-text alternative, one personal message per recipient via `wp_mail()`, and no email addresses of other recipients in headers.
+- Self-mentions are skipped by comparing the recipient ID with the current sender ID, including on Team notes with emails enabled. Only newly added mentions trigger attempts; resolving/reopening or re-saving existing mentions does not resend.
+- No recorded send means no persisted attempt result: historical pre-2.0.1 mention or a skipped notification (self, emails disabled, invalid account/email, insufficient visibility, or cooldown). Diagnose with a new Team note mentioning a different eligible account; if mail arrives without status, inspect schema 4 and the metadata write.
 - Pure builders (`subject()`, `html()`, `text()`), unit-tested the same way as Site Inspector's email class.
 
 ### Front-end script (`thrg-stk-notes.js`)
@@ -422,3 +424,12 @@ Limits: no fresh pointer-drag/resize gesture, mention-suggestion UI, bulk-action
 ## 2.0.1 email status
 
 Notes list records the latest attempted mention email per recipient: Accepted by mailer, Send failed, or No recorded send. Timestamps use UTC. No raw mail errors, addresses, or message bodies are stored in this status. Mail metadata writes do not change note revisions. Schema 4 adds nullable mail_status; old notes remain unknown. Local Zendogs integration: 52 assertions passed, including acceptance, forced failure, and unchanged revisions. PHPCS passed. Mailer acceptance does not establish inbox delivery.
+
+## 2.0.2 release
+
+- Remove the repeated inbox-delivery disclaimer from the notes list (source updated).
+- Add the Stickies walkthrough video (https://www.youtube.com/watch?v=cvO_PknGIyA): clickable README thumbnail matching Plugin Detective, plus a readme.txt link rendered in native View details. No player or remote thumbnail is loaded in wp-admin. Included in 2.0.2.
+
+View details browser review on Zendogs: include Description (video link and privacy), Installation, FAQ (self-mentions and send troubleshooting), Support, Changelog, and Other THRG Plugins; preserve local banners/icons and installed-version metadata.
+
+2.0.2 keeps schema version 4. Ego Lite verified the FAQ, video link, Support contact, companion tab, and branded header in Zendogs before the version bump. No mail sending or note access rules changed.
