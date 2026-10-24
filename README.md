@@ -8,8 +8,6 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets your team say it right where it happens. Notes are only for logged-in people with Stickies access; visitors never see them.
 
-Current release: **2.0.3**.
-
 <p align="center">
   <strong>▶ Watch Stickies in action</strong><br>
   <a href="https://www.youtube.com/watch?v=cvO_PknGIyA"><img src="https://img.youtube.com/vi/cvO_PknGIyA/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
