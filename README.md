@@ -122,7 +122,3 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 - First release.
 
 Privacy clarification: Mention suggestions load avatars using WordPress’s configured avatar provider, which may contact Gravatar. GitHub is contacted for plugin update checks.
-
-Compatibility update 2.0.3: Tested up to WordPress 7.1.3.
-
-Compatibility update 2.0.3: Tested up to WordPress 7.1.3.
