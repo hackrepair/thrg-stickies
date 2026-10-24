@@ -469,3 +469,15 @@ A review of 2.0.1 to 2.0.4 found no security or data-loss problems. Fixed in 2.0
 - Docs: README 2.0.3 changelog entry, 2.0.0 marked as unreleased, stray privacy paragraph removed from both changelogs, generic self-mention FAQ example, a role-sync note that Stickies > Settings overrides role editors, and this file's data table, tests and schema notes.
 
 Kept as designed: role sync reverts Stickies capability changes made outside Stickies > Settings on the next request. A plugin that re-applies its own role setup on every load could cause repeated role-option writes; none was seen. The walkthrough thumbnail appears in both the View details banner and as the clickable preview at the top of Description, as introduced in 2.0.3.
+
+## 2.0.6 save on release, October 24, 2026
+
+Found when a test of moving and recoloring another person's note seemed to work but reverted on the next page: a move, resize or color change only marked the note as changed, and it was saved only by the check button or by the optional autosave (off by default). Leaving the page threw the change away.
+
+- New `Note.prototype.saveLayout()` saves a saved note's position, size and color 0.4 seconds after the pointer or key is released (`markDirty()` schedules it). It sends only those fields plus `revision` and `updated_at`, so text that is still being typed is never saved by accident and stays in the note. It shows "Saved" in the footer.
+- A `pagehide` listener sends any pending move or color change with a keepalive request. The leave-page warning now ignores a pending move or color change unless its save failed (`layoutFailed`), because it is saved on the way out.
+- `saveFailed()` and `runQueued()` are shared by both save paths (409 Reload button unchanged). A layout save queued behind a text save, and the reverse, run in order.
+- A new note that has never been saved still needs its first save. With autosave on, behavior is unchanged (a full save after 1.5 seconds).
+- Setting text now reads "Also save text automatically a moment after typing stops (moving, resizing and recoloring a note always save right away)".
+
+Verified on Zendogs 2.0.6 with autosave off: an administrator moved an editor's note with the arrow keys (position and revision saved, footer "Saved", same spot after reload); recolored it and left the page at once (color saved); changed its color while unsaved text was typed (color saved, text not saved, typed text kept; the check button then saved the text); and dragged a note with the mouse (saved). Unit tests, smoke (32 checks), PHPCS and JS syntax pass. Test users and notes were removed.
