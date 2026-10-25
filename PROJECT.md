@@ -501,3 +501,9 @@ A review for code left over from earlier sessions (unused CSS, JavaScript, PHP, 
 - The `saving` and `readOnly` strings in `THRG_STK_Plugin::strings()`: the script never used them, and the second was out of date now that managers can edit any note.
 - `caps.manage` in the script's `window.thrgStickies` config and `can_delete` in the REST note payload (and the script's new-note default): never read. Delete permission still follows `can_edit` on the server.
 - Kept on purpose: the REST `page` field (the integration test checks page-address normalization with it), the unstyled `thrg-stk-video-preview` hook class, and every dynamically built class (`thrg-stk-c-*`, `stk-swatch--*`) and WordPress list-table class.
+
+## Project page (GitHub Pages), October 24, 2026
+
+https://hackrepair.github.io/thrg-stickies/ is a one-page site served by GitHub Pages from `docs/` on `main` (`docs/index.html`, `docs/img/`, `docs/.nojekyll`). It has the hero (a page under review with four pinned notes), the click-to-load video (youtube-nocookie, poster `img/poster.jpg` = `assets/brand/stickies-video-thumbnail.jpg`), download buttons, the features, an own-your-data note, the install steps and project links. On load it asks the GitHub API for the latest release and points every download button at that zip, labeled with the version; if the lookup fails the buttons go to the latest release page. Fonts: Bricolage Grotesque and Atkinson Hyperlegible from Google Fonts. Images in `docs/img/` are copies of plugin assets; refresh them if the brand art changes. No frames from the demo video are used, because it was recorded on the Zen Dogs sandbox.
+
+Release rule: `docs/` is not part of the plugin. The release `git archive` must also exclude it: add `':!docs'` to the exclusion list. `scripts/build-release.py` already skips `docs`.

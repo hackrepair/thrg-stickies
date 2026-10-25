@@ -15,6 +15,8 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
   <a href="https://github.com/hackrepair/thrg-stickies/releases/latest" title="Download the latest Stickies plugin zip from GitHub"><img src="https://img.shields.io/badge/%E2%AC%87%20%20Download%20the%20latest%20release-b34700?style=for-the-badge&labelColor=b34700" alt="Download the latest release" height="46"></a>
   <br>
   <sub>Free. Upload the zip in WordPress, and later updates arrive on the Plugins screen.</sub>
+  <br><br>
+  <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
 </p>
 
 ## What it does
