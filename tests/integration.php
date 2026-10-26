@@ -244,6 +244,23 @@ try {
     list( $s, $d ) = req( 'GET', 'notes', array( 'uri' => $uri ), $reader );
     $ids = wp_list_pluck( $d['notes'], 'id' );
     check( 'mentioned reader sees mentioned-only', in_array( $n3, $ids, true ) && ! in_array( $n2, $ids, true ), $ids );
+    // The Stickies list counts only what the viewer can open.
+    $q = THRG_STK_Notes::query( array( 'visible_to' => $editor2, 'per_page' => 100 ) );
+    $q_ids = wp_list_pluck( $q['items'], 'id' );
+    check( 'list: other editor gets team notes only', in_array( $n1, $q_ids, true ) && ! in_array( $n2, $q_ids, true ) && ! in_array( $n3, $q_ids, true ) );
+    $q = THRG_STK_Notes::query( array( 'visible_to' => $reader, 'per_page' => 100 ) );
+    $q_ids = wp_list_pluck( $q['items'], 'id' );
+    check( 'list: mentioned reader gets the mentioned note', in_array( $n3, $q_ids, true ) && ! in_array( $n2, $q_ids, true ) );
+    $q = THRG_STK_Notes::query( array( 'visible_to' => $editor, 'per_page' => 100 ) );
+    $q_ids = wp_list_pluck( $q['items'], 'id' );
+    check( 'list: author gets own private and mentioned notes', in_array( $n2, $q_ids, true ) && in_array( $n3, $q_ids, true ) );
+    $all = THRG_STK_Notes::query( array( 'per_page' => 1 ) );
+    $own = THRG_STK_Notes::query( array( 'visible_to' => $editor2, 'per_page' => 1 ) );
+    check( 'list: total excludes notes the viewer cannot open', $own['total'] < $all['total'] );
+    add_filter( 'thrg_stk_page_limit', function () { return 7; } );
+    check( 'page limit follows the filter', 7 === THRG_STK_Notes::page_limit() );
+    remove_all_filters( 'thrg_stk_page_limit' );
+    check( 'page limit defaults to 200', 200 === THRG_STK_Notes::page_limit() );
     list( $s, $d ) = req( 'GET', 'notes', array( 'uri' => $uri ), $admin );
     $ids = wp_list_pluck( $d['notes'], 'id' );
     check( 'admin does not see private on page', ! in_array( $n2, $ids, true ) && in_array( $n3, $ids, true ), $ids );

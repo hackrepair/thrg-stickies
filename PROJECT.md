@@ -2,9 +2,9 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.1.0 released, October 26, 2026** (first-install welcome note). Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.1.1 released, October 26, 2026** (list paging and page-limit fixes). 2.1.0 added the first-install welcome note. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
-Previous release: **2.0.7, October 24, 2026** (tag `v2.0.7`). The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
+Previous release: **2.1.0, October 26, 2026** (tag `v2.1.0`). Before that **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
 ## Purpose
 
@@ -517,7 +517,9 @@ New installs get a friendly first note, so the plugin shows what it does the mom
 
 Verified: all unit suites pass on PHP 8.3 (not rerun on 7.4 this time); on Zendogs a fresh install shows the welcome note with the new text and the dashboard link. `tests/integration.php` and PHPCS were not run for this release.
 
-Known, not changed in 2.1.0: `THRG_STK_Notes::for_page()` returns at most 200 notes even if `thrg_stk_page_limit` is raised; the Stickies list filters "Mentioned only" notes after paging, so a page can be short and the total can count notes the viewer cannot see.
+Fixed in 2.1.1: `THRG_STK_Notes::page_limit()` applies the `thrg_stk_page_limit` filter for both the page load and the add check; the Stickies list passes `visible_to` so SQL paging and totals match `THRG_STK_Access::can_view()` for people who cannot manage notes. Verified: unit tests on PHP 7.4, `tests/integration.php` on PHP 8.2 and 7.4, PHPCS clean with the repo ruleset.
+
+Was known in 2.1.0: `THRG_STK_Notes::for_page()` returns at most 200 notes even if `thrg_stk_page_limit` is raised; the Stickies list filters "Mentioned only" notes after paging, so a page can be short and the total can count notes the viewer cannot see.
 
 ## Project page (GitHub Pages), October 24, 2026
 

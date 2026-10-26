@@ -126,6 +126,9 @@ class THRG_STK_List_Table extends WP_List_Table {
         if ( ! $caps['see_private'] ) {
             $args['exclude_private_of_others'] = $uid;
         }
+        if ( empty( $caps['manage'] ) ) {
+            $args['visible_to'] = $uid;
+        }
         $result = THRG_STK_Notes::query( $args );
 
         // Visibility rules beyond "private" (mentioned-only) are checked per row.

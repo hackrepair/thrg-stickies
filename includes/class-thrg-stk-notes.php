@@ -65,10 +65,19 @@ final class THRG_STK_Notes {
         $table = THRG_STK_Schema::table();
         $rows  = $wpdb->get_results(
             // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from the site prefix.
-            $wpdb->prepare( "SELECT * FROM `{$table}` WHERE page_key = %s ORDER BY id ASC LIMIT %d", $page_key, self::PER_PAGE_LIMIT ),
+            $wpdb->prepare( "SELECT * FROM `{$table}` WHERE page_key = %s ORDER BY id ASC LIMIT %d", $page_key, self::page_limit() ),
             ARRAY_A
         );
         return array_map( array( __CLASS__, 'hydrate' ), (array) $rows );
+    }
+
+    /**
+     * The most notes one page may hold; the thrg_stk_page_limit filter can change it.
+     *
+     * @return int
+     */
+    public static function page_limit() {
+        return max( 1, (int) apply_filters( 'thrg_stk_page_limit', self::PER_PAGE_LIMIT ) );
     }
 
     /**
@@ -157,7 +166,7 @@ final class THRG_STK_Notes {
     /**
      * Notes for the dashboard list.
      *
-     * @param array $args status, author, mention, search, orderby, order, per_page, paged.
+     * @param array $args status, author, mention, visible_to, search, orderby, order, per_page, paged.
      * @return array{items: array[], total: int}
      */
     public static function query( array $args ) {
@@ -184,6 +193,12 @@ final class THRG_STK_Notes {
             $params[] = $like;
             $params[] = $like;
             $params[] = $like;
+        }
+        if ( ! empty( $args['visible_to'] ) ) {
+            // Same rule as THRG_STK_Access::can_view() for people who cannot manage notes, so paging and totals count only what they can open.
+            $where[]  = "(visibility = 'team' OR author_id = %d OR (visibility = 'mentioned' AND mentions LIKE %s))";
+            $params[] = (int) $args['visible_to'];
+            $params[] = '%,' . (int) $args['visible_to'] . ',%';
         }
         if ( ! empty( $args['exclude_private_of_others'] ) ) {
             $where[]  = "(visibility <> 'private' OR author_id = %d)";

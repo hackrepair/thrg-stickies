@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1.3
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -117,6 +117,10 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.1.1 =
+* The Stickies list now pages and counts only the notes you can open. Before, "Mentioned only" notes you were not part of could leave short pages and inflate the total.
+* The most notes allowed on one page now follows the thrg_stk_page_limit filter everywhere. Before, the page itself stopped loading at 200 even when the limit was raised.
 
 = 2.1.0 =
 * Fixed saved notes showing every line break as an extra blank line. The welcome note is also taller so its full message fits.

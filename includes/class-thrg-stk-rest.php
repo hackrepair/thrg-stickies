@@ -238,7 +238,7 @@ final class THRG_STK_REST {
         if ( is_wp_error( $page ) ) {
             return $page;
         }
-        if ( THRG_STK_Notes::count_page( $page['key'] ) >= (int) apply_filters( 'thrg_stk_page_limit', THRG_STK_Notes::PER_PAGE_LIMIT ) ) {
+        if ( THRG_STK_Notes::count_page( $page['key'] ) >= THRG_STK_Notes::page_limit() ) {
             return new WP_Error( 'thrg_stk_page_full', __( 'This page already has the most notes Stickies allows. Resolve and delete a few, then try again.', 'thrg-stickies' ), array( 'status' => 409 ) );
         }
         if ( THRG_STK_Notes::count_all() >= (int) apply_filters( 'thrg_stk_site_limit', THRG_STK_Notes::SITE_LIMIT ) ) {
@@ -397,7 +397,7 @@ final class THRG_STK_REST {
      * @return WP_REST_Response
      */
     public static function search_users( $req ) {
-        $term  = trim( sanitize_text_field( (string) $req['search'] ) );
+        $term     = trim( sanitize_text_field( (string) $req['search'] ) );
         $users    = array();
         $can_list = current_user_can( 'list_users' );
         $columns  = array( 'user_login', 'user_nicename', 'display_name' );
