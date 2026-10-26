@@ -125,25 +125,27 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 - Documentation corrections.
 
 ### 2.0.4
-- Restore missing Stickies role capabilities from the saved permission settings.
-- Distinguish duplicate names in mentions; administrators can identify eligible users by email.
-- Keep email addresses private from users without list-users permission.
-
-### 2.0.2
-- Explain self-mentions, No recorded send, and notification troubleshooting.
-- Add the walkthrough video and include Support in View details.
-- Remove the repeated delivery disclaimer from the notes list.
+- Repair missing role capabilities from the saved Stickies permissions, restoring editor controls and mention eligibility.
+- Distinguish matching names in mention suggestions; administrators can identify and search eligible accounts by email.
+- Keep email addresses out of suggestions for users who cannot list accounts.
 
 ### 2.0.3
-- Declare WordPress 7.1.3 compatibility in the readme and View details.
+- Declare WordPress 7.1.3 compatibility consistently in the readme and native View details.
 - Add the walkthrough thumbnail to the View details banner and a clickable local video preview.
 
+### 2.0.2
+- Explain self-mentions, No recorded send, and notification troubleshooting in the FAQ.
+- Add the Stickies walkthrough video link.
+- Include the Support tab in View details.
+- Remove the repeated delivery disclaimer from the notes list.
+
 ### 2.0.1
-- Show per-recipient mention email acceptance/failure and attempt timestamps in the notes list.
-- Historical emails display No recorded send; acceptance does not confirm inbox delivery.
+- Record mention email acceptance and failures per recipient in the notes list.
+- Show attempt timestamps and distinguish mailer acceptance from inbox delivery.
 
 ### 2.0.0 (not released; included in 2.0.1)
-- Preserve edits during manual saves and protect concurrent updates with revisions.
+- Preserve edits typed while saving.
+- Add atomic revision checks to prevent concurrent overwrites.
 - Translate mention emails and clarify avatar privacy.
 
 ### 1.1.2

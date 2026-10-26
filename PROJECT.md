@@ -4,7 +4,7 @@ Developer notes for contributors. For what the plugin does, see [README.md](READ
 
 Status: **2.0.7 released, October 24, 2026**. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
-Previous release: **1.1.2 released October 23, 2026** as the first public release (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
+Previous release: **2.0.6** (tag `v2.0.6`). The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
 ## Purpose
 
@@ -206,7 +206,7 @@ One custom table per site, `{$wpdb->prefix}thrg_stickies`, created with `dbDelta
 | `edited_at` | DATETIME (GMT) | Nullable; set only when the text changes, so resolving is not shown as an edit (added in schema 2) |
 | `resolved_by`, `resolved_at` | BIGINT UNSIGNED, DATETIME | Nullable |
 
-Limits: 2,000 characters of note content, 10 mentions per note, 200 notes per page (`thrg_stk_page_limit` filter) and 5,000 notes per site (`thrg_stk_site_limit` filter). The API explains the limit when it is reached.
+Limits: 2,000 characters of note content, 10 mentions per note, 200 notes per page (`thrg_stk_page_limit` filter) and 5,000 notes per site (`thrg_stk_site_limit` filter). The API explains the limit when it is reached. The `thrg_stk_load` filter (default: the user can read notes; receives the context, `front` or `admin`) lets a site stop the note app loading on a screen.
 
 Schema upgrades run on `init` when `thrg_stk_db_version` differs from `THRG_STK_Schema::VERSION`, and for new network sites through `wp_initialize_site`. The 1 → 2 upgrade (adding `edited_at`) and the 2 → 4 upgrade (adding `revision`, then `mail_status`; existing notes start at revision 1) were exercised on Zendogs. Schema 3 existed only in the unreleased 2.0.0 build.
 
@@ -225,7 +225,7 @@ Options: `thrg_stk_options` (settings array), `thrg_stk_db_version`, `thrg_stk_s
 
 - Custom capabilities: `thrg_stk_read`, `thrg_stk_create` and `thrg_stk_manage` (edit/resolve/delete others' notes).
 - Editing, resolving and deleting your own notes needs only `thrg_stk_create`.
-- Capabilities are granted on activation (administrators get all three, editors get read and create) and when the role matrix is saved. They are never granted on page load. The matrix is stored in settings and applied to roles in one place.
+- Capabilities are granted on activation (administrators get all three, editors get read and create) and when the role matrix is saved. Since 2.0.4 `THRG_STK_Access::sync_roles()` also runs on `init` and writes only when a role differs from the saved matrix, so role editors and migrations cannot silently remove access. The matrix is stored in settings and applied to roles in `THRG_STK_Access::apply_matrix()`.
 - Uninstall removes the capabilities from all roles when data deletion is ticked.
 - Per-note decisions live in `THRG_STK_Access` (pure functions taking the note, user ID and capability booleans) rather than `map_meta_cap`. That keeps the rules testable without WordPress; the REST routes and the Stickies list both call the same functions.
 - Resolving and reopening are also allowed for anyone mentioned in the note. Adding or managing notes implies seeing them.

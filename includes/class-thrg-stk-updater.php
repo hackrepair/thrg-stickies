@@ -22,9 +22,6 @@ use YahnisElsts\PluginUpdateChecker\v5p7\Vcs\Api;
  * Release requirements: tag `vX.Y.Z` with an uploaded asset named
  * `thrg-stickies.X.Y.Z.zip` whose single top-level folder is
  * `thrg-stickies/`.
- *
- * A private repository is invisible to an anonymous update check, so this
- * does nothing until the repository is public.
  */
 final class THRG_STK_Updater {
 
