@@ -65,28 +65,6 @@ Role-editing tools or migrations can remove WordPress’s stored Stickies capabi
 
 Administrators who can list users see email addresses next to names and can search by email. Other Stickies users see account IDs. Only eligible users appear, and selecting a mention stores the account ID, so matching names remain separate people.
 
-## Development
-
-Requires WordPress 6.9.4+ and PHP 7.4+. Tests are plain PHP scripts:
-
-```
-php tests/url.php
-php tests/content.php
-php tests/access.php
-php tests/email.php
-php tests/schema.php
-php tests/smoke.php
-php tests/uninstall.php
-php tests/revision.php
-python3 tests/package-permissions.py
-```
-
-`tests/integration.php` runs against a real WordPress install (it loads `wp-load.php`; see the file header). It creates temporary users and notes and removes them afterwards.
-
-Run shared PHPCS with `/Volumes/BACKUP8TB2/plugins/PHPCS/run-phpcs.sh "$PWD"`. Build a release ZIP with `python3 scripts/build-release.py`.
-
-See [PROJECT.md](PROJECT.md "Architecture, design decisions and known limits") for the architecture, design decisions and known limits.
-
 ## Author and support
 
 **[Jim Walker](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair")**, The Hack Repair Guy, author and maintainer.
