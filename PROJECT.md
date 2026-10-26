@@ -519,6 +519,8 @@ Verified: all unit suites pass on PHP 8.3 (not rerun on 7.4 this time); on Zendo
 
 Fixed in 2.1.1: `THRG_STK_Notes::page_limit()` applies the `thrg_stk_page_limit` filter for both the page load and the add check; the Stickies list passes `visible_to` so SQL paging and totals match `THRG_STK_Access::can_view()` for people who cannot manage notes. Verified: unit tests on PHP 7.4, `tests/integration.php` on PHP 8.2 and 7.4, PHPCS clean with the repo ruleset.
 
+Planned for the next release: the ? tooltip beside the visibility menu explains Team and Mentioned only but not Just me; add a Just me line.
+
 Was known in 2.1.0: `THRG_STK_Notes::for_page()` returns at most 200 notes even if `thrg_stk_page_limit` is raised; the Stickies list filters "Mentioned only" notes after paging, so a page can be short and the total can count notes the viewer cannot see.
 
 ## Project page (GitHub Pages), October 24, 2026

@@ -24,10 +24,11 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 - A small toolbar on the left edge of every page (and a Stickies item in the admin bar) adds a note, hides or shows notes, and opens the list of notes on the page.
 - Notes are paper-yellow by default, with blue, green, pink and gray as options. Pick a color from the button at the top right. Drag by the top edge or by the pin, resize from the corner, and pick a color: these save the moment you let go. Save text with the check button or Ctrl+S / Cmd+S. A Hack Repair heart pin shows a saved note.
 - Type `@` to mention a teammate. They get an email linking straight to the note.
-- Each note can be seen by the whole team, only the people mentioned, or just you. The ? beside the menu explains each choice.
+- Each note can be seen by the whole team, only the people mentioned, or just you. The ? beside the menu explains who can see the note.
 - Mark a note resolved with the round check button. It leaves the page, with an Undo message, and stays in the notes panel (tick Show resolved) and the Stickies list, where it can be reopened.
+- The first time Stickies is installed, a welcome note appears on your home page. It is marked Just me, so only you see it, and you can resolve or delete it like any other note.
 - **Stickies** in the dashboard menu lists every note on the site with filters, search, and bulk resolve, reopen and delete.
-- **Stickies > Settings** sets which roles can see, add or manage notes, whether notes show on dashboard screens, where the controls appear, mention emails, autosave and uninstall cleanup.
+- **Stickies > Settings** sets which roles can see, add or manage notes, whether people who manage everyone's notes can see Just me notes in the Stickies list, whether notes show on the site and on dashboard screens, where the controls appear, the screen width below which notes are listed in the panel instead of drawn on the page, mention emails, autosave and uninstall cleanup.
 
 ## Privacy and scope
 
