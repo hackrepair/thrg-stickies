@@ -22,7 +22,8 @@ function hooked( $hook, $cb ) {
     return isset( $GLOBALS['hooks'][ $hook ] ) && in_array( $cb, $GLOBALS['hooks'][ $hook ], true );
 }
 
-check( 'version constant', '2.0.7' === THRG_STK_VERSION );
+check( 'version constant', '2.1.0' === THRG_STK_VERSION );
+check( 'activation adds the welcome note', false !== strpos( file_get_contents( __DIR__ . '/../includes/class-thrg-stk-plugin.php' ), 'THRG_STK_Intro::maybe_add()' ) );
 check( 'header version matches constant', 1 === preg_match( '/^ \* Version:\s+' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../index.php' ) ) );
 check( 'readme stable tag matches', 1 === preg_match( '/^Stable tag: ' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../readme.txt' ) ) );
 check( 'activation hook', array( 'THRG_STK_Plugin', 'activate' ) === $GLOBALS['activation'] );

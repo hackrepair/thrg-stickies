@@ -31,7 +31,8 @@ check( 'filter drops unknown users', 'hi @ and @[user:2]' === THRG_STK_Content::
 // Render.
 $r = THRG_STK_Content::render( "<script>alert(1)</script>\nline2", $name_of );
 check( 'script escaped', false === strpos( $r, '<script' ) && false !== strpos( $r, '&lt;script&gt;' ) );
-check( 'newline to br', false !== strpos( $r, "<br>\nline2" ) );
+check( 'newline to br', false !== strpos( $r, '<br>line2' ) );
+check( 'no raw newline left beside the br', false === strpos( $r, "\n" ) );
 $r = THRG_STK_Content::render( 'see https://example.com/a?b=1&c=2.', $name_of );
 check( 'url linked, trailing dot outside', false !== strpos( $r, '<a href="https://example.com/a?b=1&amp;c=2" target="_blank" rel="noopener noreferrer nofollow">' ) && '.' === substr( $r, -1 ) );
 $r = THRG_STK_Content::render( 'x "https://evil.test/" onmouseover="alert(1)', $name_of );

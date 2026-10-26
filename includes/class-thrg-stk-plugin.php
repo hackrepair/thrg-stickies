@@ -79,6 +79,7 @@ final class THRG_STK_Plugin {
             add_option( THRG_STK_Settings::OPTION, THRG_STK_Settings::defaults() );
         }
         THRG_STK_Access::apply_matrix( (array) THRG_STK_Settings::get( 'roles' ) );
+        THRG_STK_Intro::maybe_add();
         update_option( 'thrg_stk_show_welcome', 1, false );
     }
 

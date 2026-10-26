@@ -144,7 +144,8 @@ final class THRG_STK_Content {
             $html
         );
 
-        $html = str_replace( "\n", "<br>\n", $html );
+        // A bare <br>: the note CSS keeps real newlines (pre-wrap), so "<br>\n" would show every line break twice.
+        $html = str_replace( "\n", '<br>', $html );
 
         if ( function_exists( 'wp_kses' ) ) {
             $html = wp_kses(

@@ -2,9 +2,9 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.0.7 released, October 24, 2026**. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.1.0 released, October 26, 2026** (first-install welcome note). Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
-Previous release: **2.0.6** (tag `v2.0.6`). The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
+Previous release: **2.0.7, October 24, 2026** (tag `v2.0.7`). The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
 ## Purpose
 
@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.0.7
+Version:           2.1.0
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -131,7 +131,8 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
   - Autosave text: on/off (move, resize and color always save right away).
   - Uninstall: *Delete all plugin data* (off by default), same wording as Site Inspector.
 - **Plugins screen:** Settings and Notes action links, and a native **View details** dialog built from the bundled readme.txt, with banner, icons, the THRG brand banner and an "Other THRG Plugins" tab (Site Inspector, Plugin Detective, Group Password Reset, Disable Other Plugin Notices).
-- **One-time notice** after activation, pointing to the toolbar and the settings. Dismissible and stored per user.
+- **One-time notice** after activation, pointing to the toolbar and the settings. Dismissible and stored per user. While the welcome note is open, the notice links straight to it.
+- **Welcome note (2.1.0):** on a site's first activation, `THRG_STK_Intro::maybe_add()` adds one yellow Just me note on the home page, written by the activating administrator. It is added only when the site has no notes and `thrg_stk_intro_note` is unset, so a reinstall that kept its notes never gets another. WP-CLI activation (no user) adds nothing and leaves the option unset, so a later browser activation can still add it. The text starts with a smiley only when `$wpdb->charset` is `utf8mb4` (older 3-byte utf8 tables cannot store it), and ends with the `[Hint]` teaser about @ mentions. No mentions, so no email.
 
 ### Out of scope for 1.0.0
 
@@ -157,6 +158,7 @@ thrg-stickies/
     class-thrg-stk-url.php           Page-path normalizer and key (pure)
     class-thrg-stk-rest.php          REST routes and the note shape sent to the browser
     class-thrg-stk-email.php         Mention emails per the THRG email standard (pure builders + send)
+    class-thrg-stk-intro.php         First-install welcome note (pure decision and row builders)
     class-thrg-stk-settings.php      Stickies > Settings and the role matrix
     class-thrg-stk-admin.php         Stickies menu, row and bulk actions, header/Support/footer, welcome notice
     class-thrg-stk-list-table.php    WP_List_Table for the Stickies list
@@ -210,7 +212,7 @@ Limits: 2,000 characters of note content, 10 mentions per note, 200 notes per pa
 
 Schema upgrades run on `init` when `thrg_stk_db_version` differs from `THRG_STK_Schema::VERSION`, and for new network sites through `wp_initialize_site`. The 1 → 2 upgrade (adding `edited_at`) and the 2 → 4 upgrade (adding `revision`, then `mail_status`; existing notes start at revision 1) were exercised on Zendogs. Schema 3 existed only in the unreleased 2.0.0 build.
 
-Options: `thrg_stk_options` (settings array), `thrg_stk_db_version`, `thrg_stk_show_welcome`. User meta: `thrg_stk_notice_dismissed`. Transients: `thrg_stk_mail_<note>_<user>` (mention throttle), `thrg_stk_github_limit`. Per-browser preferences (notes hidden, show resolved) use `localStorage` inside try/catch.
+Options: `thrg_stk_options` (settings array), `thrg_stk_db_version`, `thrg_stk_show_welcome`, `thrg_stk_intro_note` (welcome note ID, or -1 when skipped). User meta: `thrg_stk_notice_dismissed`. Transients: `thrg_stk_mail_<note>_<user>` (mention throttle), `thrg_stk_github_limit`. Per-browser preferences (notes hidden, show resolved) use `localStorage` inside try/catch.
 
 ### Page key normalization (`THRG_STK_URL::key()`)
 
@@ -501,6 +503,21 @@ A review for code left over from earlier sessions (unused CSS, JavaScript, PHP, 
 - The `saving` and `readOnly` strings in `THRG_STK_Plugin::strings()`: the script never used them, and the second was out of date now that managers can edit any note.
 - `caps.manage` in the script's `window.thrgStickies` config and `can_delete` in the REST note payload (and the script's new-note default): never read. Delete permission still follows `can_edit` on the server.
 - Kept on purpose: the REST `page` field (the integration test checks page-address normalization with it), the unstyled `thrg-stk-video-preview` hook class, and every dynamically built class (`thrg-stk-c-*`, `stk-swatch--*`) and WordPress list-table class.
+
+## 2.1.0 welcome note, October 26, 2026
+
+New installs get a friendly first note, so the plugin shows what it does the moment it is activated. Details are under "Welcome note (2.1.0)" in the dashboard section above; the class is `THRG_STK_Intro` (`includes/class-thrg-stk-intro.php`, pure decision and row builders, tests in `tests/intro.php`).
+
+- Added once per site, on activation, only when the notes table is empty and `thrg_stk_intro_note` is unset. When a site already has notes the option is set to -1, so the note can never appear later, even if the notes are deleted. WP-CLI activation (no user) leaves the option unset.
+- Text: smiley (only when `$wpdb->charset` is `utf8mb4`), "This is your first sticky note! Stickies is ready.", how to move and recolor, the `[Hint]` teaser about @, and how to resolve. Yellow, Just me, 320 by 330 px, near the top of the home page.
+- The dashboard welcome notice links to the note while it is open ("Show me my first note").
+- Fixed a display bug found while testing it: rendered notes used `<br>` followed by a real newline, and the note CSS is `white-space: pre-wrap`, so every line break in a saved note showed twice. `THRG_STK_Content::render()` now emits a bare `<br>`.
+- Dead-code review: the pre-1.1.2 "collapsed pin" for resolved notes was still in the script and stylesheet but never shown (resolved notes are `display: none` unless peeked). Removed the `collapsed` element, its tooltip and click handler, its styles, and the unused `show-resolved` class. Cross-checks found no other unused CSS classes, script functions, PHP methods or constants, strings or assets (unseen classes are WordPress list-table classes and dynamically built `*-<color>` classes).
+- Uninstall with Delete all plugin data now also removes the `thrg_stk_intro_note` option, the update checker's `external_updates-thrg-stickies` site option and the `thrg_stk_github_limit` site transient.
+
+Verified: all unit suites pass on PHP 8.3 (not rerun on 7.4 this time); on Zendogs a fresh install shows the welcome note with the new text and the dashboard link. `tests/integration.php` and PHPCS were not run for this release.
+
+Known, not changed in 2.1.0: `THRG_STK_Notes::for_page()` returns at most 200 notes even if `thrg_stk_page_limit` is raised; the Stickies list filters "Mentioned only" notes after paging, so a page can be short and the total can count notes the viewer cannot see.
 
 ## Project page (GitHub Pages), October 24, 2026
 

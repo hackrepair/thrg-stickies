@@ -382,12 +382,20 @@ final class THRG_STK_Admin {
             return;
         }
         $dismiss = wp_nonce_url( admin_url( 'admin-post.php?action=thrg_stk_dismiss' ), 'thrg_stk_dismiss' );
+        $intro   = THRG_STK_Intro::open_note( get_current_user_id() );
         ?>
         <div class="notice notice-info">
             <p><strong><?php esc_html_e( 'Stickies is ready.', 'thrg-stickies' ); ?></strong>
-            <?php esc_html_e( 'Open any page of your site while logged in and use the note button on the left edge to pin a note. Administrators and editors can use it now.', 'thrg-stickies' ); ?></p>
+            <?php
+            if ( $intro ) {
+                esc_html_e( 'Your first sticky note is waiting on the home page. Only you can see it.', 'thrg-stickies' );
+                echo ' ';
+            }
+            esc_html_e( 'Open any page of your site while logged in and use the note button on the left edge to pin a note. Administrators and editors can use it now.', 'thrg-stickies' );
+            ?>
+            </p>
             <p>
-                <a class="button button-primary" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Open the site', 'thrg-stickies' ); ?></a>
+                <a class="button button-primary" href="<?php echo esc_url( $intro ? THRG_STK_Plugin::note_url( $intro ) : home_url( '/' ) ); ?>"><?php echo esc_html( $intro ? __( 'Show me my first note', 'thrg-stickies' ) : __( 'Open the site', 'thrg-stickies' ) ); ?></a>
                 <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=' . THRG_STK_Settings::PAGE ) ); ?>"><?php esc_html_e( 'Settings', 'thrg-stickies' ); ?></a>
                 <a href="<?php echo esc_url( $dismiss ); ?>" style="margin-left:8px"><?php esc_html_e( 'Dismiss', 'thrg-stickies' ); ?></a>
             </p>

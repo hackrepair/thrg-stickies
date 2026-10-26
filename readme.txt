@@ -4,7 +4,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1.3
-Stable tag: 2.0.7
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Support link: https://github.com/hackrepair/thrg-stickies/discussions
@@ -117,6 +117,14 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
 == Changelog ==
+
+= 2.1.0 =
+* Fixed saved notes showing every line break as an extra blank line. The welcome note is also taller so its full message fits.
+* Removed leftover code from the retired collapsed-pin design for resolved notes (an unused element, tooltip, click handler and styles, plus an unused page class). Nothing visible changes.
+* Deleting Stickies with Delete all plugin data ticked now also removes the update checker's saved state and its rate-limit note.
+* A welcome note now greets you on the home page the first time Stickies is installed. It is marked Just me, so only the administrator who activated Stickies sees it, and you can resolve or delete it like any other note.
+* The welcome message on the dashboard links straight to that note while it is still open.
+* Reinstalling with your notes kept, or activating from WP-CLI, does not add a welcome note.
 
 = 2.0.7 =
 * Administrators now get a short note in the @ mention list when someone matches the name but cannot be mentioned because their role cannot see notes yet, with a link to Stickies > Settings. Other users see no change and no account details.

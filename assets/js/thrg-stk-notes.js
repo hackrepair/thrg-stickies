@@ -283,14 +283,13 @@
 				el( 'button', { type: 'button', 'data-act': 'no', text: T.cancel } )
 			] )
 		] );
-		this.collapsed = el( 'div', { class: 'thrg-stk-collapsed', svg: 'circleCheck' } );
 
 		this.grip.appendChild( el( 'div', { class: 'thrg-stk-pin', 'aria-hidden': 'true', title: canEdit ? T.move : '' } ) );
 		this.grip.appendChild( canEdit ? this.xBtn : document.createTextNode( '' ) );
 		if ( canEdit ) {
 			this.grip.appendChild( this.colorBtn );
 		}
-		[ this.grip, this.body, this.foot, this.colors, this.resize, this.msg, this.suggest, this.confirm, this.collapsed ].forEach( function ( n ) {
+		[ this.grip, this.body, this.foot, this.colors, this.resize, this.msg, this.suggest, this.confirm ].forEach( function ( n ) {
 			self.el.appendChild( n );
 		} );
 		if ( canEdit ) {
@@ -321,7 +320,6 @@
 		this.resolveBtn.innerHTML = SVG[ resolved ? 'undo' : 'circleCheck' ];
 		this.resolveBtn.setAttribute( 'aria-label', resolved ? T.reopen : T.resolve );
 		this.resolveBtn.title = resolved ? T.reopen : T.resolve;
-		this.collapsed.title = resolved && d.resolved_by ? sprintf( T.resolvedBy, d.resolved_by ) : T.resolved;
 		this.renderMeta();
 		if ( ! this.editing ) {
 			this.showView();
@@ -712,9 +710,6 @@
 			self.setStatus( self.data.status === 'resolved' ? 'open' : 'resolved' );
 		} );
 
-		this.collapsed.addEventListener( 'click', function () {
-			self.el.classList.add( 'is-peek' );
-		} );
 		el0.addEventListener( 'focusout', function () {
 			window.setTimeout( function () {
 				if ( ! self.el.contains( document.activeElement ) ) {
@@ -1297,7 +1292,6 @@
 		resolvedBox.addEventListener( 'change', function () {
 			state.showResolved = resolvedBox.checked;
 			pref( 'resolved', state.showResolved ? '1' : '0' );
-			els.root.classList.toggle( 'show-resolved', state.showResolved );
 			refreshLists();
 		} );
 		var foot = el( 'footer', null, [ el( 'label', null, [ resolvedBox, T.showResolved ] ) ] );
@@ -1316,7 +1310,6 @@
 			}
 		} );
 		els.root.appendChild( els.panel );
-		els.root.classList.toggle( 'show-resolved', state.showResolved );
 
 		document.body.appendChild( els.root );
 		setHidden( state.hidden );

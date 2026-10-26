@@ -27,7 +27,7 @@ if ( ! function_exists( 'thrg_stk_uninstall_site' ) ) {
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Removing this plugin's own table; name built from the site prefix.
         $wpdb->query( "DROP TABLE IF EXISTS `{$table}`" );
 
-        foreach ( array( 'thrg_stk_options', 'thrg_stk_db_version', 'thrg_stk_show_welcome' ) as $name ) {
+        foreach ( array( 'thrg_stk_options', 'thrg_stk_db_version', 'thrg_stk_show_welcome', 'thrg_stk_intro_note' ) as $name ) {
             delete_option( $name );
         }
 
@@ -36,6 +36,10 @@ if ( ! function_exists( 'thrg_stk_uninstall_site' ) ) {
                 $role->remove_cap( $cap );
             }
         }
+
+        // The update checker's saved state and the GitHub rate-limit note (both site-wide options).
+        delete_site_option( 'external_updates-thrg-stickies' );
+        delete_site_transient( 'thrg_stk_github_limit' );
 
         delete_metadata( 'user', 0, 'thrg_stk_notice_dismissed', '', true );
 
