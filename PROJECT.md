@@ -130,7 +130,7 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
   - Mention emails: on/off.
   - Autosave text: on/off (move, resize and color always save right away).
   - Uninstall: *Delete all plugin data* (off by default), same wording as Site Inspector.
-- **Plugins screen:** Settings and Notes action links, and a native **View details** dialog built from the bundled readme.txt, with banner, icons, the THRG brand banner and an "Other THRG Plugins" tab (Site Inspector, Plugin Detective, Group Password Reset, Disable Other Plugin Notices).
+- **Plugins screen:** Settings and View all action links, and a native **View details** dialog built from the bundled readme.txt, with banner, icons, the THRG brand banner and an "Other THRG Plugins" tab (Site Inspector, Plugin Detective, Group Password Reset, Disable Other Plugin Notices).
 - **One-time notice** after activation, pointing to the toolbar and the settings. Dismissible and stored per user. While the welcome note is open, the notice links straight to it.
 - **Welcome note (2.1.0):** on a site's first activation, `THRG_STK_Intro::maybe_add()` adds one yellow Just me note on the home page, written by the activating administrator. It is added only when the site has no notes and `thrg_stk_intro_note` is unset, so a reinstall that kept its notes never gets another. WP-CLI activation (no user) adds nothing and leaves the option unset, so a later browser activation can still add it. The text starts with a smiley only when `$wpdb->charset` is `utf8mb4` (older 3-byte utf8 tables cannot store it), and ends with the `[Hint]` teaser about @ mentions. No mentions, so no email.
 
