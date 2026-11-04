@@ -32,7 +32,6 @@ check( 'rest routes hooked', hooked( 'rest_api_init', array( 'THRG_STK_REST', 'r
 check( 'schema upgrade hooked', hooked( 'init', array( 'THRG_STK_Schema', 'maybe_upgrade' ) ) );
 check( 'settings registered', hooked( 'admin_init', array( 'THRG_STK_Settings', 'register' ) ) );
 check( 'tools page', hooked( 'admin_menu', array( 'THRG_STK_Admin', 'menu' ) ) );
-check( 'view details', hooked( 'plugins_api', 'thrg_stk_companion_plugin_info' ) && hooked( 'plugins_api_result', 'thrg_stk_companion_plugin_info' ) );
 check( 'no ajax nopriv handlers', ! preg_grep( '/^wp_ajax_nopriv_/', array_keys( $GLOBALS['hooks'] ) ) );
 
 // Settings defaults and sanitizing.

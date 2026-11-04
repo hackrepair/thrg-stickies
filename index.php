@@ -32,7 +32,6 @@ require_once __DIR__ . '/includes/class-thrg-stk-intro.php';
 require_once __DIR__ . '/includes/class-thrg-stk-rest.php';
 require_once __DIR__ . '/includes/class-thrg-stk-plugin.php';
 require_once __DIR__ . '/includes/class-thrg-stk-admin.php';
-require_once __DIR__ . '/includes/companion-plugins.php';
 
 register_activation_hook( __FILE__, array( 'THRG_STK_Plugin', 'activate' ) );
 

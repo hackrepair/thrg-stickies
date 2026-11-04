@@ -30,7 +30,6 @@ with zipfile.ZipFile(output) as z:
  assert all((info.external_attr >> 16) & 0o7777 == 0o644 for info in z.infolist()), "Packaged files must use 0644 permissions"
  assert {n.split('/')[0] for n in z.namelist()}=={slug}
  for f in files:assert z.read(slug+'/'+str(f.relative_to(root)))==f.read_bytes()
- assert slug+'/includes/companion-plugins.php' in z.namelist()
 digest=hashlib.sha256(output.read_bytes()).hexdigest()
 output.with_suffix(output.suffix+'.sha256').write_text(digest+'  '+output.name+'\n')
 print(output);print(digest)

@@ -16,7 +16,6 @@ with tempfile.TemporaryDirectory() as tmp:
     sources = {
         "index.php": "<?php /* Plugin Name: Fixture\nVersion: 1.0.0 */",
         "assets/css/fixture.css": ".fixture { color: red; }",
-        "includes/companion-plugins.php": "<?php // fixture",
     }
     for name, content in sources.items():
         path = root / name
