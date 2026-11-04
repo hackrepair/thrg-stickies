@@ -7,9 +7,9 @@ This branch is a separate build for the WordPress.org plugin directory. Compared
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.1.2 released, November 3, 2026** (Other THRG Plugins tab lists the full suite). 2.1.1 fixed list paging and page limits. 2.1.0 added the first-install welcome note. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
+Status: **2.1.3 released, November 4, 2026** (Plugins row link reads View all). 2.1.2 added the full-suite Other THRG Plugins tab. 2.1.1 fixed list paging and page limits. 2.1.0 added the first-install welcome note. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.
 
-Previous release: **2.1.1, October 26, 2026** (tag `v2.1.1`). Before that **2.1.0**, then **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
+Previous release: **2.1.2, November 3, 2026** (tag `v2.1.2`). Before that **2.1.1**, then **2.1.0**, then **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
 ## Purpose
 
