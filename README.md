@@ -84,6 +84,10 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.1.2
+
+- The Other THRG Plugins tab in View Details now lists every other THRG plugin and ends with the donation note.
+
 ### 2.1.1
 - The Stickies list now pages and counts only the notes you can open. Before, "Mentioned only" notes you were not part of could leave short pages and inflate the total.
 - The most notes allowed on one page now follows the `thrg_stk_page_limit` filter everywhere. Before, the page itself stopped loading at 200 even when the limit was raised.
