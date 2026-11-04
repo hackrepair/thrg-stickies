@@ -41,10 +41,6 @@ Notes are stored in your own WordPress database and are only shown to logged-in 
 
 Subjects follow `[example.com] [Stickies] You were mentioned in a note`. The email names who mentioned you, shows the note, and links to the page with the note highlighted. Each person gets at most one email per note every 10 minutes. You can turn mention emails off in Stickies > Settings.
 
-= Credits =
-
-Inspired by the 2014 WP Sticky Notes plugin by Soso Kruashvili (GPLv2). Stickies is a new plugin written from scratch; no code, images or text from it are used.
-
 
 == Installation ==
 
