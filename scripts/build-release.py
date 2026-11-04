@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a complete plugin ZIP, preserving bundled updater dependencies."""
+"""Build a complete plugin ZIP, for the WordPress.org edition."""
 from pathlib import Path
 import argparse, fnmatch, hashlib, re, zipfile
 p=argparse.ArgumentParser();p.add_argument('--output',type=Path);a=p.parse_args()
@@ -16,7 +16,7 @@ files=[]
 for f in root.rglob('*'):
  if not f.is_file():continue
  rel=f.relative_to(root)
- if rel.parts[0]!='plugin-update-checker' and (rel.parts[0] in excluded or f.name in excluded_files or any(fnmatch.fnmatch(str(rel),x) or str(rel).startswith(x.rstrip('/')+'/') for x in patterns)):continue
+ if (rel.parts[0] in excluded or f.name in excluded_files or any(fnmatch.fnmatch(str(rel),x) or str(rel).startswith(x.rstrip('/')+'/') for x in patterns)):continue
  files.append(f)
 with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED) as z:
  for f in files:
@@ -30,10 +30,7 @@ with zipfile.ZipFile(output) as z:
  assert all((info.external_attr >> 16) & 0o7777 == 0o644 for info in z.infolist()), "Packaged files must use 0644 permissions"
  assert {n.split('/')[0] for n in z.namelist()}=={slug}
  for f in files:assert z.read(slug+'/'+str(f.relative_to(root)))==f.read_bytes()
- for f in (root/'plugin-update-checker').rglob('*'):
-  if f.is_file():assert z.read(slug+'/'+str(f.relative_to(root)))==f.read_bytes()
  assert slug+'/includes/companion-plugins.php' in z.namelist()
- assert slug+'/plugin-update-checker/plugin-update-checker.php' in z.namelist()
 digest=hashlib.sha256(output.read_bytes()).hexdigest()
 output.with_suffix(output.suffix+'.sha256').write_text(digest+'  '+output.name+'\n')
 print(output);print(digest)

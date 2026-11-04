@@ -4,7 +4,6 @@
  * Behaviour is covered against a real WordPress by tests/integration.php.
  */
 require __DIR__ . '/bootstrap.php';
-define( 'THRG_STK_SKIP_UPDATER', true );
 
 $GLOBALS['hooks']      = array();
 $GLOBALS['activation'] = null;
@@ -33,7 +32,7 @@ check( 'rest routes hooked', hooked( 'rest_api_init', array( 'THRG_STK_REST', 'r
 check( 'schema upgrade hooked', hooked( 'init', array( 'THRG_STK_Schema', 'maybe_upgrade' ) ) );
 check( 'settings registered', hooked( 'admin_init', array( 'THRG_STK_Settings', 'register' ) ) );
 check( 'tools page', hooked( 'admin_menu', array( 'THRG_STK_Admin', 'menu' ) ) );
-check( 'view details', hooked( 'plugins_api', array( 'THRG_STK_Details', 'info' ) ) && hooked( 'plugins_api', 'thrg_stk_companion_plugin_info' ) );
+check( 'view details', hooked( 'plugins_api', 'thrg_stk_companion_plugin_info' ) && hooked( 'plugins_api_result', 'thrg_stk_companion_plugin_info' ) );
 check( 'no ajax nopriv handlers', ! preg_grep( '/^wp_ajax_nopriv_/', array_keys( $GLOBALS['hooks'] ) ) );
 
 // Settings defaults and sanitizing.
@@ -62,7 +61,7 @@ check( 'flags off when absent', 0 === $s['front'] && 0 === $s['emails'] );
 
 // Shipped files.
 $root = dirname( __DIR__ );
-foreach ( array( 'readme.txt', 'uninstall.php', 'assets/css/thrg-stk-notes.css', 'assets/js/thrg-stk-notes.js', 'assets/img/pin-heart.svg', 'assets/brand/thrg-heart-128.png', 'assets/icon-128x128.png', 'assets/banner-772x250.png' ) as $f ) {
+foreach ( array( 'readme.txt', 'uninstall.php', 'assets/css/thrg-stk-notes.css', 'assets/js/thrg-stk-notes.js', 'assets/img/pin-heart.svg', 'assets/brand/thrg-heart-128.png', '.wordpress-org/icon-128x128.png', '.wordpress-org/banner-772x250.png' ) as $f ) {
     check( "ships $f", is_readable( "$root/$f" ) );
 }
 $js = file_get_contents( "$root/assets/js/thrg-stk-notes.js" );

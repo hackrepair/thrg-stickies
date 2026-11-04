@@ -108,8 +108,6 @@ final class THRG_STK_Intro {
             return 0;
         }
 
-        // Activation runs before init has loaded translations for this plugin.
-        THRG_STK_Plugin::textdomain();
 
         $home = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
         $path = THRG_STK_URL::normalize( '' !== $home ? $home : '/', $home, 'front' );

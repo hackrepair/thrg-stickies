@@ -10,15 +10,13 @@ import zipfile
 builder = Path(__file__).resolve().parents[1] / "scripts/build-release.py"
 with tempfile.TemporaryDirectory() as tmp:
     root = Path(tmp) / "fixture"
-    for directory in ("scripts", "assets/css", "includes", "plugin-update-checker/vendor"):
+    for directory in ("scripts", "assets/css", "includes"):
         (root / directory).mkdir(parents=True, exist_ok=True)
     shutil.copy2(builder, root / "scripts/build-release.py")
     sources = {
         "index.php": "<?php /* Plugin Name: Fixture\nVersion: 1.0.0 */",
         "assets/css/fixture.css": ".fixture { color: red; }",
         "includes/companion-plugins.php": "<?php // fixture",
-        "plugin-update-checker/vendor/fixture.php": "<?php // dependency",
-        "plugin-update-checker/plugin-update-checker.php": "<?php // loader",
     }
     for name, content in sources.items():
         path = root / name

@@ -37,10 +37,6 @@ if ( ! function_exists( 'thrg_stk_uninstall_site' ) ) {
             }
         }
 
-        // The update checker's saved state and the GitHub rate-limit note (both site-wide options).
-        delete_site_option( 'external_updates-thrg-stickies' );
-        delete_site_transient( 'thrg_stk_github_limit' );
-
         delete_metadata( 'user', 0, 'thrg_stk_notice_dismissed', '', true );
 
         // Mention-email throttles.

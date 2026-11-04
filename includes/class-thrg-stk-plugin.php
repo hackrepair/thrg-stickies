@@ -22,7 +22,6 @@ final class THRG_STK_Plugin {
      * @return void
      */
     public static function boot() {
-        add_action( 'init', array( __CLASS__, 'textdomain' ) );
         add_action( 'init', array( 'THRG_STK_Schema', 'maybe_upgrade' ), 5 );
         add_action( 'init', array( 'THRG_STK_Access', 'sync_roles' ), 6 );
         add_action( 'wp_initialize_site', array( __CLASS__, 'new_site' ), 200 );
@@ -32,16 +31,6 @@ final class THRG_STK_Plugin {
         THRG_STK_Settings::boot();
         THRG_STK_REST::boot();
         THRG_STK_Admin::boot();
-        THRG_STK_Details::boot();
-    }
-
-    /**
-     * Translations.
-     *
-     * @return void
-     */
-    public static function textdomain() {
-        load_plugin_textdomain( 'thrg-stickies', false, dirname( plugin_basename( THRG_STK_FILE ) ) . '/languages' );
     }
 
     /**

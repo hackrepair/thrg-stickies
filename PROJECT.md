@@ -1,5 +1,10 @@
 # The Hack Repair Guy's Stickies: project notes
 
+## WordPress.org edition (branch `wporg`)
+
+This branch is a separate build for the WordPress.org plugin directory. Compared with `main` it removes the GitHub updater (`THRG_STK_Updater`, `THRG_STK_Update_Notices`, the unmodified `plugin-update-checker/` folder, the `Update URI` header and `THRG_STK_SKIP_UPDATER`) and the local View details override (`THRG_STK_Details`), so WordPress.org supplies the plugin information. `companion-plugins.php` still adds the "Other THRG Plugins" tab, on both `plugins_api` and `plugins_api_result`. Store graphics (banners, icons) live in `.wordpress-org/` for the SVN `assets/` folder and are not packaged. Sections below that describe the updater, the update library or the View details builder apply to `main` only.
+
+
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
 Status: **2.1.2 released, November 3, 2026** (Other THRG Plugins tab lists the full suite). 2.1.1 fixed list paging and page limits. 2.1.0 added the first-install welcome note. Schema 4 adds mention email status; schema 3 added atomic note revisions. GitHub distribution remains enabled.

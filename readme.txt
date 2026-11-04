@@ -1,13 +1,13 @@
 === The Hack Repair Guy's Stickies ===
-Contributors: hackrepair
+Contributors: hackrepair, tvcnet
+Donate link: https://hackrepair.com/donations/buy-jim-a-coffee
 Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
-Tested up to: 7.1.3
+Tested up to: 7.1
 Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Support link: https://github.com/hackrepair/thrg-stickies/discussions
 
 Pin sticky notes to the exact spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
 
@@ -35,7 +35,7 @@ Open any page of your site while logged in and click the note button on the left
 
 = Privacy =
 
-Notes are stored in your own WordPress database and are only shown to logged-in people with Stickies permissions. Notes are fetched after the page loads, so cached pages never contain them. Mention emails use your site’s normal mail setup. GitHub is contacted for updates, and mention suggestions may load images from your configured avatar provider, including Gravatar.
+Notes are stored in your own WordPress database and are only shown to logged-in people with Stickies permissions. Notes are fetched after the page loads, so cached pages never contain them. Mention emails use your site’s normal mail setup. Mention suggestions may load images from your configured avatar provider, including Gravatar.
 
 = Mention emails =
 
@@ -45,22 +45,18 @@ Subjects follow `[example.com] [Stickies] You were mentioned in a note`. The ema
 
 Inspired by the 2014 WP Sticky Notes plugin by Soso Kruashvili (GPLv2). Stickies is a new plugin written from scratch; no code, images or text from it are used.
 
-Update checks use [Plugin Update Checker](https://github.com/YahnisElsts/plugin-update-checker "Plugin Update Checker on GitHub") by Jānis Elsts (MIT license), included unmodified.
 
 == Installation ==
 
-1. In WordPress, open Plugins > Add New > Upload Plugin and select the plugin ZIP. You can also upload the thrg-stickies folder to wp-content/plugins/.
+1. In WordPress, open Plugins > Add New, search for "The Hack Repair Guy's Stickies" and choose Install Now. You can also upload the thrg-stickies folder to wp-content/plugins/.
 2. Activate The Hack Repair Guy's Stickies.
 3. Open any page of your site while logged in and click the note button on the left edge, or choose Stickies in the admin bar.
 4. Optional: review Stickies > Settings to choose which roles can see, add and manage notes, and whether notes appear on the site, on dashboard screens, or both.
 
 == Support ==
 
-For questions, ideas and community support, visit GitHub Discussions:
-https://github.com/hackrepair/thrg-stickies/discussions
-
-Report reproducible bugs through Issues:
-https://github.com/hackrepair/thrg-stickies/issues
+For questions, ideas and community support, visit the plugin's support forum on WordPress.org:
+https://wordpress.org/support/plugin/thrg-stickies/
 
 Report security concerns privately to Jim Walker at jim@hackrepair.com. Do not include credentials or sensitive site information in public posts.
 

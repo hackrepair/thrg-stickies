@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Append the companion guide only to this plugin's information.
+ * Append the companion guide to this plugin's WordPress.org information without replacing it.
  *
  * @param mixed  $result Plugin information or the original API result.
  * @param string $action Requested API action.
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * @return mixed
  */
 function thrg_stk_companion_plugin_info( $result, $action, $args ) {
-    if ( 'plugin_information' !== $action || ! is_object( $args ) || ! isset( $args->slug ) || THRG_STK_Details::slug() !== $args->slug || ! is_object( $result ) || ! isset( $result->sections ) || ! is_array( $result->sections ) ) {
+    if ( 'plugin_information' !== $action || ! is_object( $args ) || ! isset( $args->slug ) || 'thrg-stickies' !== $args->slug || ! is_object( $result ) || ! isset( $result->sections ) || ! is_array( $result->sections ) ) {
         return $result;
     }
     wp_enqueue_style( 'thrg-stk-plugin-details', plugins_url( 'assets/css/thrg-stk-plugin-details.css', THRG_STK_FILE ), array(), THRG_STK_VERSION );
@@ -39,4 +39,6 @@ function thrg_stk_companion_plugin_info( $result, $action, $args ) {
     $result->sections['other_THRG_plugins'] = $html;
     return $result;
 }
+// WordPress.org information arrives after plugins_api; handle its result too.
 add_filter( 'plugins_api', 'thrg_stk_companion_plugin_info', 100, 3 );
+add_filter( 'plugins_api_result', 'thrg_stk_companion_plugin_info', 100, 3 );
