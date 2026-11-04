@@ -1,8 +1,16 @@
 <p align="center">
-  <img src="assets/icon-256x256.png" alt="The Hack Repair Guy heart with a pinned sticky note" width="144" height="144">
+  <img src=".wordpress-org/banner-772x250.png" alt="The Hack Repair Guy's Stickies" width="772" height="250">
 </p>
 
 <h1 align="center">The Hack Repair Guy's Stickies</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-2.1.2-b34700?style=flat-square" alt="Version 2.1.2">
+  <img src="https://img.shields.io/badge/WordPress-6.9.4%2B-21759b?style=flat-square&logo=wordpress&logoColor=white" alt="WordPress 6.9.4+">
+  <img src="https://img.shields.io/badge/tested%20up%20to-7.1-21759b?style=flat-square" alt="Tested up to WordPress 7.1">
+  <img src="https://img.shields.io/badge/PHP-7.4%2B-777bb4?style=flat-square&logo=php&logoColor=white" alt="PHP 7.4+">
+  <img src="https://img.shields.io/badge/license-GPLv2%2B-2e7d32?style=flat-square" alt="License GPLv2 or later">
+</p>
 
 Pin sticky notes to the exact spot on any page of your WordPress site, mention a teammate, and mark the note resolved when the fix is done.
 
@@ -28,9 +36,31 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 - **Stickies** in the dashboard menu lists every note on the site with filters, search, and bulk resolve, reopen and delete.
 - **Stickies > Settings** sets which roles can see, add or manage notes, whether people who manage everyone's notes can see Just me notes in the Stickies list, whether notes show on the site and on dashboard screens, where the controls appear, the screen width below which notes are listed in the panel instead of drawn on the page, mention emails, autosave and uninstall cleanup.
 
+## Screenshots
+
+<p align="center">
+  <img src=".wordpress-org/screenshot-1.png" alt="Notes pinned to a page" width="720"><br>
+  <sub>Notes pinned to a page. Drag and resize them, pick a color, and mention a teammate with @.</sub>
+</p>
+
+<p align="center">
+  <img src=".wordpress-org/screenshot-2.png" alt="The notes panel" width="720"><br>
+  <sub>The notes panel lists every note on the page.</sub>
+</p>
+
+<p align="center">
+  <img src=".wordpress-org/screenshot-3.png" alt="The Stickies list" width="720"><br>
+  <sub>The Stickies list shows every note on the site, with filters, search and bulk actions.</sub>
+</p>
+
+<p align="center">
+  <img src=".wordpress-org/screenshot-4.png" alt="Stickies settings" width="720"><br>
+  <sub>Settings choose who can see, add and manage notes, and where they appear.</sub>
+</p>
+
 ## Privacy and scope
 
-Notes live in one table in your site's database. They are fetched after the page loads through the WordPress REST API, so page caches never contain them. Nothing loads for visitors. Mention emails leave the site, update checks contact GitHub, and mention suggestions may load avatars from Gravatar or your configured avatar provider. The plugin is not a public comment system and has no anonymous notes.
+Notes live in one table in your site's database. They are fetched after the page loads through the WordPress REST API, so page caches never contain them. Nothing loads for visitors. Mention emails leave the site through your normal WordPress mail setup, and mention suggestions may load avatars from Gravatar or your configured avatar provider. The plugin is not a public comment system and has no anonymous notes.
 
 ## Install
 
@@ -67,7 +97,7 @@ Administrators who can list users see email addresses next to names and can sear
 
 **[Jim Walker](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair")**, The Hack Repair Guy, author and maintainer.
 
-[Questions, ideas and community support](https://github.com/hackrepair/thrg-stickies/discussions "GitHub Discussions") · [Report a bug](https://github.com/hackrepair/thrg-stickies/issues "GitHub Issues") · [Security reporting](mailto:jim%40hackrepair%2Ecom "Email Jim privately") · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee "Support The Hack Repair Guy")
+[Support forum on WordPress.org](https://wordpress.org/support/plugin/thrg-stickies/ "Stickies support forum, available once the plugin is listed") · [Report a bug](https://github.com/hackrepair/thrg-stickies/issues "GitHub Issues") · [Security reporting](mailto:jim%40hackrepair%2Ecom "Email Jim privately") · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee "Support The Hack Repair Guy")
 
 ## License and credits
 
@@ -80,78 +110,4 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
-### 2.1.2
-
-- The Other THRG Plugins tab in View Details now lists every other THRG plugin and ends with the donation note.
-
-### 2.1.1
-- The Stickies list now pages and counts only the notes you can open. Before, "Mentioned only" notes you were not part of could leave short pages and inflate the total.
-- The most notes allowed on one page now follows the `thrg_stk_page_limit` filter everywhere. Before, the page itself stopped loading at 200 even when the limit was raised.
-
-### 2.1.0
-- Fixed saved notes showing every line break as an extra blank line. The welcome note is also taller so its full message fits.
-- Removed leftover code from the retired collapsed-pin design for resolved notes (an unused element, tooltip, click handler and styles, plus an unused page class). Nothing visible changes.
-- Deleting Stickies with Delete all plugin data ticked now also removes the update checker's saved state and its rate-limit note.
-- A welcome note now greets you on the home page the first time Stickies is installed. It is marked Just me, so only the administrator who activated Stickies sees it, and you can resolve or delete it like any other note.
-- The welcome message on the dashboard links straight to that note while it is still open.
-- Reinstalling with your notes kept, or activating from WP-CLI, does not add a welcome note.
-
-### 2.0.7
-- Administrators now get a short note in the @ mention list when someone matches the name but cannot be mentioned because their role cannot see notes yet, with a link to Stickies > Settings. Other users see no change and no account details.
-- Fixed a rare case where pressing Enter after a search found no one could pick the person from the previous search.
-- Removed unused code and two unused text strings ("Saving…" and "Only the author can change this note."). Translators can drop them.
-
-### 2.0.6
-- Moving, resizing or recoloring a saved note now saves as soon as you let go. Before, the change was lost if you left the page without clicking the check button.
-- A move or color change made just before you leave the page is still saved.
-- Text still waits for the check button (or Ctrl+S / Cmd+S) unless autosave is on, so half-typed notes are never saved by accident.
-- The autosave setting now covers text only.
-
-### 2.0.5
-- Mention emails show the author and page name in bold again, and the footer uses one translatable string.
-- A save that loses a race to another edit now returns the latest note with a Reload button; a real database error says so plainly.
-- Bulk resolve and reopen use the revision they already loaded.
-- Bulk and row actions in the Stickies list keep your search, filter, sort and page.
-- The Stickies toolbar no longer loads inside the View details window.
-- Documentation corrections.
-
-### 2.0.4
-- Repair missing role capabilities from the saved Stickies permissions, restoring editor controls and mention eligibility.
-- Distinguish matching names in mention suggestions; administrators can identify and search eligible accounts by email.
-- Keep email addresses out of suggestions for users who cannot list accounts.
-
-### 2.0.3
-- Declare WordPress 7.1.3 compatibility consistently in the readme and native View details.
-- Add the walkthrough thumbnail to the View details banner and a clickable local video preview.
-
-### 2.0.2
-- Explain self-mentions, No recorded send, and notification troubleshooting in the FAQ.
-- Add the Stickies walkthrough video link.
-- Include the Support tab in View details.
-- Remove the repeated delivery disclaimer from the notes list.
-
-### 2.0.1
-- Record mention email acceptance and failures per recipient in the notes list.
-- Show attempt timestamps and distinguish mailer acceptance from inbox delivery.
-
-### 2.0.0 (not released; included in 2.0.1)
-- Preserve edits typed while saving.
-- Add atomic revision checks to prevent concurrent overwrites.
-- Translate mention emails and clarify avatar privacy.
-
-### 1.1.2
-- Resolved notes leave the page; open them from the notes panel or the Stickies list.
-- The push-pin is now a Hack Repair heart and can be dragged to move the note.
-- A soft sheen confirms a color change.
-- Friendlier messages for empty and unsaved notes.
-
-### 1.1.0
-- Added a Stickies item to the left dashboard menu, with the note list and Settings under it.
-- Notes show on the site and on dashboard screens by default.
-- Added a help tooltip next to the note visibility menu.
-- Moved the color button to the top right of each note and made it larger.
-- The resolve button now explains itself, lines up with the color button and shows an Undo message.
-- Fixed spacing of the empty notes panel message.
-
-### 1.0.0
-- First release.
+See the **Changelog** section of [`readme.txt`](readme.txt).
