@@ -268,7 +268,7 @@ final class THRG_STK_Plugin {
             'visTeam'       => __( 'Team', 'thrg-stickies' ),
             'visMentioned'  => __( 'Mentioned only', 'thrg-stickies' ),
             'visPrivate'    => __( 'Just me', 'thrg-stickies' ),
-            'visHelp'       => __( 'Team: everyone with Stickies access can see this note. Mentioned only: just you and the people you @mention.', 'thrg-stickies' ),
+            'visHelp'       => __( 'Team: everyone with Stickies access can see this note. Mentioned only: you, the people you @mention, and note managers. Just me: only you on the page; note managers can also see it in the dashboard list if enabled in Stickies Settings.', 'thrg-stickies' ),
             'placeholder'   => __( 'Write a note. Type @ to mention someone.', 'thrg-stickies' ),
             'move'          => __( 'Drag to move. With the note focused, arrow keys move it and Shift+arrow keys resize it.', 'thrg-stickies' ),
             /* translators: %s: name of the note's author */

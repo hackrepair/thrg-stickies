@@ -74,6 +74,10 @@ Check that Editor has See notes and Add notes in Stickies > Settings. Role-editi
 
 Administrators who can list users see an email address next to each name and can search by email. Other Stickies users see an account ID next to each name. Suggestions include only accounts with Stickies access. Selecting a person stores their account ID, so identical display names remain distinct.
 
+= Who can see each note? =
+
+Team notes are visible to everyone with Stickies access. Mentioned only notes are visible to the author, the mentioned people and note managers. Just me notes appear on the page only for their author; note managers can also see them in the dashboard list if the site enables that setting.
+
 = Who can resolve a note? =
 
 The person who wrote it, anyone who manages notes, and anyone mentioned in it.
@@ -116,6 +120,10 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 4. Settings choose who can see, add and manage notes, and where they appear.
 
 == Changelog ==
+
+= Unreleased =
+
+* Clarify all three visibility choices and note-manager access in the help tooltip.
 
 = 2.1.3 =
 * The Plugins list link now reads View all instead of Notes.

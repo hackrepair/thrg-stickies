@@ -108,7 +108,6 @@ final class THRG_STK_Intro {
             return 0;
         }
 
-
         $home = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
         $path = THRG_STK_URL::normalize( '' !== $home ? $home : '/', $home, 'front' );
         if ( '' === $path ) {
