@@ -84,6 +84,10 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.1.3
+
+- The Plugins list link now reads View all instead of Notes.
+
 ### 2.1.2
 
 - The Other THRG Plugins tab in View Details now lists every other THRG plugin and ends with the donation note.
