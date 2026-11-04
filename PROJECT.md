@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.1.0
+Version:           2.1.3
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -110,7 +110,7 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 - **Resolve:** the round check button at the bottom right (same size as the color button, with a hover tip) marks the note resolved. The note leaves the page and an "Undo" message appears. A "Show resolved" toggle in the list panel lists resolved notes; clicking one shows it on the page so it can be reopened. The Stickies list also reopens notes.
 - **Delete:** with an inline "Delete this note?" confirmation, never a browser dialog.
 - **Mentions:** typing `@` and at least one character suggests up to 10 users who can read notes. Picking one inserts a chip. Mentioned users get an email.
-- **Visibility per note:** *Team* (everyone who can read notes, the default), *Mentioned only* (author, mentioned users and note managers), or *Just me*. A small ? beside the menu gives a tooltip explaining Team and Mentioned only.
+- **Visibility per note:** *Team* (everyone who can read notes, the default), *Mentioned only* (author, mentioned users and note managers), or *Just me*. A small ? beside the menu explains all three choices, including note-manager access.
 - **Links:** plain `http(s)://` URLs are turned into links when rendered, with `rel="noopener noreferrer nofollow"` and opened in a new tab.
 - **Empty and unsaved notes:** saving an empty note shows a random friendly line ("Oopsy! Out of ink?", "Using invisible ink?", "Oh, you're joking?", "Don't be shy.", "Blank notes don't stick.", "Stickies need love too!"). An unsaved note's footer says "Save Me".
 - **Footer line** in small gray text: author ("You" for your own notes), relative time, and "edited" only when the text changed. Save confirmations appear in this line so they never cover the note.
@@ -312,15 +312,16 @@ Follows `THRG-EMAIL-STANDARD.md`:
 Plain PHP scripts in `tests/` (shared helpers in `tests/bootstrap.php`), plus the 0644 package check:
 
 - `tests/url.php` (26): page-path normalization: tracking parameters, ordering, flags, dots in names, subfolder home, admin screens, rejected input.
-- `tests/content.php` (25): sanitizer, length cap, mention tokens and filtering, rendering, auto-linking, and XSS payloads (`<script>`, quote breakouts, `javascript:`, tags after URLs, entity handling).
+- `tests/content.php` (26): sanitizer, length cap, mention tokens and filtering, rendering, auto-linking, and XSS payloads (`<script>`, quote breakouts, `javascript:`, tags after URLs, entity handling).
 - `tests/access.php` (21): visibility and permission matrix for authors, writers, readers, mentioned users and managers, with and without the private-notes setting.
 - `tests/email.php` (19): subject per the email standard (domain, subdomain, port, fallback), HTML escaping, bold author and page, footer link, full width, plain-text body.
 - `tests/revision.php` (5): two writers that read the same revision; the first wins, the stale one is rejected, a fresh one succeeds.
 - `tests/schema.php` (29): table SQL shape, every repository column present, row typing.
-- `tests/smoke.php` (31): plugin loads with the updater skipped, hooks registered, no `wp_ajax_nopriv_` handlers, settings defaults and sanitizing, shipped files, `innerHTML` rule.
-- `tests/uninstall.php` (9): data kept by default; table, options, user meta, capabilities and throttles removed when opted in, other data untouched.
+- `tests/smoke.php` (33): plugin loads with the updater skipped, hooks registered, no `wp_ajax_nopriv_` handlers, settings defaults and sanitizing, shipped files, `innerHTML` rule.
+- `tests/uninstall.php` (11): data kept by default; table, options, user meta, capabilities and throttles removed when opted in, other data untouched.
+- `tests/intro.php` (24): first-install decisions, welcome-note row and text, including emoji handling.
 - `tests/package-permissions.py`: build output uses 0644 entries even from 0600 sources.
-- `tests/integration.php` (67): runs inside a real WordPress (`php tests/integration.php /var/www/html`, CLI only). It creates temporary users and notes, then checks:
+- `tests/integration.php`: runs inside a real WordPress (`php tests/integration.php /var/www/html`, CLI only). It creates temporary users and notes, then checks:
   - REST permissions for logged-out users and every role
   - creation, sanitizing and rendering
   - mentions and the mention email (intercepted with `pre_wp_mail`)
@@ -519,7 +520,7 @@ Verified: all unit suites pass on PHP 8.3 (not rerun on 7.4 this time); on Zendo
 
 Fixed in 2.1.1: `THRG_STK_Notes::page_limit()` applies the `thrg_stk_page_limit` filter for both the page load and the add check; the Stickies list passes `visible_to` so SQL paging and totals match `THRG_STK_Access::can_view()` for people who cannot manage notes. Verified: unit tests on PHP 7.4, `tests/integration.php` on PHP 8.2 and 7.4, PHPCS clean with the repo ruleset.
 
-Planned for the next release: the ? tooltip beside the visibility menu explains Team and Mentioned only but not Just me; add a Just me line.
+Addressed in the November 4 unreleased changes: the visibility tooltip explains Just me and includes note managers in Mentioned only. Private notes remain author-only on the page; optional manager access is limited to the dashboard list.
 
 Was known in 2.1.0: `THRG_STK_Notes::for_page()` returns at most 200 notes even if `thrg_stk_page_limit` is raised; the Stickies list filters "Mentioned only" notes after paging, so a page can be short and the total can count notes the viewer cannot see.
 
@@ -528,3 +529,11 @@ Was known in 2.1.0: `THRG_STK_Notes::for_page()` returns at most 200 notes even 
 https://hackrepair.github.io/thrg-stickies/ is a one-page site served by GitHub Pages from `docs/` on `main` (`docs/index.html`, `docs/img/`, `docs/.nojekyll`). It has the hero (a page under review with four pinned notes), the click-to-load video (youtube-nocookie, poster `img/poster.jpg` = `assets/brand/stickies-video-thumbnail.jpg`), download buttons, the features, an own-your-data note, the install steps and project links. On load it asks the GitHub API for the latest release and points every download button at that zip, labeled with the version; if the lookup fails the buttons go to the latest release page. Fonts: Bricolage Grotesque and Atkinson Hyperlegible from Google Fonts. Images in `docs/img/` are copies of plugin assets; refresh them if the brand art changes. No frames from the demo video are used, because it was recorded on the Zen Dogs sandbox.
 
 Release rule: `docs/` is not part of the plugin. The release `git archive` must also exclude it: add `':!docs'` to the exclusion list. `scripts/build-release.py` already skips `docs`.
+
+## Unreleased review fixes, November 4, 2026
+
+- Clarified the visibility help: Team, Mentioned only (including note managers), and Just me (author-only on the page, optional manager visibility in the dashboard list).
+- Updated README/readme FAQ and changelog, sample version metadata and current standalone test counts. Real-WordPress integration counts are left to the actual run output.
+- Both editions keep their distribution-specific updater, support and plugin-information behavior. Version remains 2.1.3 until an authorized release; existing release ZIPs are unchanged.
+- Codex Security reminder: consider a diff review before the next release; no automatic security scan is implied.
+- Validation: PHP 8.4.11 standalone suites passed (194 checks); shared PHPCS and git diff whitespace checks passed. This text-only change did not rerun real-WordPress/browser workflows.
