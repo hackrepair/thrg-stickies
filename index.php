@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name:       The Hack Repair Guy's Stickies
- * Plugin URI:        https://hackrepair.github.io/thrg-stickies/
  * Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
  * Version:           2.1.3
  * Author:            The Hack Repair Guy

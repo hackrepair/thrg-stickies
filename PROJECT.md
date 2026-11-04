@@ -86,7 +86,6 @@ Plugin header, following Site Inspector:
 
 ```
 Plugin Name:       The Hack Repair Guy's Stickies
-Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
 Version:           2.1.0
 Author:            The Hack Repair Guy
