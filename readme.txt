@@ -112,6 +112,13 @@ Enable mention emails in Stickies > Settings. Create a new Team note and select 
 
 They are kept unless you tick "Delete all plugin data when the plugin is deleted" in Stickies > Settings. With that ticked, deleting the plugin removes every note, the settings and the Stickies permissions.
 
+== Screenshots ==
+
+1. Notes pinned to a page. Drag and resize them, pick a color, and mention a teammate with @.
+2. The notes panel lists every note on the page.
+3. The Stickies list shows every note on the site, with filters, search and bulk actions.
+4. Settings choose who can see, add and manage notes, and where they appear.
+
 == Changelog ==
 
 = 2.1.2 =

@@ -144,7 +144,7 @@ final class THRG_STK_Admin {
             <h2 id="stk-support-title" class="stk-section"><?php esc_html_e( 'Support', 'thrg-stickies' ); ?></h2>
             <div class="stk-card">
                 <p>&#9749; <?php echo wp_kses_post( __( 'If you found this plugin helpful, please <a href="https://hackrepair.com/donations/buy-jim-a-coffee" target="_blank" rel="noopener">buy Jim a cup of coffee?</a>', 'thrg-stickies' ) ); ?></p>
-                <p><span class="dashicons dashicons-editor-help" aria-hidden="true"></span> <?php echo wp_kses_post( __( 'Questions and Feedback: For questions, ideas, or help with the plugin, <a href="https://github.com/hackrepair/thrg-stickies/discussions" target="_blank" rel="noopener">visit GitHub Discussions</a>.', 'thrg-stickies' ) ); ?></p>
+                <p><span class="dashicons dashicons-editor-help" aria-hidden="true"></span> <?php echo wp_kses_post( __( 'Questions and Feedback: For questions, ideas, or help with the plugin, <a href="https://wordpress.org/support/plugin/thrg-stickies/" target="_blank" rel="noopener">visit the support forum on WordPress.org</a>.', 'thrg-stickies' ) ); ?></p>
             </div>
         </section>
         <footer class="stk-footer">
