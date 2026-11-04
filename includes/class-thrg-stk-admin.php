@@ -363,7 +363,7 @@ final class THRG_STK_Admin {
         array_unshift(
             $links,
             '<a href="' . esc_url( admin_url( 'admin.php?page=' . THRG_STK_Settings::PAGE ) ) . '">' . esc_html__( 'Settings', 'thrg-stickies' ) . '</a>',
-            '<a href="' . esc_url( self::list_url() ) . '">' . esc_html__( 'Notes', 'thrg-stickies' ) . '</a>'
+            '<a href="' . esc_url( self::list_url() ) . '">' . esc_html__( 'View all', 'thrg-stickies' ) . '</a>'
         );
         return $links;
     }
