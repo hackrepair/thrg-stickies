@@ -5,7 +5,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,7 +121,9 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 
 == Changelog ==
 
-= Unreleased =
+= 2.1.4 =
+
+* Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access.
 
 * Clarify all three visibility choices and note-manager access in the help tooltip.
 

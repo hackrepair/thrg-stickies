@@ -6,9 +6,9 @@ This branch is a separate build for the WordPress.org plugin directory. Compared
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **WordPress.org edition 2.1.3 prepared, November 4, 2026** (Plugins row link reads View all). 2.1.2 added the full-suite Other THRG Plugins tab. 2.1.1 fixed list paging and page limits. 2.1.0 added the first-install welcome note. Schema 4 adds mention email status; schema 3 added atomic note revisions. This branch is prepared for WordPress.org distribution and has no GitHub updater. The public WordPress.org API returned "Plugin not found" on November 4; private submission or approval status has not been verified.
+Status: **2.1.4 WordPress.org submission build** (November 4, 2026). Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access. Schema version 4.
 
-Previous release: **2.1.2, November 3, 2026** (tag `v2.1.2`). Before that **2.1.1**, then **2.1.0**, then **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
+Previous release: **2.1.3**, preceded by **2.1.2, November 3, 2026** (tag `v2.1.2`). Before that **2.1.1**, then **2.1.0**, then **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
 ## Purpose
 
@@ -86,7 +86,7 @@ Plugin header, following Site Inspector:
 ```
 Plugin Name:       The Hack Repair Guy's Stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.1.3
+Version:           2.1.4
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Requires at least: 6.9.4
@@ -532,11 +532,12 @@ https://hackrepair.github.io/thrg-stickies/ is a one-page site served by GitHub 
 
 Release rule: `docs/` is not part of the plugin. The release `git archive` must also exclude it: add `':!docs'` to the exclusion list. `scripts/build-release.py` already skips `docs`.
 
-## Unreleased review fixes, November 4, 2026
+## 2.1.4 review fixes, November 4, 2026
 
 - Clarified the visibility help: Team, Mentioned only (including note managers), and Just me (author-only on the page, optional manager visibility in the dashboard list).
 - Updated README/readme FAQ and changelog, sample version metadata and current standalone test counts. Real-WordPress integration counts are left to the actual run output.
-- Both editions keep their distribution-specific updater, support and plugin-information behavior. Version remains 2.1.3 until an authorized release; existing release ZIPs are unchanged.
+- Both editions keep their distribution-specific updater, support and plugin-information behavior.
 - Codex Security reminder: consider a diff review before the next release; no automatic security scan is implied.
 - Removed the extra blank line in the welcome-note class.
 - Validation: PHP 8.4.11 standalone suites passed (191 checks); shared PHPCS and git diff whitespace checks passed. This text-only change did not rerun real-WordPress/browser workflows.
+- Release validation: both 2.1.4 ZIPs passed 80 real-WordPress integration checks, including both access-revocation regressions, on WordPress 7.1 and PHP 8.2.

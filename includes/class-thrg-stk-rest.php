@@ -347,7 +347,8 @@ final class THRG_STK_REST {
 
         if ( ! THRG_STK_Notes::update( $note['id'], $data, $note['revision'] ) ) {
             $latest = THRG_STK_Notes::find( $note['id'] );
-            if ( ! $latest ) {
+            $caps   = THRG_STK_Access::user_caps( $uid );
+            if ( ! $latest || ! THRG_STK_Access::can_view( $latest, $uid, $caps ) ) {
                 return new WP_Error( 'thrg_stk_missing', __( 'This note was deleted or you can no longer see it.', 'thrg-stickies' ), array( 'status' => 404 ) );
             }
             if ( $latest['revision'] !== $note['revision'] ) {
@@ -364,6 +365,10 @@ final class THRG_STK_REST {
             return new WP_Error( 'thrg_stk_db', __( 'The note could not be saved. Please try again.', 'thrg-stickies' ), array( 'status' => 500 ) );
         }
         $note = THRG_STK_Notes::find( $note['id'] );
+        $caps = THRG_STK_Access::user_caps( $uid );
+        if ( ! $note || ! THRG_STK_Access::can_view( $note, $uid, $caps ) ) {
+            return new WP_Error( 'thrg_stk_missing', __( 'This note was deleted or you can no longer see it.', 'thrg-stickies' ), array( 'status' => 404 ) );
+        }
         if ( $new_mentions ) {
             THRG_STK_Email::notify( $note, $new_mentions, $uid );
         }

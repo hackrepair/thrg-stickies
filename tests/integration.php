@@ -215,6 +215,31 @@ try {
     check( 'lost write race gets 409', 409 === $s, $s );
     check( 'lost race returns winning note', isset( $d['data']['note']['content'] ) && 'Race winner' === $d['data']['note']['content'], $d );
 
+    // The author can revoke access while a mentioned editor is resolving the note.
+    // Exercise both the lost-write response and the reread after a successful write.
+    foreach ( array( 'before_write', 'after_write' ) as $timing ) {
+        $table = THRG_STK_Schema::table();
+        $wpdb->update( $table, array( 'mentions' => ',' . $editor2 . ',', 'visibility' => 'team', 'status' => 'open' ), array( 'id' => $n1 ) );
+        $writing = false;
+        $revoked = false;
+        $revoke = static function ( $sql ) use ( $table, $n1, $timing, &$writing, &$revoked ) {
+            if ( 0 === strpos( ltrim( $sql ), 'UPDATE `' . $table . '`' ) ) {
+                $writing = true;
+            }
+            if ( $writing && ! $revoked && ( 'before_write' === $timing || 0 === strpos( ltrim( $sql ), 'SELECT * FROM `' . $table . '`' ) ) ) {
+                $revoked = true;
+                global $wpdb;
+                $wpdb->query( $wpdb->prepare( 'UPDATE `' . $table . '` SET visibility = %s, content = %s, revision = revision + 1 WHERE id = %d', 'private', 'Private revision', $n1 ) );
+            }
+            return $sql;
+        };
+        add_filter( 'query', $revoke );
+        list( $s, $d ) = req( 'PATCH', 'notes/' . $n1, array( 'status' => 'resolved' ), $editor2 );
+        remove_filter( 'query', $revoke );
+        check( 'revoked access hides fresh note ' . $timing, $revoked && 404 === $s && 'thrg_stk_missing' === $d['code'] && ! isset( $d['data']['note'] ) && false === strpos( wp_json_encode( $d ), 'Private revision' ), $d );
+    }
+    $wpdb->update( $table, array( 'mentions' => '', 'visibility' => 'team', 'status' => 'open', 'content' => 'Race winner' ), array( 'id' => $n1 ) );
+
     // Bulk resolve and reopen advance the revision.
     wp_set_current_user( $admin );
     $before = THRG_STK_Notes::find( $n1 );
