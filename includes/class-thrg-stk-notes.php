@@ -49,8 +49,7 @@ final class THRG_STK_Notes {
     public static function find( $id ) {
         global $wpdb;
         $table = THRG_STK_Schema::table();
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from the site prefix.
-        $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table}` WHERE id = %d", (int) $id ), ARRAY_A );
+        $row   = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, (int) $id ), ARRAY_A );
         return $row ? self::hydrate( $row ) : null;
     }
 
@@ -64,8 +63,7 @@ final class THRG_STK_Notes {
         global $wpdb;
         $table = THRG_STK_Schema::table();
         $rows  = $wpdb->get_results(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from the site prefix.
-            $wpdb->prepare( "SELECT * FROM `{$table}` WHERE page_key = %s ORDER BY id ASC LIMIT %d", $page_key, self::page_limit() ),
+            $wpdb->prepare( 'SELECT * FROM %i WHERE page_key = %s ORDER BY id ASC LIMIT %d', $table, $page_key, self::page_limit() ),
             ARRAY_A
         );
         return array_map( array( __CLASS__, 'hydrate' ), (array) $rows );
@@ -89,8 +87,7 @@ final class THRG_STK_Notes {
     public static function count_page( $page_key ) {
         global $wpdb;
         $table = THRG_STK_Schema::table();
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from the site prefix.
-        return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$table}` WHERE page_key = %s", $page_key ) );
+        return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE page_key = %s', $table, $page_key ) );
     }
 
     /**
@@ -101,8 +98,7 @@ final class THRG_STK_Notes {
     public static function count_all() {
         global $wpdb;
         $table = THRG_STK_Schema::table();
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from the site prefix.
-        return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" );
+        return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $table ) );
     }
 
     /**
@@ -173,7 +169,7 @@ final class THRG_STK_Notes {
         global $wpdb;
         $table  = THRG_STK_Schema::table();
         $where  = array( '1=1' );
-        $params = array();
+        $params = array( $table );
 
         if ( ! empty( $args['status'] ) && in_array( $args['status'], THRG_STK_Access::STATUSES, true ) ) {
             $where[]  = 'status = %s';
@@ -211,11 +207,11 @@ final class THRG_STK_Notes {
         $paged   = isset( $args['paged'] ) ? max( 1, (int) $args['paged'] ) : 1;
 
         $where_sql = implode( ' AND ', $where );
-        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table name from the site prefix; WHERE pieces are fixed strings with placeholders; ORDER BY values are allowlisted above.
-        $count_sql = "SELECT COUNT(*) FROM `{$table}` WHERE {$where_sql}";
-        $total     = (int) ( $params ? $wpdb->get_var( $wpdb->prepare( $count_sql, $params ) ) : $wpdb->get_var( $count_sql ) );
-        $list_sql  = "SELECT * FROM `{$table}` WHERE {$where_sql} ORDER BY {$orderby} {$order}, id DESC LIMIT %d OFFSET %d";
-        $rows      = $wpdb->get_results( $wpdb->prepare( $list_sql, array_merge( $params, array( $per, ( $paged - 1 ) * $per ) ) ), ARRAY_A );
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- The table and sort column use %i; WHERE pieces are fixed strings with placeholders; ORDER BY values are allowlisted above.
+        $count_sql = "SELECT COUNT(*) FROM %i WHERE {$where_sql}";
+        $total     = (int) $wpdb->get_var( $wpdb->prepare( $count_sql, $params ) );
+        $list_sql  = "SELECT * FROM %i WHERE {$where_sql} ORDER BY %i {$order}, id DESC LIMIT %d OFFSET %d";
+        $rows      = $wpdb->get_results( $wpdb->prepare( $list_sql, array_merge( $params, array( $orderby, $per, ( $paged - 1 ) * $per ) ) ), ARRAY_A );
         // phpcs:enable
 
         return array(

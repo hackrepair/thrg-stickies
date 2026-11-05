@@ -454,8 +454,8 @@ final class THRG_STK_REST {
             array(
                 'search'         => '*' . $term . '*',
                 'search_columns' => $columns,
-                'exclude'        => $found,
-                'number'         => 20,
+                // Allow room for the suggestions skipped below (at most ten).
+                'number'         => 20 + count( $found ),
                 'orderby'        => 'display_name',
                 'count_total'    => false,
             )
@@ -465,7 +465,7 @@ final class THRG_STK_REST {
         $url    = admin_url( 'admin.php?page=' . THRG_STK_Settings::PAGE );
         $hints  = array();
         foreach ( $query->get_results() as $user ) {
-            if ( THRG_STK_Access::user_caps( $user->ID )['read'] ) {
+            if ( in_array( (int) $user->ID, $found, true ) || THRG_STK_Access::user_caps( $user->ID )['read'] ) {
                 continue;
             }
             $who  = $user->display_name . ' (' . $user->user_email . ')';

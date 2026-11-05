@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       The Hack Repair Guy's Stickies
  * Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
- * Version:           2.1.4
+ * Version:           2.1.5
  * Author:            The Hack Repair Guy
  * Author URI:        https://hackrepair.com/
  * Requires at least: 6.9.4
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-const THRG_STK_VERSION = '2.1.4';
+const THRG_STK_VERSION = '2.1.5';
 define( 'THRG_STK_FILE', __FILE__ );
 define( 'THRG_STK_DIR', __DIR__ );
 

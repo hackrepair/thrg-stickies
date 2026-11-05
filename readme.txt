@@ -5,7 +5,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9.4
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 2.1.4
+Stable tag: 2.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,10 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 4. Settings choose who can see, add and manage notes, and where they appear.
 
 == Changelog ==
+
+= 2.1.5 =
+
+* Use WordPress identifier placeholders for note queries and uninstall cleanup. Keep administrator mention hints bounded without excluding user IDs in SQL.
 
 = 2.1.4 =
 
