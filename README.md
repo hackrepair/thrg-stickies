@@ -84,7 +84,9 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
-### Unreleased
+### 2.1.4
+
+- Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access.
 
 - Clarify all three visibility choices and note-manager access in the help tooltip.
 
