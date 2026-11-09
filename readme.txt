@@ -2,7 +2,7 @@
 Contributors: hackrepair, tvcnet
 Donate link: https://hackrepair.com/donations/buy-jim-a-coffee
 Tags: sticky notes, notes, feedback, collaboration, review
-Requires at least: 6.9.4
+Requires at least: 6.9
 Requires PHP: 7.4
 Tested up to: 7.1
 Stable tag: 2.1.5

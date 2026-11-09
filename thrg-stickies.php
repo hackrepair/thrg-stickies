@@ -5,7 +5,7 @@
  * Version:           2.1.5
  * Author:            The Hack Repair Guy
  * Author URI:        https://hackrepair.com/
- * Requires at least: 6.9.4
+ * Requires at least: 6.9
  * Requires PHP:      7.4
  * Text Domain:       thrg-stickies
  * License:           GPL v2 or later

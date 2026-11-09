@@ -15,7 +15,7 @@ function get_option( $k, $d = false ) { return isset( $GLOBALS['opts'][ $k ] ) ?
 function absint( $n ) { return abs( (int) $n ); }
 function sanitize_key( $k ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( $k ) ); }
 
-require __DIR__ . '/../index.php';
+require __DIR__ . '/../thrg-stickies.php';
 
 function hooked( $hook, $cb ) {
     return isset( $GLOBALS['hooks'][ $hook ] ) && in_array( $cb, $GLOBALS['hooks'][ $hook ], true );
@@ -23,7 +23,7 @@ function hooked( $hook, $cb ) {
 
 check( 'version constant', '2.1.5' === THRG_STK_VERSION );
 check( 'activation adds the welcome note', false !== strpos( file_get_contents( __DIR__ . '/../includes/class-thrg-stk-plugin.php' ), 'THRG_STK_Intro::maybe_add()' ) );
-check( 'header version matches constant', 1 === preg_match( '/^ \* Version:\s+' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../index.php' ) ) );
+check( 'header version matches constant', 1 === preg_match( '/^ \* Version:\s+' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../thrg-stickies.php' ) ) );
 check( 'readme stable tag matches', 1 === preg_match( '/^Stable tag: ' . preg_quote( THRG_STK_VERSION, '/' ) . '$/m', file_get_contents( __DIR__ . '/../readme.txt' ) ) );
 check( 'activation hook', array( 'THRG_STK_Plugin', 'activate' ) === $GLOBALS['activation'] );
 check( 'front enqueue hooked', hooked( 'wp_enqueue_scripts', array( 'THRG_STK_Plugin', 'enqueue_front' ) ) );

@@ -68,7 +68,7 @@ These are the reasons for a clean rewrite rather than an update of the example:
 | Plugin name | The Hack Repair Guy's Stickies |
 | Short name in UI and emails | Stickies |
 | Slug, folder, text domain | `thrg-stickies` |
-| Main file | `index.php` (same as Site Inspector) |
+| Main file | `thrg-stickies.php` (WordPress.org expects the main file to match the slug) |
 | PHP prefix | `thrg_stk_`, classes `THRG_STK_*`, constants `THRG_STK_*` |
 | CSS/JS prefix | `thrg-stk-` |
 | Version constant | `THRG_STK_VERSION` |
@@ -77,7 +77,7 @@ These are the reasons for a clean rewrite rather than an update of the example:
 | Database table | `{prefix}thrg_stickies` (schema version 4) |
 | Local working copy | `/Volumes/BACKUP8TB2/plugins/thrg-stickies/thrg-stickies` |
 | Releases folder | `/Volumes/BACKUP8TB2/plugins/thrg-stickies/releases/` (outside the repo) |
-| Requires | WordPress 6.9.4+, PHP 7.4+ (checked on PHP 7.4.33 and 8.2.33, WordPress 7.1.3) |
+| Requires | WordPress 6.9+, PHP 7.4+ (checked on PHP 7.4.33 and 8.2.33, WordPress 7.1.3) |
 | License | GPL v2 or later |
 | Author | The Hack Repair Guy, https://hackrepair.com/ |
 
@@ -89,7 +89,7 @@ Description:       Pin sticky notes to any spot on any page of your site, mentio
 Version:           2.1.5
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
-Requires at least: 6.9.4
+Requires at least: 6.9
 Requires PHP:      7.4
 Text Domain:       thrg-stickies
 License:           GPL v2 or later
@@ -146,7 +146,7 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
 ```
 thrg-stickies/
-  index.php                          Header, constants, updater, class loading, activation hook
+  thrg-stickies.php                  Header, constants, updater, class loading, activation hook
   uninstall.php                      Removes data only when "Delete all plugin data" is ticked; multisite aware
   readme.txt                         WordPress-format readme (feeds View details)
   README.md, PROJECT.md              GitHub docs (not packaged)
