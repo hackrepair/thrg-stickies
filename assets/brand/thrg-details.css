@@ -51,9 +51,9 @@ body #plugin-information-title.with-banner::after {
     background: url("stickies-video-thumbnail.jpg") center / contain no-repeat;
     border-radius: 8px;
 }
-#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=WeP5P2GjtF8"] { display: block; max-width: 400px; margin: 0 0 18px; }
-#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=WeP5P2GjtF8"] img { display: block; width: 100%; height: auto; border-radius: 6px; }
-#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=WeP5P2GjtF8"]:focus-visible { outline: 3px solid #2271b1; outline-offset: 4px; }
+#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=cvO_PknGIyA"] { display: block; max-width: 400px; margin: 0 0 18px; }
+#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=cvO_PknGIyA"] img { display: block; width: 100%; height: auto; border-radius: 6px; }
+#plugin-information #section-description > a[href="https://www.youtube.com/watch?v=cvO_PknGIyA"]:focus-visible { outline: 3px solid #2271b1; outline-offset: 4px; }
 @media (max-width: 650px) {
     body #plugin-information-title.with-banner { gap: 16px; padding: 24px; }
     body #plugin-information-title.with-banner::before { flex-basis: 64px; width: 64px; height: 64px; }
