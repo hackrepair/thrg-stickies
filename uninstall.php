@@ -24,8 +24,8 @@ if ( ! function_exists( 'thrg_stk_uninstall_site' ) ) {
         }
 
         $table = $wpdb->prefix . 'thrg_stickies';
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Removing this plugin's own table; name built from the site prefix.
-        $wpdb->query( "DROP TABLE IF EXISTS `{$table}`" );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching -- Removing this plugin's own table; name built from the site prefix.
+        $wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table ) );
 
         foreach ( array( 'thrg_stk_options', 'thrg_stk_db_version', 'thrg_stk_show_welcome', 'thrg_stk_intro_note' ) as $name ) {
             delete_option( $name );

@@ -93,8 +93,8 @@ final class THRG_STK_Schema {
     public static function drop() {
         global $wpdb;
         $table = self::table();
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Removing this plugin's own table on uninstall; the name is built from the site prefix.
-        $wpdb->query( "DROP TABLE IF EXISTS `{$table}`" );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.NoCaching -- Removing this plugin's own table on uninstall; the name is built from the site prefix.
+        $wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table ) );
         delete_option( self::VERSION_OPTION );
     }
 }

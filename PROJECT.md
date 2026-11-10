@@ -2,7 +2,7 @@
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.1.4 GitHub release** (November 4, 2026). Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access. Schema version 4.
+Status: **2.1.5 GitHub release** (November 9, 2026). Database queries now pass table names as identifiers. Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access. Schema version 4.
 
 Previous release: **2.1.3**, preceded by **2.1.2, November 3, 2026** (tag `v2.1.2`). Before that **2.1.1**, then **2.1.0**, then **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
@@ -83,7 +83,7 @@ Plugin header, following Site Inspector:
 Plugin Name:       The Hack Repair Guy's Stickies
 Plugin URI:        https://github.com/hackrepair/thrg-stickies
 Description:       Pin sticky notes to any spot on any page of your site, mention a teammate, and mark the note resolved when the fix is done.
-Version:           2.1.4
+Version:           2.1.5
 Author:            The Hack Repair Guy
 Author URI:        https://hackrepair.com/
 Update URI:        https://github.com/hackrepair/thrg-stickies
@@ -538,3 +538,7 @@ Release rule: `docs/` is not part of the plugin. The release `git archive` must 
 - Codex Security reminder: consider a diff review before the next release; no automatic security scan is implied.
 - Validation: PHP 8.4.11 standalone suites passed (194 checks); shared PHPCS and git diff whitespace checks passed. This text-only change did not rerun real-WordPress/browser workflows.
 - Release validation: both 2.1.4 ZIPs passed 80 real-WordPress integration checks, including both access-revocation regressions, on WordPress 7.1 and PHP 8.2.
+
+## WordPress.org 2.1.5 submission checks
+
+Plugin Check 2.1.0 on WordPress 7.1 reported zero errors and two warnings, both for the dashboard list and count query templates. Their WHERE clauses consist of fixed predicates, the filter values are bound, the table and sort column use identifier placeholders, and the direction is selected from ASC and DESC. No new warning suppressions were added. The submitted ZIP candidate passed 80 WordPress integration assertions, 191 standalone assertions and shared PHPCS. A dashboard query probe also verified literal wildcard search, combined filters, pagination, counts and the invalid-sort fallback.

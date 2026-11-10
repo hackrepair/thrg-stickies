@@ -84,6 +84,10 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.1.5
+
+- Prepare database identifiers explicitly and keep administrator mention hints bounded.
+
 ### 2.1.4
 
 - Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access.

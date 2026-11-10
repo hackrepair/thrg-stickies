@@ -6,7 +6,7 @@ class Role { public $caps = array(); function remove_cap( $c ) { unset( $this->c
 class FakeDB {
     public $prefix = 'wp_'; public $options = 'wp_options'; public $queries = array();
     function query( $q ) { $this->queries[] = $q; return true; }
-    function prepare( $q, ...$a ) { return vsprintf( str_replace( '%s', "'%s'", $q ), $a ); }
+    function prepare( $q, ...$a ) { return vsprintf( str_replace( array( '%s', '%i' ), array( "'%s'", '`%s`' ), $q ), $a ); }
     function esc_like( $s ) { return $s; }
 }
 
