@@ -18,9 +18,9 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 <p align="center">
   <strong>▶ Watch Stickies in action</strong><br>
-  <a href="https://www.youtube.com/watch?v=cvO_PknGIyA"><img src="https://img.youtube.com/vi/cvO_PknGIyA/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
+  <a href="https://www.youtube.com/watch?v=WeP5P2GjtF8"><img src="https://img.youtube.com/vi/WeP5P2GjtF8/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
   <br><br>
-  <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
+  <a href="https://wordpress.org/plugins/thrg-stickies/" title="Stickies on WordPress.org">Stickies on WordPress.org</a> · <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
 </p>
 
 > **WordPress.org edition.** This branch is the build prepared for the WordPress.org plugin directory. It has no GitHub updater and no bundled update library; updates come from WordPress.org. The GitHub release edition, with its own updater, lives on the `main` branch.
@@ -97,7 +97,7 @@ Administrators who can list users see email addresses next to names and can sear
 
 **[Jim Walker](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair")**, The Hack Repair Guy, author and maintainer.
 
-[Support forum on WordPress.org](https://wordpress.org/support/plugin/thrg-stickies/ "Stickies support forum, available once the plugin is listed") · [Report a bug](https://github.com/hackrepair/thrg-stickies/issues "GitHub Issues") · [Security reporting](mailto:jim%40hackrepair%2Ecom "Email Jim privately") · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee "Support The Hack Repair Guy")
+[Support forum on WordPress.org](https://wordpress.org/support/plugin/thrg-stickies/ "Stickies support forum on WordPress.org") · [Report a bug](https://github.com/hackrepair/thrg-stickies/issues "GitHub Issues") · [Security reporting](mailto:jim%40hackrepair%2Ecom "Email Jim privately") · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee "Support The Hack Repair Guy")
 
 ## License and credits
 
