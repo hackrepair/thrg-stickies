@@ -54,7 +54,6 @@ Subjects follow `[example.com] [Stickies] You were mentioned in a note`. The ema
 For questions, ideas and community support, visit the plugin's support forum on WordPress.org:
 https://wordpress.org/support/plugin/thrg-stickies/
 
-Report security concerns privately to Jim Walker at jim@hackrepair.com. Do not include credentials or sensitive site information in public posts.
 
 == Frequently Asked Questions ==
 
