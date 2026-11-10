@@ -10,13 +10,13 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 <p align="center">
   <strong>▶ Watch Stickies in action</strong><br>
-  <a href="https://www.youtube.com/watch?v=cvO_PknGIyA"><img src="https://img.youtube.com/vi/cvO_PknGIyA/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
+  <a href="https://www.youtube.com/watch?v=WeP5P2GjtF8"><img src="https://img.youtube.com/vi/WeP5P2GjtF8/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
   <br><br>
   <a href="https://github.com/hackrepair/thrg-stickies/releases/latest" title="Download the latest Stickies plugin zip from GitHub"><img src="https://img.shields.io/badge/%E2%AC%87%20%20Download%20the%20latest%20release-b34700?style=for-the-badge&labelColor=b34700" alt="Download the latest release" height="46"></a>
   <br>
   <sub>Free. Upload the zip in WordPress, and later updates arrive on the Plugins screen.</sub>
   <br><br>
-  <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
+  <a href="https://wordpress.org/plugins/thrg-stickies/" title="Stickies on WordPress.org">Stickies on WordPress.org</a> · <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
 </p>
 
 ## What it does
@@ -70,7 +70,7 @@ Administrators who can list users see email addresses next to names and can sear
 
 **[Jim Walker](https://hackrepair.com/ "The Hack Repair Guy: WordPress security and hack repair")**, The Hack Repair Guy, author and maintainer.
 
-[Questions, ideas and community support](https://github.com/hackrepair/thrg-stickies/discussions "GitHub Discussions") · [Report a bug](https://github.com/hackrepair/thrg-stickies/issues "GitHub Issues") · [Security reporting](mailto:jim%40hackrepair%2Ecom "Email Jim privately") · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee "Support The Hack Repair Guy")
+[Support forum on WordPress.org](https://wordpress.org/support/plugin/thrg-stickies/ "Stickies support forum on WordPress.org") · [GitHub Discussions](https://github.com/hackrepair/thrg-stickies/discussions "GitHub Discussions") · [Report a bug](https://github.com/hackrepair/thrg-stickies/issues "GitHub Issues") · [Security reporting](mailto:jim%40hackrepair%2Ecom "Email Jim privately") · [Buy Jim a coffee](https://hackrepair.com/donations/buy-jim-a-coffee "Support The Hack Repair Guy")
 
 ## License and credits
 

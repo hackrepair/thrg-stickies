@@ -13,7 +13,7 @@ Pin sticky notes to the exact spot on any page of your site, mention a teammate,
 
 == Description ==
 
-[Watch Stickies in action on YouTube](https://www.youtube.com/watch?v=cvO_PknGIyA "Free Sticky Notes for Your WordPress Team")
+[Watch Stickies in action on YouTube](https://www.youtube.com/watch?v=WeP5P2GjtF8 "Free Sticky Notes for Your WordPress Team")
 
 "The button on the contact page is the wrong color." "Client wants this paragraph shorter." "The plugin conflict shows up right here." Stickies lets you say it right where it happens.
 
