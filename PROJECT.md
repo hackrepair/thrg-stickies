@@ -436,7 +436,7 @@ Notes list records the latest attempted mention email per recipient: Accepted by
 ## 2.0.2 release
 
 - Remove the repeated inbox-delivery disclaimer from the notes list (source updated).
-- Add the Stickies walkthrough video (https://www.youtube.com/watch?v=cvO_PknGIyA): clickable README thumbnail matching Plugin Detective, plus a readme.txt link rendered in native View details. No player or remote thumbnail is loaded in wp-admin. Included in 2.0.2.
+- Add the Stickies walkthrough video (https://www.youtube.com/watch?v=WeP5P2GjtF8): clickable README thumbnail matching Plugin Detective, plus a readme.txt link rendered in native View details. No player or remote thumbnail is loaded in wp-admin. Included in 2.0.2.
 
 View details browser review on Zendogs: include Description (video link and privacy), Installation, FAQ (self-mentions and send troubleshooting), Support, Changelog, and Other THRG Plugins; preserve local banners/icons and installed-version metadata.
 
