@@ -12,9 +12,9 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
   <strong>▶ Watch Stickies in action</strong><br>
   <a href="https://www.youtube.com/watch?v=WeP5P2GjtF8"><img src="https://img.youtube.com/vi/WeP5P2GjtF8/maxresdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
   <br><br>
-  <a href="https://github.com/hackrepair/thrg-stickies/releases/latest" title="Download the latest Stickies plugin zip from GitHub"><img src="https://img.shields.io/badge/%E2%AC%87%20%20Download%20the%20latest%20release-b34700?style=for-the-badge&labelColor=b34700" alt="Download the latest release" height="46"></a>
+  <a href="https://wordpress.org/plugins/thrg-stickies/" title="Get Stickies from the WordPress.org plugin directory"><img src="https://img.shields.io/badge/%E2%AC%87%20%20Get%20it%20on%20WordPress.org-b34700?style=for-the-badge&labelColor=b34700" alt="Get it on WordPress.org" height="46"></a>
   <br>
-  <sub>Free. Upload the zip in WordPress, and later updates arrive on the Plugins screen.</sub>
+  <sub>Free. Install it from Plugins > Add New in WordPress, and later updates arrive on the Plugins screen.</sub>
   <br><br>
   <a href="https://wordpress.org/plugins/thrg-stickies/" title="Stickies on WordPress.org">Stickies on WordPress.org</a> · <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
 </p>
@@ -36,11 +36,11 @@ Notes live in one table in your site's database. They are fetched after the page
 
 ## Install
 
-1. Download `thrg-stickies.X.Y.Z.zip` from the latest release.
-2. In WordPress, open Plugins > Add New > Upload Plugin and choose the ZIP.
+1. In WordPress, open Plugins > Add New and search for The Hack Repair Guy's Stickies, or get it from the [WordPress.org plugin page](https://wordpress.org/plugins/thrg-stickies/).
+2. Click Install Now.
 3. Activate it, open any page of your site while logged in, and click the note button on the left edge.
 
-Updates arrive through the normal WordPress Plugins screen from this repository's GitHub releases.
+Updates arrive through the normal WordPress Plugins screen from WordPress.org.
 
 ## Frequently asked questions
 

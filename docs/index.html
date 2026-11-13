@@ -210,9 +210,9 @@ footer { padding: 44px 0 56px; border-top: 2px solid var(--ink); }
         <h1>Leave a note right where the problem is.</h1>
         <p class="lede">Stickies pins a sticky note to the exact spot on any page of your WordPress site. Mention a teammate, and mark the note resolved when the fix is done.</p>
         <div class="actions">
-          <a class="btn" data-download href="https://github.com/hackrepair/thrg-stickies/releases/latest">
+          <a class="btn" data-download href="https://wordpress.org/plugins/thrg-stickies/">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-5-5m5 5 5-5M5 20h14"/></svg>
-            <span data-download-label>Download Stickies</span>
+            <span data-download-label>Get Stickies on WordPress.org</span>
           </a>
           <a class="text-link" href="#tour">Watch the tour</a>
         </div>
@@ -249,9 +249,9 @@ footer { padding: 44px 0 56px; border-top: 2px solid var(--ink); }
       </div>
       <noscript><p><a href="https://www.youtube.com/watch?v=WeP5P2GjtF8">Watch the video on YouTube</a></p></noscript>
       <div class="below">
-        <a class="btn" data-download href="https://github.com/hackrepair/thrg-stickies/releases/latest">
+        <a class="btn" data-download href="https://wordpress.org/plugins/thrg-stickies/">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-5-5m5 5 5-5M5 20h14"/></svg>
-          <span data-download-label>Download Stickies</span>
+          <span data-download-label>Get Stickies on WordPress.org</span>
         </a>
         <p class="version" data-version>Free, and updates arrive inside WordPress.</p>
       </div>
@@ -290,11 +290,11 @@ footer { padding: 44px 0 56px; border-top: 2px solid var(--ink); }
         <li><strong>Activate it</strong>, open any page of your site while logged in, and click the note button on the left edge.</li>
       </ol>
       <div class="below" style="margin-top:0">
-        <a class="btn" data-download href="https://github.com/hackrepair/thrg-stickies/releases/latest">
+        <a class="btn" data-download href="https://wordpress.org/plugins/thrg-stickies/">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-5-5m5 5 5-5M5 20h14"/></svg>
-          <span data-download-label>Download Stickies</span>
+          <span data-download-label>Get Stickies on WordPress.org</span>
         </a>
-        <p class="version">Later updates arrive on the normal Plugins screen, from this project's GitHub releases.</p>
+        <p class="version">Later updates arrive on the normal Plugins screen, from WordPress.org.</p>
       </div>
     </section>
   </main>
@@ -308,7 +308,7 @@ footer { padding: 44px 0 56px; border-top: 2px solid var(--ink); }
     </div>
     <nav aria-label="Project links">
       <a href="https://github.com/hackrepair/thrg-stickies">GitHub</a>
-      <a href="https://wordpress.org/plugins/thrg-stickies/">WordPress.org</a>      <a href="https://github.com/hackrepair/thrg-stickies/releases">Releases</a>
+      <a href="https://wordpress.org/plugins/thrg-stickies/">WordPress.org</a>
       <a href="https://wordpress.org/support/plugin/thrg-stickies/">Support</a>
       <a href="https://hackrepair.com/">hackrepair.com</a>
     </nav>
@@ -332,23 +332,6 @@ footer { padding: 44px 0 56px; border-top: 2px solid var(--ink); }
     });
   }
 
-  // Point every download button at the newest zip. If the lookup fails, the
-  // buttons keep going to the latest release page.
-  var api = 'https://api.github.com/repos/hackrepair/thrg-stickies/releases/latest';
-  fetch(api, { headers: { Accept: 'application/vnd.github+json' } }).then(function (r) {
-    return r.ok ? r.json() : null;
-  }).then(function (rel) {
-    if (!rel || !rel.assets) { return; }
-    var zip = rel.assets.filter(function (a) { return /^thrg-stickies\.\d+\.\d+\.\d+\.zip$/.test(a.name); })[0];
-    if (!zip) { return; }
-    var version = String(rel.tag_name || '').replace(/^v/, '');
-    document.querySelectorAll('[data-download]').forEach(function (a) { a.href = zip.browser_download_url; });
-    document.querySelectorAll('[data-download-label]').forEach(function (s) { s.textContent = 'Download Stickies ' + version; });
-    var when = rel.published_at ? new Date(rel.published_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-    document.querySelectorAll('[data-version]').forEach(function (p) {
-      p.textContent = 'Latest version ' + version + (when ? ', released ' + when : '') + '. Updates arrive inside WordPress.';
-    });
-  }).catch(function () {});
 })();
 </script>
 </body>
