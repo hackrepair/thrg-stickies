@@ -258,6 +258,7 @@ final class THRG_STK_Plugin {
             'yesDelete'     => __( 'Delete', 'thrg-stickies' ),
             'cancel'        => __( 'Cancel', 'thrg-stickies' ),
             'resolve'       => __( 'Mark resolved', 'thrg-stickies' ),
+            'resolveTip'     => __( 'Mark resolved?', 'thrg-stickies' ),
             'reopen'        => __( 'Reopen', 'thrg-stickies' ),
             'resolved'      => __( 'Resolved', 'thrg-stickies' ),
             'toastResolved' => __( 'Note marked resolved.', 'thrg-stickies' ),

@@ -84,6 +84,11 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.1.6
+
+- Make the Mark resolved button on each note always visible, with a clearer tooltip.
+- Remove the pin icon beside Stickies in the admin bar.
+
 ### 2.1.5
 
 - Prepare database identifiers explicitly and keep administrator mention hints bounded.
