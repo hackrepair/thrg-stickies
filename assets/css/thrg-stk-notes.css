@@ -210,10 +210,11 @@
 .thrg-stk-root .thrg-stk-ok { color: var(--stk-blue-dark) !important; font-size: 18px !important; }
 .thrg-stk-root .thrg-stk-note.is-saved .thrg-stk-ok { display: none; }
 .thrg-stk-meta { flex: 1 1 40px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px; }
-.thrg-stk-tools { display: flex; gap: 2px; opacity: 0; transition: opacity .15s; }
-.thrg-stk-note:hover .thrg-stk-tools,
-.thrg-stk-note:focus-within .thrg-stk-tools,
-.thrg-stk-note.is-new .thrg-stk-tools { opacity: 1; }
+.thrg-stk-tools { display: flex; gap: 2px; align-items: center; }
+.thrg-stk-tools > :not(.thrg-stk-resolve) { opacity: 0; transition: opacity .15s; }
+.thrg-stk-note:hover .thrg-stk-tools > *,
+.thrg-stk-note:focus-within .thrg-stk-tools > *,
+.thrg-stk-note.is-new .thrg-stk-tools > * { opacity: 1; }
 .thrg-stk-dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3); display: block; }
 .thrg-stk-colors {
 	display: none;
@@ -285,8 +286,11 @@
 .thrg-stk-foot button.thrg-stk-help:hover::after,
 .thrg-stk-foot button.thrg-stk-help:focus-visible::after { display: block; }
 
-.thrg-stk-foot button.thrg-stk-resolve { position: relative; width: 26px; height: 26px; font-size: 20px; margin-right: -3px; top: -2px; }
-.thrg-stk-foot button.thrg-stk-ok { position: relative; width: 26px; height: 26px; font-size: 20px; top: -2px; }
+.thrg-stk-foot button.thrg-stk-resolve { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; margin-right: 0; top: -1px; border-radius: 50%; color: #fff; background: #2e6b4f; box-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
+.thrg-stk-foot button.thrg-stk-resolve svg { font-size: 16px; stroke-width: 2.4; }
+.thrg-stk-foot button.thrg-stk-resolve:hover, .thrg-stk-foot button.thrg-stk-resolve:focus-visible { background: #1f5e43; color: #fff; box-shadow: 0 0 0 3px rgba(46, 107, 79, .3); }
+.thrg-stk-foot button.thrg-stk-resolve .thrg-stk-resolve-label { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.thrg-stk-note.is-resolved .thrg-stk-foot button.thrg-stk-resolve { color: #fff; background: #6b7077; }
 .thrg-stk-foot button.thrg-stk-resolve:active { background: rgba(46, 107, 79, .25); color: #2e6b4f; transform: scale(.92); }
 
 .thrg-stk-toast {
@@ -452,6 +456,9 @@
 
 /* Admin bar item */
 #wpadminbar .thrg-stk-ab .ab-icon::before { content: "\f537"; top: 2px; }
+/* No pin icon beside the word on wide screens; narrow admin bars show only icons, so it stays there. */
+#wpadminbar .thrg-stk-ab .ab-icon { display: none; }
+@media screen and (max-width: 782px) { #wpadminbar .thrg-stk-ab .ab-icon { display: block; } }
 #wpadminbar .thrg-stk-ab .thrg-stk-ab-count { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 4px; border-radius: 9px; background: #b34700; color: #fff; font-size: 11px; line-height: 18px; text-align: center; }
 #wpadminbar .thrg-stk-ab .thrg-stk-ab-count[data-n="0"] { background: rgba(240, 246, 252, .2); }
 
@@ -467,7 +474,7 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.thrg-stk-note.is-pulse { animation: none; outline: 3px solid var(--stk-blue); }
-	.thrg-stk-tools { transition: none; }
+	.thrg-stk-tools > * { transition: none; }
 	.thrg-stk-note { transition: none; }
 	.thrg-stk-note.is-recolor::after { animation: none; }
 }

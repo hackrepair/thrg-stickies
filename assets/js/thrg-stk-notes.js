@@ -318,8 +318,12 @@
 		this.resolveBtn.hidden = ! this.id || ! d.can_resolve;
 		var resolved = d.status === 'resolved';
 		this.resolveBtn.innerHTML = SVG[ resolved ? 'undo' : 'circleCheck' ];
+		var resolveLabel = document.createElement( 'span' );
+		resolveLabel.className = 'thrg-stk-resolve-label';
+		resolveLabel.textContent = resolved ? T.reopen : T.resolve;
+		this.resolveBtn.appendChild( resolveLabel );
 		this.resolveBtn.setAttribute( 'aria-label', resolved ? T.reopen : T.resolve );
-		this.resolveBtn.title = resolved ? T.reopen : T.resolve;
+		this.resolveBtn.title = resolved ? T.reopen : T.resolveTip;
 		this.renderMeta();
 		if ( ! this.editing ) {
 			this.showView();

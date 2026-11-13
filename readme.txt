@@ -5,7 +5,7 @@ Tags: sticky notes, notes, feedback, collaboration, review
 Requires at least: 6.9
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,11 @@ They are kept unless you tick "Delete all plugin data when the plugin is deleted
 4. Settings choose who can see, add and manage notes, and where they appear.
 
 == Changelog ==
+
+= 2.1.6 =
+
+* Make the Mark resolved button on each note always visible, with a clearer tooltip.
+* Remove the pin icon beside Stickies in the admin bar.
 
 = 2.1.5 =
 

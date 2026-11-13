@@ -6,7 +6,7 @@ This branch is a separate build for the WordPress.org plugin directory. Compared
 
 Developer notes for contributors. For what the plugin does, see [README.md](README.md "What the plugin does and how to install it"). This file keeps the architecture, decisions and limits, in the same format as [Site Inspector's PROJECT.md](https://github.com/hackrepair/thrg-site-inspector "Site Inspector, the reference for this plugin's structure").
 
-Status: **2.1.5 WordPress.org submission candidate** (November 4, 2026). Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access. Schema version 4.
+Status: **2.1.6 WordPress.org release** (November 13, 2026). The Mark resolved button on each note is always visible as a green check with a Mark resolved? tooltip, and the admin-bar item no longer shows the pin icon. Earlier status: 2.1.5 WordPress.org submission candidate (November 4, 2026). Recheck note visibility before returning a save response. If another edit makes the note private, its contents are withheld from anyone who lost access. Schema version 4.
 
 Previous release: **2.1.3**, preceded by **2.1.2, November 3, 2026** (tag `v2.1.2`). Before that **2.1.1**, then **2.1.0**, then **2.0.7**. The first public release was **1.1.2, October 23, 2026** (tag `v1.1.2`, asset `thrg-stickies.1.1.2.zip`) at https://github.com/hackrepair/thrg-stickies. Versions 1.0.0 to 1.1.1 were local builds only and were never published. Tested on the Zendogs sandbox (http://localhost:8081).
 
