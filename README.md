@@ -84,6 +84,10 @@ Made by [The Hack Repair Guy](https://hackrepair.com/ "The Hack Repair Guy: Word
 
 ## Changelog
 
+### 2.1.7
+
+- Tuck other plugins' admin notices away on the Stickies screens behind a Show link. Stickies' own messages stay visible.
+
 ### 2.1.6
 
 - Make the Mark resolved button on each note always visible, with a clearer tooltip.

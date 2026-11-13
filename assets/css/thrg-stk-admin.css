@@ -63,3 +63,32 @@
 @media (max-width: 782px) {
 	.stk-help { justify-content: flex-start; }
 }
+
+/* Tuck other plugins' admin notices away on this plugin's screens (shown again with the Show link). Needs JavaScript so the notices stay visible without it. */
+body.js.thrg-stk-screen:not(.thrg-stk-notices-shown) #wpbody-content > .notice:not(.thrg-stk-own):not(.settings-error),
+body.js.thrg-stk-screen:not(.thrg-stk-notices-shown) #wpbody-content > .update-nag,
+body.js.thrg-stk-screen:not(.thrg-stk-notices-shown) .wrap.thrg-stk-admin > .notice:not(.thrg-stk-own):not(.settings-error),
+body.js.thrg-stk-screen:not(.thrg-stk-notices-shown) .wrap.thrg-stk-admin > .updated:not(.thrg-stk-own):not(.settings-error),
+body.js.thrg-stk-screen:not(.thrg-stk-notices-shown) .wrap.thrg-stk-admin > .error:not(.thrg-stk-own):not(.settings-error) {
+	display: none !important;
+}
+
+.thrg-stk-notice-bar {
+	margin: 0 0 16px;
+	padding: 8px 14px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-left: 4px solid #ff9933;
+	border-radius: 4px;
+	color: #50575e;
+	font-size: 13px;
+}
+
+.thrg-stk-notice-bar[hidden] {
+	display: none;
+}
+
+.thrg-stk-notice-bar .button-link {
+	margin-left: 6px;
+	font-weight: 600;
+}

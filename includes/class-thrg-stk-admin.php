@@ -21,6 +21,7 @@ final class THRG_STK_Admin {
         add_action( 'admin_menu', array( __CLASS__, 'menu' ), 9 );
         add_action( 'admin_post_thrg_stk_note_action', array( __CLASS__, 'row_action' ) );
         add_action( 'admin_notices', array( __CLASS__, 'welcome' ) );
+        add_filter( 'admin_body_class', array( __CLASS__, 'body_class' ) );
         add_action( 'admin_post_thrg_stk_dismiss', array( __CLASS__, 'dismiss' ) );
         add_filter( 'plugin_action_links_' . plugin_basename( THRG_STK_FILE ), array( __CLASS__, 'action_links' ) );
         add_filter( 'removable_query_args', array( __CLASS__, 'removable_args' ) );
@@ -101,10 +102,35 @@ final class THRG_STK_Admin {
      *
      * @return void
      */
+    public static function body_class( $classes ) {
+        $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+        if ( $screen && in_array( $screen->id, array( 'toplevel_page_' . self::PAGE, 'stickies_page_' . self::PAGE, 'stickies_page_' . THRG_STK_Settings::PAGE ), true ) ) {
+            $classes .= ' thrg-stk-screen';
+        }
+        return $classes;
+    }
+
+    /**
+     * Styles for this plugin's screens.
+     *
+     * @return void
+     */
     public static function enqueue_admin_styles() {
         $url = plugins_url( 'assets/', THRG_STK_FILE );
         wp_enqueue_style( 'thrg-stk-brand', $url . 'brand/thrg-brand.css', array(), THRG_STK_VERSION );
         wp_enqueue_style( 'thrg-stk-admin', $url . 'css/thrg-stk-admin.css', array( 'thrg-stk-brand' ), THRG_STK_VERSION );
+        wp_enqueue_script( 'thrg-stk-notices', $url . 'js/thrg-stk-notices.js', array(), THRG_STK_VERSION, true );
+        wp_localize_script(
+            'thrg-stk-notices',
+            'thrgStkNotices',
+            array(
+                'noticesOne'  => __( '1 notice from another plugin or WordPress is hidden on this page.', 'thrg-stickies' ),
+                /* translators: %d: number of hidden notices */
+                'noticesMany' => __( '%d notices from other plugins or WordPress are hidden on this page.', 'thrg-stickies' ),
+                'show'        => __( 'Show', 'thrg-stickies' ),
+                'hide'        => __( 'Hide', 'thrg-stickies' ),
+            )
+        );
     }
 
     /**
@@ -231,9 +257,9 @@ final class THRG_STK_Admin {
             'delete'  => _n( '%d note deleted.', '%d notes deleted.', $count, 'thrg-stickies' ),
         );
         if ( isset( $messages[ $done ] ) ) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( sprintf( $messages[ $done ], $count ) ) . '</p></div>';
+            echo '<div class="thrg-stk-own notice notice-success is-dismissible"><p>' . esc_html( sprintf( $messages[ $done ], $count ) ) . '</p></div>';
         } elseif ( 'none' === $done ) {
-            echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html__( 'No notes were changed. You can only change notes you wrote, unless you manage everyone’s notes.', 'thrg-stickies' ) . '</p></div>';
+            echo '<div class="thrg-stk-own notice notice-warning is-dismissible"><p>' . esc_html__( 'No notes were changed. You can only change notes you wrote, unless you manage everyone’s notes.', 'thrg-stickies' ) . '</p></div>';
         }
     }
 
@@ -384,7 +410,7 @@ final class THRG_STK_Admin {
         $dismiss = wp_nonce_url( admin_url( 'admin-post.php?action=thrg_stk_dismiss' ), 'thrg_stk_dismiss' );
         $intro   = THRG_STK_Intro::open_note( get_current_user_id() );
         ?>
-        <div class="notice notice-info">
+        <div class="thrg-stk-own notice notice-info">
             <p><strong><?php esc_html_e( 'Stickies is ready.', 'thrg-stickies' ); ?></strong>
             <?php
             if ( $intro ) {
