@@ -18,7 +18,7 @@ Pin sticky notes to the exact spot on any page of your WordPress site, mention a
 
 <p align="center">
   <strong>▶ Watch Stickies in action</strong><br>
-  <a href="https://www.youtube.com/watch?v=WeP5P2GjtF8"><img src="https://img.youtube.com/vi/WeP5P2GjtF8/hqdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
+  <a href="https://www.youtube.com/watch?v=WeP5P2GjtF8"><img src="https://img.youtube.com/vi/WeP5P2GjtF8/maxresdefault.jpg" alt="Free Sticky Notes for Your WordPress Team: watch on YouTube" width="480"></a>
   <br><br>
   <a href="https://wordpress.org/plugins/thrg-stickies/" title="Stickies on WordPress.org">Stickies on WordPress.org</a> · <a href="https://hackrepair.github.io/thrg-stickies/" title="The Stickies project page">Visit the Stickies page</a>
 </p>
