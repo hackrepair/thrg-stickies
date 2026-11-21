@@ -1,9 +1,0 @@
-.DS_Store
-.AppleDouble
-*.swp
-
-# Generated release artifacts.
-/dist/
-
-# Local review scripts and screenshots.
-/.review/
